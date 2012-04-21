@@ -1,0 +1,56 @@
+[ranger]
+bfast_exe=/path/to/bfast/bin/
+bfast_raw_reads_dir = /path/to/DARE-Bioscope/prepare_reads/
+bfast_reads_num = 1200000
+bfast_reads_dir = /path/to/DARE-Bioscope/reads_b/
+bfast_ref_genome_dir = /path/to/DARE-Bioscope/bglumae/
+bfast_tmp_dir = /path/to/DARE-Bioscope/matchtmp/ 
+bfast_matches_dir = /path/to/DARE-Bioscope/matches/ 
+##this should be pre calculated which depends on how large RAM and reference genome size
+bfast_num_cores_threads = 2
+bfast_localalign_dir = /path/to/DARE-Bioscope/localalign/
+bfast_postprocess_dir = /path/to/DARE-Bioscope/postprocess/
+encoding_space = 0
+
+[fgeuca]
+bfast_exe=/path/to/bfast/bin/
+bfast_raw_reads_dir = /path/to/DARE-Bioscope/prepare_reads/
+bfast_reads_num = 1200000
+bfast_reads_dir = /path/to/DARE-Bioscope/reads_b/
+bfast_ref_genome_dir = /path/to/DARE-Bioscope/bglumae/
+bfast_tmp_dir = /path/to/DARE-Bioscope/matchtmp/              
+bfast_matches_dir = /path/to/DARE-Bioscope/matches/              
+##this should be pre calculated which depends on how large RAM and reference genome size
+bfast_num_cores_threads = 2
+bfast_localalign_dir = /path/to/DARE-Bioscope/localalign/
+bfast_postprocess_dir = /path/to/DARE-Bioscope/postprocess/
+encoding_space = 0
+
+[qb]
+bfast_exe=/path/to/bfast/bin/
+bfast_raw_reads_dir = /path/to/DARE-Bioscope/prepare_reads/
+bfast_reads_num = 1200000
+bfast_reads_dir = /path/to/DARE-Bioscope/reads_b/
+bfast_ref_genome_dir = /path/to/DARE-Bioscope/bglumae/
+bfast_tmp_dir = /path/to/DARE-Bioscope/matchtmp/              
+bfast_matches_dir = /path/to/DARE-Bioscope/matches/              
+##this should be pre calculated which depends on how large RAM and reference genome size
+bfast_num_cores_threads = 2
+bfast_localalign_dir = /path/to/DARE-Bioscope/localalign/
+bfast_postprocess_dir = /path/to/DARE-Bioscope/postprocess/
+encoding_space = 0
+
+[painter]
+bfast_exe=/path/to/bfast/bin/
+bfast_raw_reads_dir = /path/to/DARE-Bioscope/prepare_reads/
+bfast_reads_num = 1200000
+bfast_reads_dir = /path/to/DARE-Bioscope/reads_b/
+bfast_ref_genome_dir = /path/to/DARE-Bioscope/bglumae/
+bfast_tmp_dir = /path/to/DARE-Bioscope/matchtmp/              
+bfast_matches_dir = /path/to/DARE-Bioscope/matches/              
+##this should be pre calculated which depends on how large RAM and reference genome size
+bfast_num_cores_threads = 2
+bfast_localalign_dir = /path/to/DARE-Bioscope/localalign/
+bfast_postprocess_dir = /path/to/DARE-Bioscope/postprocess/
+encoding_space = 0
+

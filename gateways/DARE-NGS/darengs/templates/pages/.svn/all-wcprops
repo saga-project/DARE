@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/saga-web/!svn/ver/224/DARE-web/DARE-NGS/darengs/templates/pages
+END
+trac.mako
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/saga-web/!svn/ver/140/DARE-web/DARE-NGS/darengs/templates/pages/trac.mako
+END
+about.mako
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/saga-web/!svn/ver/224/DARE-web/DARE-NGS/darengs/templates/pages/about.mako
+END
+resources.mako
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/saga-web/!svn/ver/140/DARE-web/DARE-NGS/darengs/templates/pages/resources.mako
+END
+software.mako
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/saga-web/!svn/ver/140/DARE-web/DARE-NGS/darengs/templates/pages/software.mako
+END
+contact.mako
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/saga-web/!svn/ver/152/DARE-web/DARE-NGS/darengs/templates/pages/contact.mako
+END
+using_chipseq.mako
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/saga-web/!svn/ver/140/DARE-web/DARE-NGS/darengs/templates/pages/using_chipseq.mako
+END
+using_bfast.mako
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/saga-web/!svn/ver/224/DARE-web/DARE-NGS/darengs/templates/pages/using_bfast.mako
+END
+index.mako
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/saga-web/!svn/ver/224/DARE-web/DARE-NGS/darengs/templates/pages/index.mako
+END
+using_tophatfusion.mako
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/saga-web/!svn/ver/140/DARE-web/DARE-NGS/darengs/templates/pages/using_tophatfusion.mako
+END

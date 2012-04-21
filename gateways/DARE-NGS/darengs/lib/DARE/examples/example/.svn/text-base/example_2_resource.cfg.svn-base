@@ -1,0 +1,14 @@
+[common]
+executable=/bin/date
+number_of_processes = 2
+spmd_variation =  single
+
+[cyder]
+environment = 
+arguments = 
+
+[ranger]
+environment = PATH=${PATH}:/path/to/exe/:/path/to/exe/
+
+[painter]
+environment = PATH=${PATH}:/path/to/exe/:/path/to/exe/

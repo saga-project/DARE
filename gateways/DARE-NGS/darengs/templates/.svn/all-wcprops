@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/saga-web/!svn/ver/224/DARE-web/DARE-NGS/darengs/templates
+END
+base.mako
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/saga-web/!svn/ver/224/DARE-web/DARE-NGS/darengs/templates/base.mako
+END
+job_table_view.mako
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/saga-web/!svn/ver/164/DARE-web/DARE-NGS/darengs/templates/job_table_view.mako
+END
+jobsubmitted.mako
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/saga-web/!svn/ver/31/DARE-web/DARE-NGS/darengs/templates/jobsubmitted.mako
+END
+dalliance.mako
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/saga-web/!svn/ver/77/DARE-web/DARE-NGS/darengs/templates/dalliance.mako
+END
+job_update.mako
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/saga-web/!svn/ver/13/DARE-web/DARE-NGS/darengs/templates/job_update.mako
+END

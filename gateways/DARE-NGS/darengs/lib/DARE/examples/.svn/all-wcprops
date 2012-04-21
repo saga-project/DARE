@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/saga-web/!svn/ver/164/DARE-web/DARE-NGS/darengs/lib/DARE/examples
+END
+launchexample.sh
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/saga-web/!svn/ver/120/DARE-web/DARE-NGS/darengs/lib/DARE/examples/launchexample.sh
+END
+launchchipseq.sh
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/saga-web/!svn/ver/164/DARE-web/DARE-NGS/darengs/lib/DARE/examples/launchchipseq.sh
+END
+bfast_dare.py
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/saga-web/!svn/ver/117/DARE-web/DARE-NGS/darengs/lib/DARE/examples/bfast_dare.py
+END
+launchtophat.sh
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/saga-web/!svn/ver/116/DARE-web/DARE-NGS/darengs/lib/DARE/examples/launchtophat.sh
+END
+tophatfusion_dare.py
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/saga-web/!svn/ver/117/DARE-web/DARE-NGS/darengs/lib/DARE/examples/tophatfusion_dare.py
+END
+scalabe_chipseq_dare.py
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/saga-web/!svn/ver/159/DARE-web/DARE-NGS/darengs/lib/DARE/examples/scalabe_chipseq_dare.py
+END
+example_dare.py
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/saga-web/!svn/ver/120/DARE-web/DARE-NGS/darengs/lib/DARE/examples/example_dare.py
+END
+chipseq_dare.py
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/saga-web/!svn/ver/164/DARE-web/DARE-NGS/darengs/lib/DARE/examples/chipseq_dare.py
+END
