@@ -1,0 +1,17 @@
+#python specific
+*.pyc
+*.egg
+*.gz
+*.DS_Store
+
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.log
+
+framework/envdare
+framework/build
+framework/dist
+framework/DARE.egg-info
