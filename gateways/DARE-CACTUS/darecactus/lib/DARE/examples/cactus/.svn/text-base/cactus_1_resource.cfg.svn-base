@@ -1,0 +1,27 @@
+[common]
+executable=wget 
+number_of_processes = 2
+spmd_variation =  single
+common_arguments =  --no-check-certificate https://github.com/gridaphobe/CRL/raw/ET_2011_10/GetComponents
+
+[cyder]
+environment = 
+arguments = 
+
+
+[queenbee]
+environment = 
+arguments =  
+
+[ranger]
+environment = 
+arguments =  
+
+[lonestar]
+environment = 
+arguments =  
+
+
+[painter]
+environment =
+arguments =  

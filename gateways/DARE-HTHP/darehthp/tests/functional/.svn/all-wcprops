@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/saga-web/!svn/ver/1/DARE-web/DARE-HTHP/darehthp/tests/functional
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/saga-web/!svn/ver/1/DARE-web/DARE-HTHP/darehthp/tests/functional/__init__.py
+END
+test_users.py
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/saga-web/!svn/ver/1/DARE-web/DARE-HTHP/darehthp/tests/functional/test_users.py
+END
+test_hthpmd.py
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/saga-web/!svn/ver/1/DARE-web/DARE-HTHP/darehthp/tests/functional/test_hthpmd.py
+END

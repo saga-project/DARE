@@ -1,0 +1,3 @@
+include darehthp/config/deployment.ini_tmpl
+recursive-include darehthp/public *
+recursive-include darehthp/templates *

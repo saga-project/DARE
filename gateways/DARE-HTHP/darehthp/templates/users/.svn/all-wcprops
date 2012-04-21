@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/saga-web/!svn/ver/192/DARE-web/DARE-HTHP/darehthp/templates/users
+END
+succ_register.mako
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/saga-web/!svn/ver/192/DARE-web/DARE-HTHP/darehthp/templates/users/succ_register.mako
+END
+register.mako
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/saga-web/!svn/ver/192/DARE-web/DARE-HTHP/darehthp/templates/users/register.mako
+END
+login.mako
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/saga-web/!svn/ver/192/DARE-web/DARE-HTHP/darehthp/templates/users/login.mako
+END

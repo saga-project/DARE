@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/saga-web/!svn/ver/188/DARE-web/DARE-HTHP/darehthp/config
+END
+middleware.py
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/saga-web/!svn/ver/1/DARE-web/DARE-HTHP/darehthp/config/middleware.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/saga-web/!svn/ver/1/DARE-web/DARE-HTHP/darehthp/config/__init__.py
+END
+deployment.ini_tmpl
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/saga-web/!svn/ver/1/DARE-web/DARE-HTHP/darehthp/config/deployment.ini_tmpl
+END
+environment.py
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/saga-web/!svn/ver/188/DARE-web/DARE-HTHP/darehthp/config/environment.py
+END
+ntenvironment.py
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/saga-web/!svn/ver/188/DARE-web/DARE-HTHP/darehthp/config/ntenvironment.py
+END
+routing.py
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/saga-web/!svn/ver/1/DARE-web/DARE-HTHP/darehthp/config/routing.py
+END
