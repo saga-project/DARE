@@ -1,12 +1,11 @@
 [main]
-steps = hello_1, hello_2, hello_3
-# hello_4
+steps = hello_1, hello_2, hello_3, hello_4
 jobid = 1
 webupdate= False
-used_pilots = localhost
+used_pilots = cyder, qb, ranger
 #, localhost
 
-[localhost]
+[cyder]
 pilot_config_file = default
 #/path/to/resource.cfg
 number_of_processes = 1   
@@ -27,6 +26,7 @@ input_names = two
 step_cfg_file = default
 
 [hello_3]
+step_resource= qb
 step_name = hello_3
 start_after_steps = hello_2
 cu_type = echo_hello

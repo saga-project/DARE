@@ -4,8 +4,8 @@ UNDEFINED = runtime.UNDEFINED
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 6
-_modified_time = 1328843225.289857
-_template_filename='/Users/Sharath/workspace/projects/DARE-CACTUS/darecactus/templates/pages/job_table_view.mako'
+_modified_time = 1335111202.349978
+_template_filename='/Users/Sharath/workspace/projects/DARE/gateways/DARE-CACTUS/darecactus/templates/pages/job_table_view.mako'
 _template_uri='/pages/job_table_view.mako'
 _template_cache=cache.Cache(__name__, _modified_time)
 _source_encoding='utf-8'
@@ -132,7 +132,7 @@ def render_body(context,**pageargs):
             else:
                 # SOURCE LINE 72
                 __M_writer(u'               ')
-                __M_writer(escape(h.link_to("View Output", url('/cactus/download_job_output', jobid=job.id))))
+                __M_writer(escape(h.link_to("Download Output", url('/cactus/download_job_output', jobid=job.id))))
                 __M_writer(u'   <br/>\n')
                 pass
             # SOURCE LINE 74

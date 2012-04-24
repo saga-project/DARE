@@ -14,42 +14,32 @@ from darecactus.lib.cactusormhelper import *
 DARENGS_HOME = os.getcwd()
 
 # go into lib/forms
+machines_list   =  [\
+		#['cyder','Cyder'], \
+                    ['queenbee','Queen Bee'],\
+                    #['lonestar','Lonestar'],\
+                    #['ranger','Ranger'],\
+                    #['osg', 'OSG glidein-WMS Pool'],\
+                    ]
+time_list       = [\
+		['120','2 Hours'], \
+                    ['300','5 Hours'],\
+                    ['600','10 Hours'],\
+                    ['1440','1 Day'],\
+                    ['2879','2 Days'],\
+                    ]
 
                  
 class CactusForm(forms.Form): 
                  
     description     = forms.CharField(initial='test')
     appname         = forms.CharField(widget=forms.HiddenInput,initial='cactus')
-
-    machines_list   =  [\
-						#['cyder','Cyder'], \
-                        ['queenbee','Queen Bee'],\
-                        #['lonestar','Lonestar'],\
-                        #['ranger','Ranger'],\
-                        #['osg', 'OSG glidein-WMS Pool'],\
-                        ]
-
-    time_list       = [\
-						['120','2 Hours'], \
-                        ['300','5 Hours'],\
-                        ['600','10 Hours'],\
-                        ['1440','1 Day'],\
-                        ['2879','2 Days'],\
-                        ]
-
-
     appname         = forms.CharField(initial='test')
-        
-
-    thornlist       = forms.ChoiceField(widget=Select(), label='Select Thorn',\
-                        required = False)  
-    
-    parameterfile    = forms.FileField(label='Parmeter File',required = False)
-              
-    walltime         = forms.ChoiceField(widget=Select(), label='Expected Runtime', choices=time_list, initial='2879')   
-   
-    machine         = forms.ChoiceField(widget=Select(), label='Resource',\
-                        choices=machines_list)                        
+    thornlist       = forms.ChoiceField(widget=Select(), label='Select Thorn', required = False)  
+    corecount       = forms.CharField(initial=1, label='Core Count')
+    parameterfile   = forms.FileField(label='Parmeter File',required = False)              
+    walltime        = forms.ChoiceField(widget=Select(), label='Expected Runtime', choices=time_list, initial='2879')   
+    machine         = forms.ChoiceField(widget=Select(), label='Resource', choices=machines_list)                        
     
     def __init__(self, *args, **kwargs):
         try:
@@ -61,9 +51,7 @@ class CactusForm(forms.Form):
         except:
             super(CactusForm, self).__init__(*args, **kwargs)  
      
-
-        
-                              
+          
                         
 class ThornForm(forms.Form):
     

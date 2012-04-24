@@ -11,7 +11,7 @@ from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
 
 
-einstientoolkit_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),'..','lib', 'DARE', 'examples', 'cactus', 'einsteintoolkit.th')
+einstientoolkit_file = os.path.join(os.path.abspath('.'),'..','lib', 'DARE', 'examples', 'cactus', 'einsteintoolkit.th')
 
 
 import darecactus.model as model
@@ -229,7 +229,7 @@ class CactusController(BaseController):
             
         jobid = request.params['jobid']
         file_type = request.params['type']
-	        
+            
         outname, outfile = get_job_file(jobid, file_type)
         print 'outname, outfile ', outname, outfile 
 
@@ -244,15 +244,19 @@ class CactusController(BaseController):
 
         if (c.userid == "false"):
             redirect(url('/users/login?cont=cactus&action=download_thorn'))
-
-        jobid = request.params['jobid']
-
+        try:
+        	jobid = request.params['jobid']
+        except:
+            return "jobid does not exist"
         filepath = os.path.join(os.getenv('HOME'), "DAREJOBS","darecactus",str(jobid), "%s-cactus.tar.gz"%jobid)  
-        outfile = open(filepath,'r') 
-        response.headers["content-type"] = "application"
-        response.headers["Content-Disposition"] = "attachment;filename=%s-cactus.tar.gz"%jobid
 
-        return outfile
+        if os.path.isfile(filepath):
+            outfile = open(filepath,'r') 
+            response.headers["content-type"] = "application"
+            response.headers["Content-Disposition"] = "attachment;filename=%s-cactus.tar.gz"%jobid
+            return outfile
+        else:
+            return "file does not exist"
 
     def job_status_update(self):    
         
