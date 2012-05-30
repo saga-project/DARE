@@ -25,7 +25,7 @@ sys.path.append(DARECACTUS_HOME)
 
 try:
     from bigjob import bigjob, subjob, description
-    from bigjob_dynamic.many_job import *
+    from bigjob_dynamic.many_job import many_job_service
 except ImportError:
     print "failed to import bigjob"
     sys.exit()
@@ -160,13 +160,13 @@ class dare(object):
                 #for cloud files
                 cmd = "scp  -r -i /path/to/username.private %s %s" % (source_url, dest_url)
                 os.system(cmd)
-            except saga.exception, e:
+            except:
                 error_msg = "File stage in failed : from " + source_url + " to " + dest_url
         elif (fs["fs_type"] == "gridftp"):
             try:
                 cmd = "globus-url-copy  -cd  %s %s" % (source_url, dest_url)
                 os.system(cmd)
-            except saga.exception, e:
+            except:
                 error_msg = "File stage in failed : from " + source_url + " to " + dest_url
 
         elif (fs["fs_type"] == "scp"):
@@ -174,57 +174,58 @@ class dare(object):
                 cmd = "scp -r %s %s" % (source_url, dest_url)
                 self.logger.info(cmd)
                 os.system(cmd)
-             except saga.exception, e:
-                 error_msg = "File stage in failed : from "+ source_url + " to "+ dest_url
+
+            except:
+                error_msg = "File stage in failed : from " + source_url + " to " + dest_url
+
         return None
 
 
-    def submit_wu(self,wu):
-        jd = description()   
-        jd.executable = wu["executable"]        
-        jd.number_of_processes =  "1" # wu["number_of_processes"]
+    def submit_wu(self, wu):
+        jd = description()
+        jd.executable = wu["executable"]
+        jd.number_of_processes = "1"
+        # wu["number_of_processes"]
         jd.spmd_variation = wu["spmd_variation"]
-        jd.arguments = [wu["arguments"],]
+        jd.arguments = [wu["arguments"]]
         jd.environment = wu["environment"].split(",")
         jd.working_directory = wu["working_directory"]
-        jd.output =  wu["output"]
-        jd.error = wu["error"]                                        
+        jd.output = wu["output"]
+        jd.error = wu["error"]
+
         subjob = self.mjs[int(wu["resource"])].create_job(jd)
         subjob.run()
-        print "Submited sub-job "+ "."
-        self.jobs.append(subjob)
-        self.job_start_times[subjob]=time.time()
-        self.job_states[subjob] = subjob.get_state()
-        self.logger.info( "jd.number_of_processes " + str(jd.number_of_processes))
-        self.logger.info( "jd exec " + jd.executable)
-            
-     
-     
-    #get the number of wus and wait till they finish 
-    def wait_for_wus(self,number_of_jobs):               
 
-            print "************************ All Jobs submitted ************************" +  str(number_of_jobs)
+        print "Submited sub-job " + "."
+        self.jobs.append(subjob)
+        self.job_start_times[subjob] = time.time()
+        self.job_states[subjob] = subjob.get_state()
+        self.logger.info("jd.number_of_processes " + str(jd.number_of_processes))
+        self.logger.info("jd exec " + jd.executable)
+
+    #get the number of wus and wait till they finish
+    def wait_for_wus(self, number_of_jobs):
+
+            print "************************ All Jobs submitted ************************" + str(number_of_jobs)
             while 1:
-                finish_counter=0
+                finish_counter = 0
                 result_map = {}
                 for i in range(0, number_of_jobs):
                     old_state = self.job_states[self.jobs[i]]
                     state = self.jobs[i].get_state()
                     if result_map.has_key(state) == False:
-                        result_map[state]=0
-                    result_map[state] = result_map[state]+1
+                        result_map[state] = 0
+                    result_map[state] = result_map[state] + 1
                     #print "counter: " + str(i) + " job: " + str(jobs[i]) + " state: " + state
                     if old_state != state:
-                        print "Job %s changed from: %s to %s"%(str(self.jobs[i]), old_state, state)
-                    if old_state != state and self.has_finished(state)==True:
-                         print "Job: " + str(self.jobs[i]) + " Runtime: " + str(time.time()-self.job_start_times[self.jobs[i]]) + " s."
-                    if self.has_finished(state)==True and state != None :
-                         finish_counter = finish_counter + 1
-                    self.job_states[self.jobs[i]]=state
+                        print "Job %s changed from: %s to %s" % (str(self.jobs[i]), old_state, state)
+                    if old_state != state and self.has_finished(state) == True:
+                        print "Job: " + str(self.jobs[i]) + " Runtime: " + str(time.time() - self.job_start_times[self.jobs[i]]) + " s."
+                    if self.has_finished(state) == True and state != None:
+                        finish_counter = finish_counter + 1
+                    self.job_states[self.jobs[i]] = state
 
                 time.sleep(5)
                 self.logger.info("Current states: " + str(result_map))
                 if finish_counter == number_of_jobs:
                     break
-                  
-              
