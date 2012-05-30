@@ -1,0 +1,9 @@
+#!/Users/Sharath/workspace/projects/DARE/gateways/DARE-CACTUS/envdarecactus/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'BigJob==0.4.64','console_scripts','test-bigjob-dynamic'
+__requires__ = 'BigJob==0.4.64'
+import sys
+from pkg_resources import load_entry_point
+
+sys.exit(
+   load_entry_point('BigJob==0.4.64', 'console_scripts', 'test-bigjob-dynamic')()
+)

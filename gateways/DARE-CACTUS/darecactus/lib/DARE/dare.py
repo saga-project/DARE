@@ -1,71 +1,71 @@
 #!/usr/bin/env python
 import sys
-import os 
+import os
 import time
-import pdb
 import traceback
 import logging
 
 import ConfigParser
-import optparse
+
 
 #add bigjob path
-if os.getenv("BIGJOB_HOME")!=None:
-    BIGJOB_HOME= os.getenv("BIGJOB_HOME")
+if os.getenv("BIGJOB_HOME") != None:
+    BIGJOB_HOME = os.getenv("BIGJOB_HOME")
 else:
-    BIGJOB_HOME = "~/project/BigJob"         
+    BIGJOB_HOME = "~/project/BigJob"
 
-if os.getenv("DARENGS_HOME")!=None:
-    DARECACTUS_HOME= os.getenv("DARECACTUS_HOME")
+if os.getenv("DARENGS_HOME") != None:
+    DARECACTUS_HOME = os.getenv("DARECACTUS_HOME")
 else:
-    DARECACTUS_HOME = os.path.abspath("/work/smaddi2/agent/") 
+    DARECACTUS_HOME = os.path.abspath("/work/smaddi2/agent/")
 
 COORDINATION_URL = "redis://gw68.quarry.iu.teragrid.org:2525"
 sys.path.append(BIGJOB_HOME)
 sys.path.append(DARECACTUS_HOME)
 
-try:        
-   from bigjob import bigjob, subjob, description
-   from bigjob_dynamic.many_job import *
+try:
+    from bigjob import bigjob, subjob, description
+    from bigjob_dynamic.many_job import *
 except ImportError:
     print "failed to import bigjob"
     sys.exit()
 
-DARECACTUS_HOME = os.path.abspath(os.path.join(os.path.abspath(__file__),"..", "..", "..",".."))
-sys.path.insert(0,DARECACTUS_HOME)
+DARECACTUS_HOME = os.path.abspath(os.path.join(os.path.abspath(__file__), "..", "..", "..", ".."))
+sys.path.insert(0, DARECACTUS_HOME)
 try:
-   from darecactus.lib.ormconnector import update_job_status,update_job_detail_status,RUNNING, FAILED, DONE 
-   load_update_env = "true"
+
+    from darecactus.lib.ormconnector import update_job_status, update_job_detail_status, RUNNING, FAILED, DONE
+    load_update_env = "true"
 except:
-   load_update_env = "false"
-   
+    load_update_env = "false"
 
 
 def dict_section(config, section):
-        
+
     lst = config.items(section)
-    dct={}
+    dct = {}
     for i in range(len(lst)):
-        dct[lst[i][0]]=lst[i][1]
+        dct[lst[i][0]] = lst[i][1]
     return dct
 
+
 class dare(object):
-    
-    def __init__(self,conf_file):
-  
+
+    def __init__(self, conf_file):
+
         self.jobs = []
         self.job_start_times = {}
         self.job_states = {}
-        
+
         #parse job conf file
         self.config = ConfigParser.ConfigParser()
-        self.config.read(conf_file)                      
-        
+        self.config.read(conf_file)
+
         self.job_conf = dict_section(self.config, "DAREJOB")
-        self.load_update_env = load_update_env 
-                        
+        self.load_update_env = load_update_env
+
     def run(self):
-                              
+
         #create a logfile
         LOG_FILENAME = self.job_conf["log_filename"]
         print LOG_FILENAME
@@ -75,109 +75,105 @@ class dare(object):
         hdlr.setFormatter(formatter)
         self.logger.addHandler(hdlr)
         self.logger.setLevel(logging.INFO)
-        
+
         #first info in log file
-        self.logger.info("Job id  is "+ self.job_conf["jobid"]  )
-        self.logger.info("RESOURCES used are " + self.job_conf["num_resources"] )            
-        
-        try:  
+        self.logger.info("Job id  is " + self.job_conf["jobid"])
+        self.logger.info("RESOURCES used are " + self.job_conf["num_resources"])
+
+        try:
             #get resource info
             #start the big job agents
             resource_list = []
-            self.mjs = []                
-            for i in range(0, int(self.job_conf["num_resources"])):           
+            self.mjs = []
+            for i in range(0, int(self.job_conf["num_resources"])):
                 resource_list.append([])
-                resource_list[i].append(dict_section(self.config,"resource_"+ str(i) ))
+                resource_list[i].append(dict_section(self.config, "resource_" + str(i)))
                 #create multiple manyjobs
                 print "Create manyjob service "
                 self.mjs.append(many_job_service(resource_list[i], COORDINATION_URL))
-            total_number_of_jobs=0       
-            
-            
-            ### run the step             
+            total_number_of_jobs = 0
+            ### run the step
             wus_count = 0
             for STEP in range(0, int(self.job_conf["num_steps"])):
                 starttime = time.time()
-                                
+
                 #job started update status
                 if (self.load_update_env == "true"):
-                    update_job_detail_status(self.job_conf["jobid"], "In step " + str(STEP +1))
-                
+                    update_job_detail_status(self.job_conf["jobid"], "In step " + str(STEP + 1))
+
                 step_wus = self.job_conf["step_" + str(STEP)].split(',')
-                if ("step_" + str(STEP)) not in self.job_conf["ft_steps"].split(','): 
+                if ("step_" + str(STEP)) not in self.job_conf["ft_steps"].split(','):
                     ### submit the each step wus to bigjob
                     for wu_count in range(0, len(step_wus)):
-                         wu = dict_section(self.config, step_wus[wu_count].strip())               
-                         wus_count = wus_count +1
-                         self.submit_wu(wu)
+                        wu = dict_section(self.config, step_wus[wu_count].strip())
+                        wus_count = wus_count + 1
+                        self.submit_wu(wu)
                     self.wait_for_wus(wus_count)
-                else:                    
+                else:
                     #time.sleep(10)
                     for wu_count in range(0, len(step_wus)):
-                         fs = dict_section(self.config, step_wus[wu_count].strip())               
-                         self.submit_fs(fs)                                    
- 
-                runtime = time.time()-starttime
-                                
-                self.logger.info("STEP"+str(STEP)+" Runtime: " + str(runtime) )                             
-                           
+                        fs = dict_section(self.config, step_wus[wu_count].strip())
+                        self.submit_fs(fs)
+
+                runtime = time.time() - starttime
+
+                self.logger.info("STEP" + str(STEP) + " Runtime: " + str(runtime))
+
             #all jobs done update status
             if (self.load_update_env == "true"):
                 update_job_detail_status(self.job_conf["jobid"], "")
                 update_job_status(self.job_conf["jobid"], 4)
-            
-            for i in range(0,int(self.job_conf["num_resources"])):
+
+            for i in range(0, int(self.job_conf["num_resources"])):
                 self.mjs[i].cancel()
-            
+
         except:
             traceback.print_exc(file=sys.stdout)
             try:
-                for i in range(0,int(self.job_conf["num_resources"])):
-                    self.mjs[i].cancel()            
+                for i in range(0, int(self.job_conf["num_resources"])):
+                    self.mjs[i].cancel()
             except:
                 sys.exit()
 
-    
-
-    def has_finished(self,state=''):
+    def has_finished(self, state=''):
             if state:
-               state = state.lower()
+                state = state.lower()
             else:
-               state = "failed"
-            
-            if state=="done" or state=="failed" or state=="canceled":
+                state = "failed"
+
+            if state == "done" or state == "failed" or state == "canceled":
                 return True
             else:
                 return False
-                
+
     # file stager for grids and clouds
     #TODO: should be SAGA based and pilot store
-    def submit_fs(self,fs):
+    def submit_fs(self, fs):
 
-        source_url=fs["source_url"]
-        dest_url=fs["dest_url"]
-        
-        self.logger.info( "Now I am tranferring the files from %s to %s"%(source_url, dest_url))
+        source_url = fs["source_url"]
+        dest_url = fs["dest_url"]
+
+        self.logger.info("Now I am tranferring the files from %s to %s" % (source_url, dest_url))
         #fgeuca for clouds
         if (fs["fs_type"] == "fgeuca"):
             try:
                 #for cloud files
-                cmd = "scp  -r -i /path/to/username.private %s %s"%(source_url, dest_url)
+                cmd = "scp  -r -i /path/to/username.private %s %s" % (source_url, dest_url)
                 os.system(cmd)
             except saga.exception, e:
-                error_msg = "File stage in failed : from "+ source_url + " to "+ dest_url
-        elif (fs["fs_type"] =="gridftp"):
+                error_msg = "File stage in failed : from " + source_url + " to " + dest_url
+        elif (fs["fs_type"] == "gridftp"):
             try:
-                cmd = "globus-url-copy  -cd  %s %s"%(source_url, dest_url)
+                cmd = "globus-url-copy  -cd  %s %s" % (source_url, dest_url)
                 os.system(cmd)
             except saga.exception, e:
-                error_msg = "File stage in failed : from "+ source_url + " to "+ dest_url
-                
+                error_msg = "File stage in failed : from " + source_url + " to " + dest_url
+
         elif (fs["fs_type"] == "scp"):
-             try:
-                 cmd = "scp -r %s %s"%(source_url, dest_url)
-                 self.logger.info(cmd)
-                 os.system(cmd)
+            try:
+                cmd = "scp -r %s %s" % (source_url, dest_url)
+                self.logger.info(cmd)
+                os.system(cmd)
              except saga.exception, e:
                  error_msg = "File stage in failed : from "+ source_url + " to "+ dest_url
         return None

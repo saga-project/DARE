@@ -27,7 +27,7 @@ end
 # unset irrelavent variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/Sharath/workspace/projects/DARE-CACTUS/envdarecactus"
+set -gx VIRTUAL_ENV "/Users/Sharath/workspace/projects/DARE/gateways/DARE-CACTUS/envdarecactus"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
