@@ -7,7 +7,7 @@ __license__   = "MIT"
 
 
 import os
-from dare.api import StepUnit
+
 
 class StepUnitStates(object):
     Unknown = 0

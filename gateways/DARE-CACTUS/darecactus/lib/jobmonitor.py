@@ -14,9 +14,7 @@ DARECACTUS_HOME = os.path.abspath(os.path.join(os.path.abspath(__file__),"..", "
 sys.path.insert(0,DARECACTUS_HOME)
 
 from darecactus.lib.ormconnector import check_new_jobs,get_jobinfo,get_job_file,update_job_status,get_jobtype,update_job_pid,RUNNING, NEW
-
 DARE_CACTUS_JOB_DIR = os.path.join(os.getenv('HOME') , "DAREJOBS/darecactus")
-
 
 class JobMonitor(object):
     def __init__(self):
@@ -34,7 +32,6 @@ class JobMonitor(object):
             #import pdb; pdb.set_trace()
 
             time.sleep(10)
-
 
 class JobStarter(Thread):
 

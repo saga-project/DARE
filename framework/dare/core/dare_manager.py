@@ -14,7 +14,6 @@ from dare import darelogger
 
 from dare.helpers.stepunit import StepUnit, StepUnitStates
 from dare.helpers.cfgparser import CfgParser
-
 from dare.helpers.prepareworkflow import PrepareWorkFlow
 
 from dare.helpers.updater import Updater
@@ -195,16 +194,16 @@ class DareManager(object):
             return False
 
 
-    def check_to_start_step(self, step_id):
-        flags = []
+  #  def check_to_start_step(self, step_id):
+ #       flags = []
 #        import pdb; pdb.set_trace()
-        print self.workflow.step_units_repo[step_id].UnitInfo['start_after_steps']
-        if self.workflow.step_units_repo[step_id].get_status() == StepUnitStates.New:  
-           for dep_step_id in self.workflow.step_units_repo[step_id].UnitInfo['start_after_steps']:
-               if self.workflow.step_units_repo[dep_step_id].get_status() != StepUnitStates.Done:
-                  flags.append(False)
-               print self.workflow.step_units_repo[dep_step_id].get_status()
-        return False if False in flags else True
+   #     print self.workflow.step_units_repo[step_id].UnitInfo['start_after_steps']
+    #    if self.workflow.step_units_repo[step_id].get_status() == StepUnitStates.New:  
+     #      for dep_step_id in self.workflow.step_units_repo[step_id].UnitInfo['start_after_steps']:
+      #         if self.workflow.step_units_repo[dep_step_id].get_status() != StepUnitStates.Done:
+       #           flags.append(False)
+        #       print self.workflow.step_units_repo[dep_step_id].get_status()
+        #return False if False in flags else True
 
 
     def cancel(self):

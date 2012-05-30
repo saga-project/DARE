@@ -11,7 +11,7 @@ import os
 #logging.basicConfig(level=logging.INFO, datefmt='%m/%d/%Y %I:%M:%S %p', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 #darelogger = logging.getLogger(name='DARE')
 
-class DL():
+class DareLogger():
     def debug(self, p):
         print "DARE-Debug-%s"%p
 
@@ -21,7 +21,7 @@ class DL():
     def error(self, p):
         print "DARE-error-%s"%p
         
-darelogger = DL()
+darelogger = DareLogger()
 
 version = "latest"
 
