@@ -54,7 +54,7 @@ class JobStarter(Thread):
         exec_file = "cactus_build_dare.py"
         cmd = os.path.join(DARECACTUS_HOME, 'darecactus', 'lib', 'DARE', "examples", exec_file)
         print cmd, " -c ", self.conffile
-        p1 = Popen(['python', cmd,  " -c ", self.conffile], stdout=PIPE)
+        p1 = Popen(['python', cmd,  "-c", self.conffile], stdout=PIPE)
 
         update_job_pid(self.jobid, p1.pid)
         update_job_status(self.jobid, RUNNING)
