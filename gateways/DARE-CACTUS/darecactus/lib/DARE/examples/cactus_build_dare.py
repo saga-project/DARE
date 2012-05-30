@@ -59,28 +59,25 @@ if __name__ == '__main__':
     except:
         print "failed to import dare"
         sys.exit()
-    
-    
-    
-    job_conf = dict_section( job_config, "JOB")
 
-    
+    job_conf = dict_section(job_config, "JOB")
+
     #print job_conf
-    #get the resources used from job configuration file   
+    #get the resources used from job configuration file
     resources_used = [job_conf["machine"]]
-    jobid = job_conf["jobid"] 
+    jobid = job_conf["jobid"]
     #get the dare_cwd
-    
+
     ft_list = []
-    ft_list.append(job_conf["thornfile"]) 
+    ft_list.append(job_conf["thornfile"])
     ft_list.append(job_conf["parfile"])
- 
+
     #TODO calculate number of nodes an walltime here now its static
-    number_nodes = [16] 
-    walltime  = job_conf.get("walltime", 2879)
+    number_of_processes_list = job_conf.get("corecount", 16).split(',')
+    walltime = job_conf.get("walltime", 200)
 
     #application working directory
-    
+
     LOCAL_DAREJOB_DIR = job_conf["local_darejob_dir"]
     #start building the dare conf file for dare
     dare_config = ConfigParser.ConfigParser()
@@ -88,9 +85,11 @@ if __name__ == '__main__':
     working_dirs = []
     cactus_working_dirs = []
 
-    jobunqstr = "dare-%s"%dare_uuid
-    cactus_build_name = job_conf["cactus_build_name"]  #''.join(random.choice(string.ascii_letters) for x in range(8))
-    cactus_sim_name = job_conf["cactus_sim_name"]   #''.join(random.choice(string.ascii_letters) for x in range(8)) 
+    jobunqstr = "dare-%s" % dare_uuid
+    cactus_build_name = job_conf["cactus_build_name"]
+    #''.join(random.choice(string.ascii_letters) for x in range(8))
+    cactus_sim_name = job_conf["cactus_sim_name"]
+    #''.join(random.choice(string.ascii_letters) for x in range(8))
 ###################################################################################################
 ##########          define resource list                        ###################################
 ###################################################################################################
@@ -98,33 +97,33 @@ if __name__ == '__main__':
     #read the resource conf file
     resource_conf_file = os.path.join(DARE_HOME, 'examples/cactus/resource.cfg')
     resource_config = ConfigParser.ConfigParser()
-    resource_config.read(resource_conf_file)  
-    
-    for i in range (0,len(resources_used)):   
-        resource_conf = dict_section( resource_config, "%s-head"%resources_used[i])
+    resource_config.read(resource_conf_file)
+
+    for i in range(0, len(resources_used)):
+        resource_conf = dict_section(resource_config, "%s-head" % resources_used[i])
         section_name = "resource_" + str(i)
-        dare_config.add_section(section_name)        
+        dare_config.add_section(section_name)
         #constant parameters
-        dare_config.set(section_name, "resource_url", resource_conf["resource_url"] )
+        dare_config.set(section_name, "resource_url", resource_conf["resource_url"])
         dare_config.set(section_name, "processes_per_node",  resource_conf["cores_per_node"])
-        dare_config.set(section_name, "allocation", resource_conf["allocation"]) 
-        dare_config.set(section_name, "queue", resource_conf["queue"]) 
+        dare_config.set(section_name, "allocation", resource_conf["allocation"])
+        dare_config.set(section_name, "queue", resource_conf["queue"])
         dare_config.set(section_name, "userproxy", resource_conf["userproxy"])
         dare_config.set(section_name, "working_directory", resource_conf["working_directory"])
         dare_config.set(section_name, "filetransfer_url", resource_conf["filetransfer_url"])
-        
+
         #changing parameters from job to job
         dare_config.set(section_name, "walltime", walltime)
-        dare_config.set(section_name, "number_of_processes",  number_nodes[i])
-        working_dirs.append(os.path.join(resource_conf["working_directory"],jobunqstr)) 
+        dare_config.set(section_name, "number_of_processes",  int(number_of_processes_list[i]))
+        working_dirs.append(os.path.join(resource_conf["working_directory"],jobunqstr))
         cwd_dir = os.path.join(resource_conf["working_directory"], cactus_build_name)
         cactus_working_dirs.append(cwd_dir)
         #todo add resource list in the middle
 
 
-        PWD = os.path.join(os.path.dirname(os.path.realpath(__file__)),'cactus')
-        mod_this_file = os.path.join(PWD, 'def.local.ini' )
-        to_this_file = os.path.join('/tmp',  '%s.%sdef.local.ini'%(resources_used[i],dare_uuid) )
+        PWD = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'cactus')
+        mod_this_file = os.path.join(PWD, 'def.local.ini')
+        to_this_file = os.path.join('/tmp',  '%s.%sdef.local.ini' % (resources_used[i],dare_uuid))
         strrr = "sed -e 's/MACHINE_NAME/%s/' -e 's/USERNAME/%s/'  -e 's/YOUR_ALLOCATION/%s/'  -e 's/THORN_NAME/%s/'  -e 's@RESOURCE_CACTUS_WD@%s@' -e 's@RESOURCE_CACTUS_SIMD@%s@'"\
                "< %s > %s "%(resources_used[i], resource_conf["username"], resource_conf["allocation"] , job_conf["thornlist"], cwd_dir, resource_conf["cactus_simulation_dir"], mod_this_file,to_this_file  )
         os.system(strrr)

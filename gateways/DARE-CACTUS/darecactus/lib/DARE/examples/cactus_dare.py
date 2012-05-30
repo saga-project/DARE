@@ -68,9 +68,9 @@ if __name__ == '__main__':
     ft_list.append(job_conf["parfile"])
  
     #TODO calculate number of nodes an walltime here now its static
-    number_nodes = [8] 
-    walltime  = job_conf.get("walltime", 2879)
-    
+    number_of_processes_list = job_conf.get("corecount", 16).split(',')
+    walltime = job_conf.get("walltime", 200)
+
     #application working directory
     
     LOCAL_DAREJOB_DIR = job_conf["local_darejob_dir"]
@@ -107,7 +107,7 @@ if __name__ == '__main__':
         
         #changing parameters from job to job
         dare_config.set(section_name, "walltime", walltime)
-        dare_config.set(section_name, "number_of_processes",  number_nodes[i])
+        dare_config.set(section_name, "number_of_processes",  int(number_of_processes_list[i]))
         working_dirs.append(os.path.join(resource_conf["working_directory"],jobunqstr)) 
         cactus_working_dirs.append(os.path.join(resource_conf["working_directory"], cactus_build_name))
         #todo add resource list in the middle
