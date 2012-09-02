@@ -44,12 +44,13 @@ document.write('<style type='text/css'>h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
             
             <!-- LOGIN -->
             <div id='social_header' style='top:121px;'>
-    {# if c.userid=='false' #}
-        <a href='/users/login'>Login</a><br/>
-        <a href='/users/register'>Register</a>
-    {# else #}
-        <a href='/users/logout'>Logout</a><br/>
-    {# endif #}
+    {% if request.user.is_authenticated %}
+
+     Hello  {{request.user.get_full_name|title}}  <a href='/logout'>Logout</a><br/>
+{{social_auth.associated }}
+    {% else %}
+        <a href='/login'>Login</a><br/>
+    {% endif %}
             </div>      
             
             <!-- navigation -->
@@ -68,21 +69,18 @@ document.write('<style type='text/css'>h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
                       </li>
 
 
-      <li><a href=''/contact'>ACCOUNT</a>
+      <li><a href=''>ACCOUNT</a>
          <ul>
-
-            <li ><a title='Pipeline'  href='/thorn_list' >Manage Thorn List</a></li>
-            <li ><a title='Pipeline'  href='/upload_thorn' >Upload Thorns</a></li>
-
+            <li ><a title='Pipeline'  href='/cactus/thornfileslist' >Manage Thorn List</a></li>
         </ul>      
       </li>
 
       <li><a class='MenuBarItemSubmenu'> JOB SUBMISSION </a>
         <ul>
 
-          <li ><a title='Pipeline'  href='_form' >Cactus</a></li>
+          <li ><a title='Pipeline'  href='/cactus/create-job' >Cactus</a></li>
 
-          <li><a href='/job_table_view'>Job Table View</a></li>
+          <li><a href='/view_job_list'>Job Table View</a></li>
           
         </ul>
       </li>

@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'darecactus.db',                      # Or path to database file if using sqlite3.
+        'NAME': 'databasedare.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -96,15 +96,21 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.auth.backends.ModelBackend'
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'dare_cactus.urls'
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+  'django.core.context_processors.request',
+)
+
+ROOT_URLCONF = 'dare-site.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'dare_cactus.wsgi.application'
+WSGI_APPLICATION = 'dare-site.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -122,8 +128,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'social_auth',
 #    'debug_toolbar',
-    'dareweb',
-    'chunks'
+    'darewap',
+    'cactus',
+    'chunks',
+    'storages'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -191,3 +199,37 @@ DEBUG_TOOLBAR_CONFIG = {
     'TAG': 'div',
     'ENABLE_STACKTRACES' : True,
 }
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'social_auth.backends.yahoo.YahooBackend',
+    'social_auth.backends.browserid.BrowserIDBackend',
+    'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'social_auth.backends.contrib.livejournal.LiveJournalBackend',
+    'social_auth.backends.contrib.foursquare.FoursquareBackend',
+    'social_auth.backends.contrib.github.GithubBackend',
+    'social_auth.backends.contrib.vkontakte.VKontakteBackend',
+    'social_auth.backends.contrib.live.LiveBackend',
+    'social_auth.backends.contrib.skyrock.SkyrockBackend',
+    'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
+    'social_auth.backends.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
+LOGIN_ERROR_URL = '/login-error/'
+
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
+
+DB_FILES = {
+    'db_table': 'Thornfiles',
+    'fname_column':  'filename',
+    'blob_column': 'thornfile',
+    'base_url': 'http://localhost/cactus/thornfiles/'
+}
+
+MEDIA_ROOT = STATICFILES_DIRS[0]
+MEDIA_URL = 'media'

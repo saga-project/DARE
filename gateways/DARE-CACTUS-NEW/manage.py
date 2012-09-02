@@ -2,8 +2,10 @@
 import os
 import sys
 
+sys.path.append("app")
+
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dare_cactus.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dare-site.settings")
 
     from django.core.management import execute_from_command_line
 

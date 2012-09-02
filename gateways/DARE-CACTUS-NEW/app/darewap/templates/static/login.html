@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body%}
+Login Via 
+    <a href={% url socialauth_begin 'yahoo' %}?{{ redirect_querystring }}> Yahoo </a>
+    <a href={% url socialauth_begin 'google' %}?{{ redirect_querystring }}> Github </a>
+
+{% endblock %}
+
+ 
