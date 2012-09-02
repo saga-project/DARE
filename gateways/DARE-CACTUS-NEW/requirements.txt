@@ -1,0 +1,4 @@
+django
+django-social-auth
+django-debug-toolbar
+https://github.com/clintecker/django-chunks.git
