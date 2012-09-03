@@ -105,6 +105,7 @@ MIDDLEWARE_CLASSES = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
   'django.core.context_processors.request',
+  'django.contrib.messages.context_processors.messages',
 )
 
 ROOT_URLCONF = 'dare-site.urls'
@@ -226,7 +227,7 @@ LOGIN_ERROR_URL = '/login-error/'
 
 DB_FILES = {
     'db_table': 'Thornfiles',
-    'fname_column':  'filename',
+    'fname_column':  'name',
     'blob_column': 'thornfile',
     'base_url': 'http://localhost/cactus/thornfiles/'
 }

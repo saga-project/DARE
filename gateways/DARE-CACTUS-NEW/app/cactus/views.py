@@ -9,17 +9,22 @@ from django.core.urlresolvers import reverse
 from darewap.models import Job
 from .models import Thornfiles
 from .forms import ThornfilesForm, CactusJobForm
-
+from django.contrib import messages
 
 @login_required
 def view_create_job_cactus(request):
     if request.method == 'POST':
-        form = ThornfilesForm(request.POST, request.FILES)
+        form = CactusJobForm(request.user, request.POST, request.FILES)
         if form.is_valid():
-            pass
+            form.save(request)
+            messages.success(request, "Job Succesfully created")
+        else:
+            messages.error(request, "Error in creating job: Inavlid Form")
     else:
-        form = CactusJobForm()
+        form = CactusJobForm(request.user)
+
     return render_to_response('cactus/create_job.html', {'form': form}, context_instance=RequestContext(request))
+
 
 @login_required
 def view_thornfileslist(request):

@@ -99,7 +99,14 @@ document.write('<style type='text/css'>h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
 
             <div class='inner'> 
             <!--    <a class='button_link alignright large_button' href=''><span>Learn More</span></a> -->  
-          
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
                 {% block body %}
                 {% endblock %}
           

@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.widgets import Select
-from .models import Thornfiles
+from .models import Thornfiles, Paramfiles
+from darewap.models import Job, JobQueue, JobInfo
 
 class ThornfilesForm(forms.Form):
     docfile = forms.FileField(
@@ -16,12 +17,36 @@ time_list = [['120', '2 Hours'], \
                     ['2879', '2 Days'],\
                     ]
 
+
 class CactusJobForm(forms.Form):
-    description = forms.CharField(initial='test')
-    appname = forms.CharField(widget=forms.HiddenInput, initial='cactus')
+    description = forms.CharField(initial='Test')
     appname = forms.CharField(initial='test')
-   # thornlist = forms.ModelField(Thornfiles, label='Select Thorn', required=False)
+    thornlist = forms.ModelChoiceField(Thornfiles, label='Select Thorn')
     corecount = forms.CharField(initial=1, label='Core Count')
-    parameterfile = forms.FileField(label='Parmeter File', required=False)
-    walltime = forms.ChoiceField(widget=Select(), label='Expected Runtime', choices=time_list, initial='2879')
-    machine = forms.ChoiceField(widget=Select(), label='Resource', choices=machines_list)
+    parameterfile = forms.FileField(label='Parmeter File')
+    walltime = forms.ChoiceField(widget=Select(), label='Expected Runtime', \
+                                choices=time_list, initial='2879')
+    machine = forms.ChoiceField(widget=Select(), label='Resource', \
+                                choices=machines_list)
+
+    def __init__(self, user, *args, **kwargs):
+        super(CactusJobForm, self).__init__(*args, **kwargs)
+        self.fields['thornlist'].queryset = Thornfiles.objects.filter(user=user)
+
+    def save(self, request):
+        job = Job(user=request.user)
+        job.save()
+        for key, value in self.fields.items():
+            print key, value
+            if key == 'parameterfile':
+                newdoc = Paramfiles(paramfile=request.FILES['parameterfile'], job=job)
+                newdoc.save()
+                jobinfo = JobInfo(key=key, value=newdoc.id, job=job)
+            else:
+                jobinfo = JobInfo(key=key, value=value, job=job)
+                jobinfo.save()
+
+        jobq = JobQueue(job=job)
+        jobq.save()
+        return job
+
