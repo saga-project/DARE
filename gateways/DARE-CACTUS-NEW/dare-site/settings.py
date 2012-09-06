@@ -177,7 +177,7 @@ SOCIAL_AUTH_CHANGE_SIGNAL_ONLY = True
 SOCIAL_AUTH_ASSOCIATE_BY_MAIL = True
 
 
-STATICFILES_DIRS = ('/Users/Sharath/workspace/projects/DARE-DJANGO/dare_cactus/site_media/',)
+STATICFILES_DIRS = ('/opt/DARE/gateways/DARE-CACTUS-NEW/site_media/',)
 STATIC_URL = '/site_media/'
 INTERNAL_IPS = ('127.0.0.1',)
 
