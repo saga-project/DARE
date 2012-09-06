@@ -39,7 +39,7 @@ def view_thornfileslist(request):
         form = ThornfilesForm()
 
     # Load documents for the list page
-    documents = Thornfiles.objects.all()
+    documents = Thornfiles.objects.filter(user=request.user)
 
     # Render list page with the documents and the form
     return render_to_response(
@@ -62,7 +62,7 @@ def view_paramfileslist(request):
         form = ThornfilesForm()
 
     # Load documents for the list page
-    documents = Thornfiles.objects.all()
+    documents = Thornfiles.objects.filter(user=request.user)
 
     # Render list page with the documents and the form
     return render_to_response(
