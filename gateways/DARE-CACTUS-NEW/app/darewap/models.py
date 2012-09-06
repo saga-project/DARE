@@ -14,6 +14,18 @@ class Job(models.Model):
     def __repr__(self):
         return "%s-%s" % (self.id, self.type)
 
+    @property
+    def app_type(self):
+        return JobInfo.objects.filter(id=self.id).filter(key='app_type')
+
+    @property
+    def status(self):
+        return JobInfo.objects.filter(id=self.id).filter(key='status')
+
+    @property
+    def description(self):
+        return JobInfo.objects.filter(id=self.id).filter(key='description')
+
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:

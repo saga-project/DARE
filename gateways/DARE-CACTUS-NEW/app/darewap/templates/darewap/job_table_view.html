@@ -22,10 +22,10 @@
              <tr  bgcolor="white" >  
         {% endif  %}
         <td> {{ job.id}}  </td>
-        <td>  {{ jobinfo.description}} %}</td>
-        <td><span style="text-transform: uppercase"> {{ jobinfo.description}} </span> </td>
+        <td>  {{ job.description}} </td>
+        <td><span style="text-transform: uppercase"> {{ job.app_type}} </span> </td>
         <td>  {{ jobinfo.status }}</td>
-        <td width="10%" > ${job.modified} </td>
+        <td width="10%" > {{job.modified}} </td>
         <td width="25%"><font size='2'>
             <a href='{{ jobinfo.description}}'> "View Thorn" </a>         <br/> 
             <a href='{{ jobinfo.description}}'> "View Parameter File" </a>         <br/> 
