@@ -1,5 +1,6 @@
-django
+django==1.4.1
 django-social-auth
 django-debug-toolbar
 django-chunks
 django-storages
+https://github.com/msharath/django-chroniker/tarball/master

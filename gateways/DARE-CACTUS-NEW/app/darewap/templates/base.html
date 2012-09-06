@@ -48,8 +48,9 @@ document.write('<style type='text/css'>h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
 
      Hello  {{request.user.get_full_name|title}}  <a href='/logout'>Logout</a><br/>
 {{social_auth.associated }}
-    {% else %}
-        <a href='/login'>Login</a><br/>
+    {% else %}Login via:
+            <a href="{% url socialauth_begin 'yahoo' %}?{{ redirect_querystring }}"> Yahoo </a>|
+    <a href="{% url socialauth_begin 'google-oauth2' %}?{{ redirect_querystring }}"> Google</a>
     {% endif %}
             </div>      
             
