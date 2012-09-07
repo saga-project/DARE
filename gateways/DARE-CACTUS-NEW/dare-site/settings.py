@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'social_auth',
 #    'debug_toolbar',
+    'south',
     'darewap',
     'cactus',
     'chunks',
@@ -235,6 +236,4 @@ DB_FILES = {
 
 MEDIA_ROOT = STATICFILES_DIRS[0]
 MEDIA_URL = 'media'
-
-
 

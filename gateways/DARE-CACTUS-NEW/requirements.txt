@@ -4,3 +4,5 @@ django-debug-toolbar
 django-chunks
 django-storages
 https://github.com/msharath/django-chroniker/tarball/master
+south==0.7.6
+

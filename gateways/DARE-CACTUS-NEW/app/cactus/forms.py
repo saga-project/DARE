@@ -34,7 +34,7 @@ class CactusJobForm(forms.Form):
         self.fields['thornlist'].queryset = Thornfiles.objects.filter(user=user)
 
     def save(self, request):
-        job = Job(user=request.user)
+        job = Job(user=request.user, status="New")
         job.save()
         for key, value in self.fields.items():
             print key, value
