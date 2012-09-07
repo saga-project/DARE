@@ -32,6 +32,7 @@ class CactusJobForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(CactusJobForm, self).__init__(*args, **kwargs)
         self.fields['thornlist'].queryset = Thornfiles.objects.filter(user=user)
+        self.fields['thornlist'].error_messages['required'] = 'Please select a Thornfile or upload Thornfiles in Manage Thorn List'
 
     def save(self, request):
         job = Job(user=request.user, status="New")
