@@ -3,8 +3,9 @@ from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = patterns('darewap.views',
-    (r'^?P<page_type>[^/]+)/$', 'view_static'),
-    (r'^view_job_list/$', 'view_job_list'),
+    url(r'^$', 'view_home', name='site-homepage'),
+    (r'^view-job-list/$', 'view_job_list'),
+    (r'^(?P<page_type>[-\w]+)/$', 'view_static'),
 )
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += patterns('',   url(r'', include('social_auth.urls')))
