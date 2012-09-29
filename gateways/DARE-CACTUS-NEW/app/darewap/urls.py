@@ -5,7 +5,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('darewap.views',
     url(r'^$', 'view_home', name='site-homepage'),
     (r'^view-job-list/$', 'view_job_list'),
-    (r'^(?P<page_type>[-\w]+)/$', 'view_static'),
+    (r'^static/(?P<page_type>[-\w]+)/$', 'view_static'),
 )
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += patterns('',   url(r'', include('social_auth.urls')))
