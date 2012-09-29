@@ -3,10 +3,8 @@ import os
 import sys
 
 sys.path.append("app")
-
+#sys.path.append("deployment/env_settings")
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dare-site.settings")
-
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deployment.env_settings.local.settings")
     from django.core.management import execute_from_command_line
-
     execute_from_command_line(sys.argv)
