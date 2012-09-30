@@ -96,7 +96,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.contrib.auth.backends.ModelBackend'
+    'django.contrib.auth.backends.ModelBackend',
+    #'djrestrictaccess.restrictaccessmoddleware.RestrictAccessMiddleware',
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -129,6 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'social_auth',
 #    'debug_toolbar',
+    'djrestrictaccess',
     'south',
     'darewap',
     'cactus',
@@ -222,7 +224,7 @@ AUTHENTICATION_BACKENDS = (
 
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/login-error/'
 
 #SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
