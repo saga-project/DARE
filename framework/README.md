@@ -35,7 +35,13 @@ Configuration of Coordination Backend
 -------------------------------------
 Edit or create ~/.darerc 
 
-	COORDINATION_URL = "redis://gw68.quarry.iu.teragrid.org:6379"
+	[DEFAULT]
+	COORDINATION_URL =redis://localhost:6379
+
+Usage
+-----
+	wget https://raw.github.com/saga-project/DARE/master/framework/examples/simple_examples/hello.dare
+	dare-run hello.dare
 
 For more information about Coordination please visit https://github.com/saga-project/BigJob/wiki
 
