@@ -66,3 +66,23 @@ class JobQueue(models.Model):
             self.created = datetime.datetime.now()
         self.modified = datetime.datetime.now()
         super(JobQueue, self).save(*args, **kwargs)
+
+
+class UserContext(models.Model):
+    '''  saga.Context() properties'''
+    user = models.ForeignKey('auth.User', null=True, related_name='user_context')
+    type = models.CharField(max_length=30, blank=True)
+    usercert = models.FileField(upload_to='usercert/%Y/%m/%d')
+    userid = models.CharField(max_length=30, blank=True)
+    userkey = models.CharField(max_length=30, blank=True)
+    userpass = models.CharField(max_length=30, blank=True)
+    userproxy = models.FileField(upload_to='userproxy/%Y/%m/%d')
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = datetime.datetime.now()
+        self.modified = datetime.datetime.now()
+        super(UserContext, self).save(*args, **kwargs)

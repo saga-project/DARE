@@ -1,4 +1,4 @@
-django==1.4.1
+django==1.4.2
 django-social-auth
 django-debug-toolbar
 django-chunks
