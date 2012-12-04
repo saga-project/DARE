@@ -1,9 +1,8 @@
 #!/usr/bin/env python
+__author__ = "Sharath Maddineni"
+__copyright_ = "Copyright 2011-2012, Sharath Maddineni"
+__license__ = "MIT"
 
-__author__    = "Sharath Maddineni"
-__email__     = "smaddineni@cct.lsu.edu"
-__copyright__ = "Copyright 2011, Sharath Maddineni"
-__license__   = "MIT"
 
 import os
 #import logging
@@ -11,16 +10,17 @@ import os
 #logging.basicConfig(level=logging.INFO, datefmt='%m/%d/%Y %I:%M:%S %p', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 #darelogger = logging.getLogger(name='DARE')
 
+
 class DareLogger():
     def debug(self, p):
-        print "DARE-Debug-%s"%p
+        print "DARE-Debug-%s" % p
 
     def info(self, p):
-        print "DARE-info-%s"%p
-        
+        print "DARE-info-%s" % p
+
     def error(self, p):
-        print "DARE-error-%s"%p
-        
+        print "DARE-error-%s" % p
+
 darelogger = DareLogger()
 
 version = "latest"
@@ -41,7 +41,7 @@ try:
         darelogger.error("found ~/.darerc file using it for settings")
     except:
         _conf_file = os.path.join(os.path.abspath('..'), '..', 'dare.conf')
-        darelogger.error("usning default dare config file")       
+        darelogger.error("usning default dare config file")
 
     cfgparser = ConfigParser.ConfigParser()
     cfgparser.read(_conf_file)
