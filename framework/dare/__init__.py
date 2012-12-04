@@ -33,6 +33,6 @@ darelogger.info("Loading settings in %s" % _conf_file)
 cfgparser = ConfigParser.ConfigParser()
 cfgparser.read(_conf_file)
 cfgdict = cfgparser.defaults()
-COORDINATION_URL = str(cfgdict.get('coordination_url', "redis://gw68.quarry.iu.teragrid.org:2525"))
+COORDINATION_URL = str(cfgdict.get('coordination_url'))
 
 darelogger.info("Bigjob COORDINATION_URL: %s " % COORDINATION_URL)

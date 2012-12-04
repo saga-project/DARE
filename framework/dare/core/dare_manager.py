@@ -39,9 +39,8 @@ class DareManager(object):
        # try:
 
             darelogger.info("Creating Compute Engine service ")
-            print COORDINATION_URL
             self.pilot_compute_service = PilotComputeService(coordination_url=COORDINATION_URL)
-            self.pilot_data_service = PilotDataService()
+            self.pilot_data_service = PilotDataService(coordination_url=COORDINATION_URL)
 
             for compute_pilot, desc in self.workflow.compute_pilot_repo.items():
                 self.pilot_compute_service.create_pilot(pilot_compute_description=desc)
@@ -194,8 +193,8 @@ class DareManager(object):
 
     def cancel(self):
         darelogger.debug("Terminate Pilot Compute/Data Service")
-        self.compute_data_service.cancel()
         try:
+            self.compute_data_service.cancel()
             self.pilot_data_service.cancel()
             self.pilot_compute_service.cancel()
         except:
