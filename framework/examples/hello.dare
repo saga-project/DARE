@@ -1,0 +1,15 @@
+[main]
+steps = hello_1
+jobid = 1
+webupdate= False
+used_pilots = localhost
+
+[localhost]
+number_of_processes = 1   
+
+
+[hello_1]
+step_name = hello_1
+cu_type = echo_hello
+input_names = one
+step_cfg_file = default

@@ -6,13 +6,14 @@ __license__ = "MIT"
 
 import os
 import sys
-import jobmodel_helper
 
 if os.getenv("DARENGS_HOME") != None:
     DARE_WEB_LIB = os.getenv("DARENGS_HOME")
 else:
     DARE_WEB_LIB = "~/darecactus"
 
+# should be from django
+#import jobmodel_helper
 
 sys.path.insert(0, os.path.join(DARE_WEB_LIB, 'lib'))
 #import ormconnector as jobmodel_helper

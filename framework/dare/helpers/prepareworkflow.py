@@ -77,8 +77,8 @@ class PrepareWorkFlow(object):
                              "working_directory": info_pilot['working_directory'],
                              'affinity_datacenter_label': '%s-adl' % pilot,
                              'affinity_machine_label': '%s-aml' % pilot,
-                             "number_of_processes":  int(pilot_info_from_main_cfg['number_of_processes']),
-                             "walltime": int(pilot_info_from_main_cfg['walltime'])
+                             "number_of_processes":  int(pilot_info_from_main_cfg.get('number_of_processes', 1)),
+                             "walltime": int(pilot_info_from_main_cfg.get('walltime', 100))
                             }
 
             self.compute_pilot_repo[compute_pilot_uuid] = pilot_compute_description

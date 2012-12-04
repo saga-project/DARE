@@ -31,7 +31,6 @@ class DareManager(object):
         self.workflow = PrepareWorkFlow(self.dare_conffile)
         self.updater = Updater(self.workflow.update_site_db, self.workflow.dare_web_id)
         self.dare_id = "dare-" + str(uuid.uuid1())
-        self.compute_pilot_service_repo = []
         self.data_pilot_service_repo = []
 
         self.start()
@@ -39,13 +38,13 @@ class DareManager(object):
     def start(self):
        # try:
 
-            darelogger.info("Create Compute Engine service ")
-
+            darelogger.info("Creating Compute Engine service ")
+            print COORDINATION_URL
             self.pilot_compute_service = PilotComputeService(coordination_url=COORDINATION_URL)
             self.pilot_data_service = PilotDataService()
 
             for compute_pilot, desc in self.workflow.compute_pilot_repo.items():
-                self.compute_pilot_service_repo.append(self.pilot_compute_service.create_pilot(pilot_compute_description=desc))
+                self.pilot_compute_service.create_pilot(pilot_compute_description=desc)
 
             #for data_pilot, desc in self.workflow.data_pilot_repo.items():
              #   self.data_pilot_service_repo.append(self.pilot_data_service.create_pilot(pilot_data_description=desc))

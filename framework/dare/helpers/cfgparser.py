@@ -5,24 +5,29 @@ __license__ = "MIT"
 
 
 import ConfigParser
+from ConfigParser import NoSectionError
 import os
 import sys
+from dare import darelogger
 
 
 class CfgParser(object):
-
-    def __init__(self, conf_file=''):
-
-        if conf_file == '' or not os.path.exists(conf_file):
-            conf_file = "/default/conf/file/"
+    def __init__(self, conf_file="/default/conf/file/"):
+        self.conf_file = conf_file
+        darelogger.info('Loading conf file %s' % conf_file)
+        if not os.path.exists(self.conf_file):
+            raise RuntimeError("Cannot find %s " % self.conf_file)
 
         #parse job conf file
         self.config = ConfigParser.ConfigParser()
-        self.config.read(conf_file)
+        self.config.read(self.conf_file)
 
     def SectionDict(self, section):
+        try:
+            lst = self.config.items(section)
+        except NoSectionError:
+            raise RuntimeError("Cannot Find %s in file %s" % (section, self.conf_file))
 
-        lst = self.config.items(section)
         dct = {}
         for i in range(len(lst)):
             dct[lst[i][0]] = lst[i][1]
