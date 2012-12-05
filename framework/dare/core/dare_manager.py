@@ -7,7 +7,7 @@ __license__ = "MIT"
 import uuid
 import time
 import threading
-
+import sys
 from dare import darelogger
 
 from dare.helpers.stepunit import StepUnitStates
@@ -32,52 +32,53 @@ class DareManager(object):
         self.updater = Updater(self.workflow.update_site_db, self.workflow.dare_web_id)
         self.dare_id = "dare-" + str(uuid.uuid1())
         self.data_pilot_service_repo = []
-
-        self.start()
+        try:
+            self.start()
+        except KeyboardInterrupt:
+            self.cancel()
 
     def start(self):
-       # try:
+        darelogger.info("Creating Compute Engine service ")
+        self.pilot_compute_service = PilotComputeService(coordination_url=COORDINATION_URL)
+        self.pilot_data_service = PilotDataService(coordination_url=COORDINATION_URL)
 
-            darelogger.info("Creating Compute Engine service ")
-            self.pilot_compute_service = PilotComputeService(coordination_url=COORDINATION_URL)
-            self.pilot_data_service = PilotDataService(coordination_url=COORDINATION_URL)
+        for compute_pilot, desc in self.workflow.compute_pilot_repo.items():
+            self.pilot_compute_service.create_pilot(pilot_compute_description=desc)
 
-            for compute_pilot, desc in self.workflow.compute_pilot_repo.items():
-                self.pilot_compute_service.create_pilot(pilot_compute_description=desc)
+        #for data_pilot, desc in self.workflow.data_pilot_repo.items():
+         #   self.data_pilot_service_repo.append(self.pilot_data_service.create_pilot(pilot_data_description=desc))
+        self.compute_data_service = ComputeDataService()
+        self.compute_data_service.add_pilot_compute_service(self.pilot_compute_service)
+       # self.compute_data_service.add_pilot_data_service(self.pilot_data_service)
 
-            #for data_pilot, desc in self.workflow.data_pilot_repo.items():
-             #   self.data_pilot_service_repo.append(self.pilot_data_service.create_pilot(pilot_data_description=desc))
-            self.compute_data_service = ComputeDataService()
-            self.compute_data_service.add_pilot_compute_service(self.pilot_compute_service)
-           # self.compute_data_service.add_pilot_data_service(self.pilot_data_service)
+        self.step_thread = {}
 
-            self.step_thread = {}
+        ### run the steps
+        self.step_start_lock = threading.RLock()
+        self.step_run_lock = threading.RLock()
 
-            ### run the steps
-            self.step_start_lock = threading.RLock()
-            self.step_run_lock = threading.RLock()
-
-            for step_id in self.workflow.step_units_repo.keys():
-                    darelogger.info(" Sumitted step %s " % step_id)
-                    self.step_start_lock.acquire()
-                    self.start_thread_step_id = step_id
-                    self.step_start_lock.release()
-
+        for step_id in self.workflow.step_units_repo.keys():
+                darelogger.info(" Sumitted step %s " % step_id)
+                self.step_start_lock.acquire()
+                self.start_thread_step_id = step_id
+                self.step_start_lock.release()
+                try:
                     self.step_thread[step_id] = threading.Thread(target=self.start_step)
-                    self.step_thread[step_id].start()
+                except (KeyboardInterrupt, SystemExit):
+                    print '\n! Received keyboard interrupt, quitting step %s.\n' % self.start_step
+                    self.step_thread[step_id].stop()
+                self.step_thread[step_id].start()
 
-            while(1):
-                count_step = [v.is_alive() for k, v in self.step_thread.items()]
-                darelogger.info('count_step %s' % count_step)
-                if not True in count_step and len(count_step) > 0:
-                    break
-                time.sleep(10)
+        while(1):
+            count_step = [v.is_alive() for k, v in self.step_thread.items()]
+            darelogger.info('count_step %s' % count_step)
+            if not True in count_step and len(count_step) > 0:
+                break
+            time.sleep(10)
 
-            darelogger.info(" All Steps Done processing")
+        darelogger.info(" All Steps Done processing")
 
-            self.cancel()
-        #except:
-         #   self.cancel()
+        self.cancel()
 
     def check_to_start_step(self, step_id):
         flags = []
@@ -98,6 +99,7 @@ class DareManager(object):
             darelogger.info(" Checking to start step %s " % step_id)
             if self.check_to_start_step(step_id):
                 self.run_step(step_id)
+                self.cancel()
                 break
             else:
                 darelogger.info(" Cannot start this step %s sleeping..." % step_id)
@@ -193,6 +195,9 @@ class DareManager(object):
 
     def cancel(self):
         darelogger.debug("Terminate Pilot Compute/Data Service")
+        for step, thread  in self.step_thread.items():
+            print "killing", step
+            thread._Thread__stop()
         try:
             self.compute_data_service.cancel()
             self.pilot_data_service.cancel()

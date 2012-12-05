@@ -30,11 +30,7 @@ def main():
         raise "missing dare configurtion file"
 
     darelogger.debug("starting DARE")
-    try:
-        dare = DareManager(conffile)
-       #dare.start()
-    except KeyboardInterrupt:
-        dare.cancel()
+    DareManager(conffile)
 
     darelogger.debug("DARE Exec Done")
 
