@@ -7,7 +7,6 @@ __license__ = "MIT"
 import uuid
 import time
 import threading
-import sys
 from dare import darelogger
 
 from dare.helpers.stepunit import StepUnitStates
@@ -32,10 +31,11 @@ class DareManager(object):
         self.updater = Updater(self.workflow.update_site_db, self.workflow.dare_web_id)
         self.dare_id = "dare-" + str(uuid.uuid1())
         self.data_pilot_service_repo = []
+        self.step_threads = {}
         try:
             self.start()
         except KeyboardInterrupt:
-            self.cancel()
+            self.quit(message='KeyboardInterrupt')
 
     def start(self):
         darelogger.info("Creating Compute Engine service ")
@@ -51,8 +51,6 @@ class DareManager(object):
         self.compute_data_service.add_pilot_compute_service(self.pilot_compute_service)
        # self.compute_data_service.add_pilot_data_service(self.pilot_data_service)
 
-        self.step_thread = {}
-
         ### run the steps
         self.step_start_lock = threading.RLock()
         self.step_run_lock = threading.RLock()
@@ -62,15 +60,11 @@ class DareManager(object):
                 self.step_start_lock.acquire()
                 self.start_thread_step_id = step_id
                 self.step_start_lock.release()
-                try:
-                    self.step_thread[step_id] = threading.Thread(target=self.start_step)
-                except (KeyboardInterrupt, SystemExit):
-                    print '\n! Received keyboard interrupt, quitting step %s.\n' % self.start_step
-                    self.step_thread[step_id].stop()
-                self.step_thread[step_id].start()
+                self.step_threads[step_id] = threading.Thread(target=self.start_step)
+                self.step_threads[step_id].start()
 
         while(1):
-            count_step = [v.is_alive() for k, v in self.step_thread.items()]
+            count_step = [v.is_alive() for k, v in self.step_threads.items()]
             darelogger.info('count_step %s' % count_step)
             if not True in count_step and len(count_step) > 0:
                 break
@@ -78,7 +72,7 @@ class DareManager(object):
 
         darelogger.info(" All Steps Done processing")
 
-        self.cancel()
+        self.quit(message='quit gracefully')
 
     def check_to_start_step(self, step_id):
         flags = []
@@ -99,7 +93,6 @@ class DareManager(object):
             darelogger.info(" Checking to start step %s " % step_id)
             if self.check_to_start_step(step_id):
                 self.run_step(step_id)
-                self.cancel()
                 break
             else:
                 darelogger.info(" Cannot start this step %s sleeping..." % step_id)
@@ -113,10 +106,10 @@ class DareManager(object):
 
         darelogger.info(" Started running %s " % step_id)
         for du_id in self.workflow.step_units_repo[step_id].UnitInfo['transfer_input_data_units']:
-                #data_unit = self.compute_data_service.submit_data_unit(self.workflow.data_units_repo[du_id])
-                #darelogger.debug("Pilot Data URL: %s Description: \n%s"%(data_unit, str(self.workflow.data_units_repo[du_id])))
-                #data_unit.wait()
-        #        self.compute_data_service.wait()
+            #data_unit = self.compute_data_service.submit_data_unit(self.workflow.data_units_repo[du_id])
+            #darelogger.debug("Pilot Data URL: %s Description: \n%s"%(data_unit, str(self.workflow.data_units_repo[du_id])))
+            #data_unit.wait()
+            #self.compute_data_service.wait()
             darelogger.debug(" input tranfer for step %s complete" % step_id)
 
         jobs = []
@@ -138,7 +131,7 @@ class DareManager(object):
             for i in range(0, NUMBER_JOBS):
                 old_state = job_states[jobs[i]]
                 state = jobs[i].get_state()
-                if result_map.has_key(state) == False:
+                if  state in result_map == False:
                     result_map[state] = 0
                 result_map[state] = result_map[state] + 1
                 #print "counter: " + str(i) + " job: " + str(jobs[i]) + " state: " + state
@@ -161,9 +154,9 @@ class DareManager(object):
         darelogger.debug(" Compute jobs for step %s complete" % step_id)
 
         #for du_id in self.workflow.step_units_repo[step_id].UnitInfo['transfer_output_data_units']:
-        #        data_unit = self.compute_data_service.submit_data_unit(self.workflow.data_units_repo[du_id])
-        #        darelogger.debug("Pilot Data URL: %s Description: \n%s"%(data_unit, str(pilot_data_description)))
-        #        data_unit.wait()
+    #        data_unit = self.compute_data_service.submit_data_unit(self.workflow.data_units_repo[du_id])
+    #        darelogger.debug("Pilot Data URL: %s Description: \n%s"%(data_unit, str(pilot_data_description)))
+    #        data_unit.wait()
         #darelogger.debug(" Output tranfer for step %s complete"%step_id)
 
         #        self.compute_data_service.wait()
@@ -182,22 +175,15 @@ class DareManager(object):
         else:
             return False
 
-  #  def check_to_start_step(self, step_id):
- #       flags = []
-#        import pdb; pdb.set_trace()
-   #     print self.workflow.step_units_repo[step_id].UnitInfo['start_after_steps']
-    #    if self.workflow.step_units_repo[step_id].get_status() == StepUnitStates.New:
-     #      for dep_step_id in self.workflow.step_units_repo[step_id].UnitInfo['start_after_steps']:
-      #         if self.workflow.step_units_repo[dep_step_id].get_status() != StepUnitStates.Done:
-       #           flags.append(False)
-        #       print self.workflow.step_units_repo[dep_step_id].get_status()
-        #return False if False in flags else True
-
-    def cancel(self):
-        darelogger.debug("Terminate Pilot Compute/Data Service")
-        for step, thread  in self.step_thread.items():
-            print "killing", step
+    def quit(self, message=None):
+        if message:
+            darelogger.debug(message)
+        darelogger.debug("Terminating steps")
+        for step, thread  in self.step_threads.items():
+            darelogger.debug("Stoppping step %s" % step)
             thread._Thread__stop()
+
+        darelogger.debug("Terminating Pilot Compute/Data Service")
         try:
             self.compute_data_service.cancel()
             self.pilot_data_service.cancel()

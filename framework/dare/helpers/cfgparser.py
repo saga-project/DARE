@@ -23,11 +23,7 @@ class CfgParser(object):
         self.config.read(self.conf_file)
 
     def SectionDict(self, section):
-        try:
-            lst = self.config.items(section)
-        except NoSectionError:
-            raise RuntimeError("Cannot Find %s in file %s" % (section, self.conf_file))
-
+        lst = self.config.items(section)
         dct = {}
         for i in range(len(lst)):
             dct[lst[i][0]] = lst[i][1]
