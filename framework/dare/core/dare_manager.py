@@ -133,7 +133,7 @@ class DareManager(object):
                 state = jobs[i].get_state()
                 if  state in result_map == False:
                     result_map[state] = 0
-                result_map[state] = result_map[state] + 1
+                result_map[state] = result_map.get(state, 0) + 1
                 #print "counter: " + str(i) + " job: " + str(jobs[i]) + " state: " + state
                 if old_state != state:
                     darelogger.debug("Job " + str(jobs[i]) + " changed from: " + old_state + " to " + state)

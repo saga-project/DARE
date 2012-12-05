@@ -64,7 +64,7 @@ class PrepareWorkFlow(object):
             except:
                 darelogger.info("cannot find section %s. Using defaults" % pilot)
             walltime = int(pilot_info_from_main_cfg.get('walltime', 100))
-            number_of_processes = int(pilot_info_from_main_cfg.get('number_of_processes', 1))
+            number_of_processes = pilot_info_from_main_cfg.get('number_of_processes')
 
             darelogger.info("Preparing pilot unit for  %s" % pilot)
 
@@ -76,15 +76,19 @@ class PrepareWorkFlow(object):
             pilot_config_from_db = CfgParser(pilot_config_file)
 
             info_pilot = pilot_config_from_db.SectionDict(pilot)
+            if not number_of_processes:
+                number_of_processes = info_pilot.get('number_of_processes', 1)
 
             # create pilot job service and initiate a pilot job
             pilot_compute_description = {
-                             "service_url": info_pilot['service_url'],
-                             "working_directory": info_pilot['working_directory'],
+                             "service_url": info_pilot.get('service_url'),
+                             "working_directory": info_pilot.get('working_directory'),
                              'affinity_datacenter_label': '%s-adl' % pilot,
                              'affinity_machine_label': '%s-aml' % pilot,
-                             "number_of_processes":  number_of_processes,
-                             "walltime": walltime
+                             "number_of_processes":  int(number_of_processes),
+                             "walltime": walltime,
+                             "queue": info_pilot.get('queue'),
+                             "allocation": info_pilot.get('allocation')
                             }
 
             self.compute_pilot_repo[compute_pilot_uuid] = pilot_compute_description
