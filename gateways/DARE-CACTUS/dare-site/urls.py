@@ -8,4 +8,8 @@ urlpatterns = patterns('',
     url(r'', include('darewap.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^cactus/', include('cactus.urls')),
+    url(r'', include('invitation.urls')),
+    url(r'', include('main.urls')),
+    url(r'^accounts/', include('invitation.urls')),
 )
+urlpatterns += patterns('',   url(r'', include('social_auth.urls')))

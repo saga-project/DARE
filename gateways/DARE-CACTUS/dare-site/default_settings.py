@@ -260,6 +260,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+SOCIAL_AUTH_PARTIAL_PIPELINE_KEY = 'aa'
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
     #'main.pipeline.social_auth_user',
@@ -281,3 +282,5 @@ SOCIAL_AUTH_PIPELINE = (
 GOOGLE_OAUTH2_CLIENT_ID = '130016037963.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = '4-wWN2SjTl7pHiEezVfeW7mo'
 
+INVITATIONS_PER_USER = 10
+ACCOUNT_INVITATION_DAYS =7 

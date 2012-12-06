@@ -10,4 +10,3 @@ urlpatterns = patterns('darewap.views',
     (r'^static/(?P<page_type>[-\w]+)/$', 'view_static'),
 )
 urlpatterns += staticfiles_urlpatterns()
-urlpatterns += patterns('',   url(r'', include('social_auth.urls')))

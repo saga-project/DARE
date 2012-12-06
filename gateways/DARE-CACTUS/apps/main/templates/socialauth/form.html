@@ -16,21 +16,3 @@
 </form>
 {% endblock %}
  
- 
-#templates.socialauth.form2.html
- 
-{% extends "base.html" %}
- 
-{% block heading %}Email Form{% endblock %}
- 
-{% block content %}
-<form action="" method="post">
-    {% csrf_token %}
-    <p>
-        <label for="id_email">Email Address</label>
-        <input type="text" name="email_address" id="id_email" value="" />
-    </p>
- 
-    <input type="submit" value="Send" />
-</form>
-{% endblock %}
