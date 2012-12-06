@@ -260,27 +260,22 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_PARTIAL_PIPELINE_KEY = 'aa'
+SOCIAL_AUTH_PARTIAL_PIPELINE_KEY = 'mykey'
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
-    #'main.pipeline.social_auth_user',
-    'social_auth.backends.pipeline.associate.associate_by_email',
+    #'social_auth.backends.pipeline.associate.associate_by_email',
+    'social_auth.backends.pipeline.user.get_username',
     'social_auth.backends.pipeline.misc.save_status_to_session',
-    'main.pipeline.redirect_to_form',
-    'main.pipeline.username',
-    #'social_auth.backends.pipeline.user.get_username',
+    'main.pipeline.check_valid_key',
     'social_auth.backends.pipeline.user.create_user',
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',
-    'social_auth.backends.pipeline.user.update_user_details',
-    'social_auth.backends.pipeline.misc.save_status_to_session',
-    'main.pipeline.redirect_to_form2',
-    #'main.pipeline.first_name',
-    'main.pipeline.email',
+    'social_auth.backends.pipeline.user.update_user_details'
 )
- 
+
 GOOGLE_OAUTH2_CLIENT_ID = '130016037963.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = '4-wWN2SjTl7pHiEezVfeW7mo'
 
 INVITATIONS_PER_USER = 10
 ACCOUNT_INVITATION_DAYS =7 
+INVITE_MODE = True

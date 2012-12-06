@@ -1,36 +1,21 @@
-from django.http import HttpResponseRedirect
-from django.http import Http404
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from social_auth.models import UserSocialAuth
+from invitation.models import InvitationKey
+is_key_valid = InvitationKey.objects.is_key_valid
+user_exists = UserSocialAuth.simple_user_exists
 
 
-def redirect_to_form(*args, **kwargs):
-    if not kwargs['request'].session.get('saved_username') and \
-       kwargs.get('user') is None:
-        return HttpResponseRedirect('/formusername/')
+#def check_valid_key(request, *args, **kwargs):
+#    request.session["saved_username"] = kwargs.get('username')
+#    return HttpResponseRedirect('/check_valid_key/')
 
 
-def username(request, *args, **kwargs):
-                if kwargs.get('user'):
-                        username = kwargs['user'].username
-                else:
-                        username = request.session.get('saved_username')
-                return {'username': username}
-
-
-def redirect_to_form2(*args, **kwargs):
-    if not kwargs['request'].session.get('email_address') and not kwargs.get('user').email:
-        return HttpResponseRedirect('/formemail/')
-
-
-def email(request, *args, **kwargs):
-    if kwargs.get('user') and request.session.get('email_address'):
-        email = request.session['email_address']
-        user = kwargs['user']
-        user.email = email
-        user.save()
-
-
-def first_name(request, *args, **kwargs):
-    if 'saved_first_name' in request.session:
-        user = kwargs['user']
-        user.first_name = request.session.get('saved_first_name')
-        user.save()
+def check_valid_key(request, *args, **kwargs):
+    print kwargs.get('username')
+    if not user_exists(username=kwargs.get('username')):
+        if request.session.get('invitation_key') and is_key_valid(request.session['invitation_key']):
+            pass
+            #InvitationKey.get_key(request.session['invitation_key']).mark_used()
+        else:
+            return render_to_response('invitation/wrong_invitation_key.html', {}, RequestContext(request))

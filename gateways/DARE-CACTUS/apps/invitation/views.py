@@ -4,16 +4,12 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
-from registration.views import register as registration_register
-from registration.forms import RegistrationForm
-from registration.backends import default as registration_backend
-
 from invitation.models import InvitationKey
 from invitation.forms import InvitationKeyForm
-from invitation.backends import InvitationBackend
 
 is_key_valid = InvitationKey.objects.is_key_valid
 remaining_invitations_for_user = InvitationKey.objects.remaining_invitations_for_user
+
 
 def invited(request, invitation_key=None, extra_context=None):
     if getattr(settings, 'INVITE_MODE', False):
@@ -21,38 +17,16 @@ def invited(request, invitation_key=None, extra_context=None):
             template_name = 'invitation/invited.html'
         else:
             template_name = 'invitation/wrong_invitation_key.html'
+            direct_to_template(request, template_name, extra_context)
+
         extra_context = extra_context is not None and extra_context.copy() or {}
         extra_context.update({'invitation_key': invitation_key})
-        request.session['invitation_key']= invitation_key #the only line changed in this view:)
-        return direct_to_template(request, template_name, extra_context)
-    else:
-        return HttpResponseRedirect(reverse('registration_register'))
- 
+        request.session['invitation_key'] = invitation_key
 
-def register(request, backend, success_url=None,
-            form_class=RegistrationForm,
-            disallowed_url='registration_disallowed',
-            post_registration_redirect=None,
-            template_name='registration/registration_form.html',
-            wrong_template_name='invitation/wrong_invitation_key.html',
-            extra_context=None):
-    extra_context = extra_context is not None and extra_context.copy() or {}
-    if getattr(settings, 'INVITE_MODE', False):
-        invitation_key = request.REQUEST.get('invitation_key', False)
-        if invitation_key:
-            extra_context.update({'invitation_key': invitation_key})
-            if is_key_valid(invitation_key):
-                return registration_register(request, backend, success_url,
-                                            form_class, disallowed_url,
-                                            template_name, extra_context)
-            else:
-                extra_context.update({'invalid_key': True})
-        else:
-            extra_context.update({'no_key': True})
-        return direct_to_template(request, wrong_template_name, extra_context)
+        return HttpResponseRedirect(reverse('dare_login'))
     else:
-        return registration_register(request, backend, success_url, form_class,
-                                     disallowed_url, template_name, extra_context)
+        return HttpResponseRedirect(reverse('dare_login'))
+
 
 def invite(request, success_url=None,
             form_class=InvitationKeyForm,

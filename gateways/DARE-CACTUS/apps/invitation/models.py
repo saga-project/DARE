@@ -11,7 +11,8 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 
-from registration.models import SHA1_RE
+#from registration.models import SHA1_RE
+
 
 class InvitationKeyManager(models.Manager):
     def get_key(self, invitation_key):
@@ -19,8 +20,8 @@ class InvitationKeyManager(models.Manager):
         Return InvitationKey, or None if it doesn't (or shouldn't) exist.
         """
         # Don't bother hitting database if invitation_key doesn't match pattern.
-        if not SHA1_RE.search(invitation_key):
-            return None
+        #if not SHA1_RE.search(invitation_key):
+        #    return None
         
         try:
             key = self.get(key=invitation_key)
@@ -88,44 +89,46 @@ class InvitationKey(models.Model):
         Determine whether this ``InvitationKey`` has expired, returning 
         a boolean -- ``True`` if the key has expired.
         
-        The date the key has been created is incremented by the number of days 
-        specified in the setting ``ACCOUNT_INVITATION_DAYS`` (which should be 
+        The date the key has been created is incremented by the number of days
+        specified in the setting ``ACCOUNT_INVITATION_DAYS`` (which should be
         the number of days after invite during which a user is allowed to
-        create their account); if the result is less than or equal to the 
+        create their account); if the result is less than or equal to the
         current date, the key has expired and this method returns ``True``.
-        
+
         """
         expiration_date = datetime.timedelta(days=settings.ACCOUNT_INVITATION_DAYS)
-        return self.date_invited + expiration_date <= datetime.datetime.now()
+        return (self.date_invited + expiration_date).replace(tzinfo=None) <= datetime.datetime.now().replace(tzinfo=None)
     key_expired.boolean = True
-    
+
     def mark_used(self, registrant):
         """
         Note that this key has been used to register a new user.
         """
         self.registrant = registrant
         self.save()
-        
+
     def send_to(self, email):
         """
         Send an invitation email to ``email``.
         """
-        current_site = Site.objects.get_current()
-        
+        try:
+            current_site = Site.objects.get_current()
+        except:
+            current_site = "localhost"
+
         subject = render_to_string('invitation/invitation_email_subject.txt',
-                                   { 'site': current_site, 
-                                     'invitation_key': self })
+                                   {'site': current_site,
+                                     'invitation_key': self})
         # Email subject *must not* contain newlines
         subject = ''.join(subject.splitlines())
-        
+
         message = render_to_string('invitation/invitation_email.txt',
-                                   { 'invitation_key': self,
+                                   {'invitation_key': self,
                                      'expiration_days': settings.ACCOUNT_INVITATION_DAYS,
-                                     'site': current_site })
-        
+                                     'site': current_site})
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
 
-        
+
 class InvitationUser(models.Model):
     inviter = models.ForeignKey(User, unique=True)
     invitations_remaining = models.IntegerField()
@@ -133,7 +136,36 @@ class InvitationUser(models.Model):
     def __unicode__(self):
         return u"InvitationUser for %s" % self.inviter.username
 
-    
+from django.contrib import admin
+
+
+def send_invitation(email):
+    invitation = InvitationKey.objects.create_invitation(User.objects.get(username='admin'))
+    invitation.send_to(email)
+
+
+class RequestInvite(models.Model):
+    email = models.CharField(max_length=30)
+    email_sent = models.IntegerField(default=0)
+    is_approved = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if self.is_approved:
+            send_invitation(self.email)
+        super(RequestInvite, self).save(*args, **kwargs)
+
+
+class RequestInviteAdmin(admin.ModelAdmin):
+    list_display = ('email', 'email_sent', 'is_approved')
+
+    # Enforce our "unapproved" policy on saves
+    def save_model(self, *args, **kwargs):
+        return super(RequestInviteAdmin, self).save_model(*args, **kwargs)
+
+
+admin.site.register(RequestInvite, RequestInviteAdmin)
+
+
 def user_post_save(sender, instance, created, **kwargs):
     """Create InvitationUser for user when User is created."""
     if created:
@@ -144,12 +176,13 @@ def user_post_save(sender, instance, created, **kwargs):
 
 models.signals.post_save.connect(user_post_save, sender=User)
 
+
 def invitation_key_post_save(sender, instance, created, **kwargs):
     """Decrement invitations_remaining when InvitationKey is created."""
     if created:
         invitation_user = InvitationUser.objects.get(inviter=instance.from_user)
         remaining = invitation_user.invitations_remaining
-        invitation_user.invitations_remaining = remaining-1
+        invitation_user.invitations_remaining = remaining - 1
         invitation_user.save()
 
 models.signals.post_save.connect(invitation_key_post_save, sender=InvitationKey)

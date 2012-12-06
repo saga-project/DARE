@@ -1,10 +1,6 @@
-from django.conf.urls import patterns, url, include
-from django.conf import settings
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
+from django.conf.urls import patterns, url
 #social auth customization
 urlpatterns = patterns('main.views',
     url(r'^error/$', 'error', name='error'),
-    url(r'^formusername/$', 'formusername', name='formusername'),
-    url(r'^formemail/$', 'formemail', name='formemail'),
+    url(r'^check_valid_key/$', 'check_valid_key', name='dare_registration'),
 )

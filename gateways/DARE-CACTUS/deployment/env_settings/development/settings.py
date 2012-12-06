@@ -239,4 +239,3 @@ MEDIA_URL = 'media'
 
 GOOGLE_OAUTH2_CLIENT_ID = '130016037963.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = '4-wWN2SjTl7pHiEezVfeW7mo'
-

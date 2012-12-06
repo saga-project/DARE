@@ -56,6 +56,7 @@ document.write('<style type="text/css">h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
 
     <a href="{% url socialauth_begin 'yahoo' %}?{{ redirect_querystring }}"> Yahoo </a>|
     <a href="{% url socialauth_begin 'google-oauth2' %}?{{ redirect_querystring }}"> Google</a>
+    <br/><a href="{% url request_invite %}">  Request Invite</a>
     
     {% endif %}
 

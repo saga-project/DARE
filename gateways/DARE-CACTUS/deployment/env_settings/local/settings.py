@@ -1,2 +1,4 @@
 DEBUG=True
-EMAIL_HOST_PASSWORD = 'tiger@123'
+EMAIL_HOST_PASSWORD = 'xxxxxx'
+
+SITE_ID = 1
