@@ -98,7 +98,7 @@ ctx_types = (('SSH', 'SSH'), ('X509', 'X509'), ('EC2', 'EC2'))
 class UserContext(models.Model):
     '''  saga.Context() properties'''
     user = models.ForeignKey('auth.User', null=True, related_name='user_context')
-    type = models.CharField(max_length=30, blank=True, choices=ctx_types, default='SSH')
+    type = models.CharField(max_length=30, choices=ctx_types, default='SSH')
     usercert = models.FileField(upload_to=get_usercert, storage=fs, blank=True, null=True)
     userproxy = models.FileField(upload_to=get_userproxy, storage=fs, blank=True, null=True)
     userid = models.CharField(max_length=30, blank=True)

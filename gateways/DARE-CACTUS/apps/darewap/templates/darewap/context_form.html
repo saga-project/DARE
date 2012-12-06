@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% block body%}
 
-<form action="" method="get">
-    {{ filter.form.as_p }}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.errors }}   
+    <table>{{ form.as_table }}</table>
     <input type="submit" />
 </form>
+
+<h2> Your contexts</h2>
 {% load django_tables2 %}
 {% render_table table %}
 {% endblock%}

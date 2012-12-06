@@ -8,15 +8,15 @@ import django_tables2 as tables
 class UserContextForm(forms.ModelForm):
     class Meta:
         model = UserContext
-        exclude = ('user', 'created', 'modified')
+        exclude = ('user')
 
     def save(self, commit=True, *args, **kwargs):
         request = kwargs.pop('request')
         self.instance.user = request.user
-        self.created = datetime.datetime.now()
-        self.modified = datetime.datetime.now()
+        self.instance.created = datetime.datetime.now()
+        self.instance.modified = datetime.datetime.now()
 
-        super(UserContextTable, self).save(commit=commit, *args, **kwargs)
+        super(UserContextForm, self).save(commit=commit, *args, **kwargs)
 
 
 class UserContextTable(tables.Table):
