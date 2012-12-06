@@ -145,7 +145,7 @@ def send_invitation(email):
 
 
 class RequestInvite(models.Model):
-    email = models.CharField(max_length=30)
+    email = models.EmailField()
     email_sent = models.IntegerField(default=0)
     is_approved = models.BooleanField(default=False)
 

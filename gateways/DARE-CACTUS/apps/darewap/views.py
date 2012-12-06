@@ -25,7 +25,7 @@ def view_login_all(request):
     """Logs out user"""
     page_type = "login"
     template = 'static/%s.html' % page_type
-    return render_to_response(template, {})
+    return render_to_response(template, {}, context_instance=RequestContext(request))
 
 
 def view_registration(request):

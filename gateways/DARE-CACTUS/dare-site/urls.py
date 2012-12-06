@@ -10,6 +10,6 @@ urlpatterns = patterns('',
     url(r'^cactus/', include('cactus.urls')),
     url(r'', include('invitation.urls')),
     url(r'', include('main.urls')),
-    url(r'^accounts/', include('invitation.urls')),
+    url(r'^invite/', include('invitation.urls')),
 )
 urlpatterns += patterns('',   url(r'', include('social_auth.urls')))

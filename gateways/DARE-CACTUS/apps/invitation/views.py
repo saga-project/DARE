@@ -5,19 +5,19 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 from invitation.models import InvitationKey
-from invitation.forms import InvitationKeyForm
+from invitation.forms import RequestInvitationKeyForm
 
 is_key_valid = InvitationKey.objects.is_key_valid
 remaining_invitations_for_user = InvitationKey.objects.remaining_invitations_for_user
 
 
-def invited(request, invitation_key=None, extra_context=None):
+def approve_invite(request, invitation_key=None, extra_context=None):
     if getattr(settings, 'INVITE_MODE', False):
         if invitation_key and is_key_valid(invitation_key):
             template_name = 'invitation/invited.html'
         else:
             template_name = 'invitation/wrong_invitation_key.html'
-            direct_to_template(request, template_name, extra_context)
+            return direct_to_template(request, template_name, extra_context)
 
         extra_context = extra_context is not None and extra_context.copy() or {}
         extra_context.update({'invitation_key': invitation_key})
@@ -28,30 +28,18 @@ def invited(request, invitation_key=None, extra_context=None):
         return HttpResponseRedirect(reverse('dare_login'))
 
 
-def invite(request, success_url=None,
-            form_class=InvitationKeyForm,
-            template_name='invitation/invitation_form.html',
-            extra_context=None):
-    extra_context = extra_context is not None and extra_context.copy() or {}
-    remaining_invitations = remaining_invitations_for_user(request.user)
+def request_invite(request, form_class=RequestInvitationKeyForm, extra_context={}):
+
     if request.method == 'POST':
-        form = form_class(data=request.POST, files=request.FILES)
-        if remaining_invitations > 0 and form.is_valid():
-            invitation = InvitationKey.objects.create_invitation(request.user)
-            invitation.send_to(form.cleaned_data["email"])
-            # success_url needs to be dynamically generated here; setting a
-            # a default value using reverse() will cause circular-import
-            # problems with the default URLConf for this application, which
-            # imports this file.
-            return HttpResponseRedirect(success_url or reverse('invitation_complete'))
+        form = form_class(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('invitation_complete'))
     else:
         form = form_class()
-    extra_context.update({
-            'form': form,
-            'remaining_invitations': remaining_invitations,
-        })
-    return direct_to_template(request, template_name, extra_context)
-invite = login_required(invite)
+        extra_context.update({'form': form})
 
+    template_name = 'invitation/invitation_form.html'
+    return direct_to_template(request, template_name, extra_context)
 
 
