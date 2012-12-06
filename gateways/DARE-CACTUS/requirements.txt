@@ -5,3 +5,4 @@ south==0.7.6
 django-celery
 django-social-auth
 bliss
+git+https://github.com/bradleyayers/django-tables2.git#egg=django-tables2

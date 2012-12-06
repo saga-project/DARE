@@ -4,10 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate
 from django.template import RequestContext
 from django.shortcuts import render
-from .models import Job
+from .models import Job, UserContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
+from django.views.generic.simple import direct_to_template
 
-
+from .forms import UserContextTable
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
@@ -46,9 +48,13 @@ def view_logout(request):
     return HttpResponseRedirect('/')
 
 
-def view_manage_resources(request):
-    if request.method == 'POST':
-        pass
+@login_required
+def view_manage_contexts(request):
+
+    context = {}
+    queryset = UserContext.objects.filter(user=request.user)
+    context['table'] = UserContextTable(queryset)
+    return render_to_response("darewap/context_form.html", context, context_instance=RequestContext(request))
 
 
 @login_required

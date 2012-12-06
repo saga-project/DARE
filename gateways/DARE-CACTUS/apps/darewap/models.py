@@ -92,17 +92,20 @@ def get_userproxy(instance, filename):
     return get_path(instance, filename, 'userproxy')
 
 
+ctx_types = (('SSH', 'SSH'), ('X509', 'X509'), ('EC2', 'EC2'))
+
+
 class UserContext(models.Model):
     '''  saga.Context() properties'''
     user = models.ForeignKey('auth.User', null=True, related_name='user_context')
-    type = models.CharField(max_length=30, blank=True)
-    usercert = models.FileField(upload_to=get_usercert, storage=fs)
-    userproxy = models.FileField(upload_to=get_userproxy, storage=fs)
+    type = models.CharField(max_length=30, blank=True, choices=ctx_types, default='SSH')
+    usercert = models.FileField(upload_to=get_usercert, storage=fs, blank=True, null=True)
+    userproxy = models.FileField(upload_to=get_userproxy, storage=fs, blank=True, null=True)
     userid = models.CharField(max_length=30, blank=True)
     userkey = models.CharField(max_length=30, blank=True)
     userpass = models.CharField(max_length=30, blank=True)
-    created = models.DateTimeField(editable=False)
-    modified = models.DateTimeField()
+    created = models.DateTimeField(editable=False, blank=True, null=True)
+    modified = models.DateTimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
