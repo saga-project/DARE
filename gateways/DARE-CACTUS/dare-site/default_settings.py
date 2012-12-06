@@ -215,17 +215,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'dare.users@gmail.com'
 
 
-
-
-
-
-
-
-
-
-
-
-
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/accounts/login/'
@@ -266,9 +255,9 @@ SOCIAL_AUTH_PIPELINE = (
     #'social_auth.backends.pipeline.associate.associate_by_email',
     'social_auth.backends.pipeline.user.get_username',
     'social_auth.backends.pipeline.misc.save_status_to_session',
-    'main.pipeline.check_valid_key',
+    'invitation.pipeline.check_valid_key',
     'social_auth.backends.pipeline.user.create_user',
-    'main.pipeline.mark_used_key',
+    'invitation.pipeline.mark_used_key',
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',
     'social_auth.backends.pipeline.user.update_user_details'
