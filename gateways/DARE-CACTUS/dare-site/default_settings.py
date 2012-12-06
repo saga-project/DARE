@@ -135,7 +135,6 @@ INSTALLED_APPS = (
     'storages',
     'djcelery',
     'invitation',
-    'main'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -168,7 +167,6 @@ LOGGING = {
 }
 
 
-
 import os
 full_path = os.path.dirname(os.path.realpath(__file__))
 STATICFILES_DIRS = (os.path.join(full_path, '..', 'site_media/'),)
@@ -196,14 +194,12 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 
-
 DB_FILES = {
     'db_table': 'Thornfiles',
     'fname_column':  'name',
     'blob_column': 'thornfile',
     'base_url': 'http://localhost/cactus/thornfiles/'
 }
-
 
 
 MEDIA_ROOT = STATICFILES_DIRS[0]
@@ -229,7 +225,6 @@ SOCIAL_AUTH_DEFAULT_USERNAME = lambda u: slugify(u)
 SOCIAL_AUTH_EXTRA_DATA = False
 SOCIAL_AUTH_CHANGE_SIGNAL_ONLY = True
 SOCIAL_AUTH_ASSOCIATE_BY_MAIL = True
-
 
 
 AUTHENTICATION_BACKENDS = (
@@ -267,5 +262,8 @@ GOOGLE_OAUTH2_CLIENT_ID = '130016037963.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = '4-wWN2SjTl7pHiEezVfeW7mo'
 
 INVITATIONS_PER_USER = 10
-ACCOUNT_INVITATION_DAYS =7 
+ACCOUNT_INVITATION_DAYS = 7
 INVITE_MODE = True
+
+DEBUG = True
+SITE_ID = 1
