@@ -122,3 +122,32 @@ class UserContextAdmin(admin.ModelAdmin):
         return super(UserContextAdmin, self).save_model(*args, **kwargs)
 
 admin.site.register(UserContext, UserContextAdmin)
+
+
+class UserResource(models.Model):
+    user = models.ForeignKey('auth.User', null=True, related_name='user_resource')
+    hostname = models.CharField(max_length=30, blank=True, null=True)
+    username = models.CharField(max_length=30, blank=True)
+    data_service_url = models.CharField(max_length=200)
+    working_directory = models.CharField(max_length=30, blank=True)
+    allocation = models.CharField(max_length=30, blank=True)
+    cores_per_node = models.IntegerField(default=1)
+    queue = models.CharField(max_length=30, blank=True)
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = datetime.datetime.now()
+        self.modified = datetime.datetime.now()
+        super(UserResource, self).save(*args, **kwargs)
+
+
+class UserResourceAdmin(admin.ModelAdmin):
+    list_display = ('user', 'data_service_url', 'hostname', 'username', 'cores_per_node', 'queue', 'modified')
+
+    def save_model(self, *args, **kwargs):
+        return super(UserContextAdmin, self).save_model(*args, **kwargs)
+
+admin.site.register(UserResource, UserResourceAdmin)

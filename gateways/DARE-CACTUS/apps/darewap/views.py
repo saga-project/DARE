@@ -9,8 +9,8 @@ from django.core.urlresolvers import reverse
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Job, UserContext
-from .forms import UserContextTable, UserContextForm
+from .models import Job, UserContext, UserResource
+from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm
 
 
 def view_home(request):
@@ -19,14 +19,14 @@ def view_home(request):
 
 def view_static(request, page_type):
     template = 'static/%s.html' % page_type
-    return render_to_response(template, {})
+    return render(request, template)
 
 
 def view_login_all(request):
     """Logs out user"""
     page_type = "login"
     template = 'static/%s.html' % page_type
-    return render_to_response(template, {}, context_instance=RequestContext(request))
+    return render(request, template)
 
 
 def view_registration(request):
@@ -62,6 +62,24 @@ def view_manage_contexts(request):
     context['form'] = form
 
     return render_to_response("darewap/context_form.html", context, context_instance=RequestContext(request))
+
+
+@login_required
+def view_manage_resources(request):
+    if request.method == 'POST':
+        form = UserResourceForm(request.POST)
+        if form.is_valid():
+            form.save(request=request)
+            form = UserResourceForm()
+    else:
+        form = UserResourceForm()
+    context = {}
+    queryset = UserResource.objects.filter(user=request.user)
+    context['table'] = UserResourceTable(queryset)
+    context['form'] = form
+
+    return render_to_response("darewap/context_form.html", context, context_instance=RequestContext(request))
+
 
 
 @login_required
