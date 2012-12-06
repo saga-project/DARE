@@ -1,15 +1,15 @@
-import os
 import random
 import datetime
 from django.db import models
 from django.conf import settings
-from django.utils.http import int_to_base36
 from django.utils.hashcompat import sha_constructor
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
+from django.contrib import admin
+
 
 #from registration.models import SHA1_RE
 
@@ -22,14 +22,14 @@ class InvitationKeyManager(models.Manager):
         # Don't bother hitting database if invitation_key doesn't match pattern.
         #if not SHA1_RE.search(invitation_key):
         #    return None
-        
+
         try:
             key = self.get(key=invitation_key)
         except self.model.DoesNotExist:
             return None
-        
+
         return key
-        
+
     def is_key_valid(self, invitation_key):
         """
         Check if an ``InvitationKey`` is valid or not, returning a boolean,
@@ -41,8 +41,7 @@ class InvitationKeyManager(models.Manager):
     def create_invitation(self, user):
         """
         Create an ``InvitationKey`` and returns it.
-        
-        The key for the ``InvitationKey`` will be a SHA1 hash, generated 
+        The key for the ``InvitationKey`` will be a SHA1 hash, generated
         from a combination of the ``User``'s username and a random salt.
         """
         salt = sha_constructor(str(random.random())).hexdigest()[:5]
@@ -66,29 +65,29 @@ class InvitationKeyManager(models.Manager):
 
 class InvitationKey(models.Model):
     key = models.CharField(_('invitation key'), max_length=40)
-    date_invited = models.DateTimeField(_('date invited'), 
+    date_invited = models.DateTimeField(_('date invited'),
                                         default=datetime.datetime.now)
-    from_user = models.ForeignKey(User, 
+    from_user = models.ForeignKey(User,
                                   related_name='invitations_sent')
-    registrant = models.ForeignKey(User, null=True, blank=True, 
+    registrant = models.ForeignKey(User, null=True, blank=True,
                                   related_name='invitations_used')
-    
+
     objects = InvitationKeyManager()
-    
+
     def __unicode__(self):
         return u"Invitation from %s on %s" % (self.from_user.username, self.date_invited)
-    
+
     def is_usable(self):
         """
-        Return whether this key is still valid for registering a new user.        
+        Return whether this key is still valid for registering a new user.
         """
         return self.registrant is None and not self.key_expired()
-    
+
     def key_expired(self):
         """
-        Determine whether this ``InvitationKey`` has expired, returning 
+        Determine whether this ``InvitationKey`` has expired, returning
         a boolean -- ``True`` if the key has expired.
-        
+
         The date the key has been created is incremented by the number of days
         specified in the setting ``ACCOUNT_INVITATION_DAYS`` (which should be
         the number of days after invite during which a user is allowed to
@@ -135,8 +134,6 @@ class InvitationUser(models.Model):
 
     def __unicode__(self):
         return u"InvitationUser for %s" % self.inviter.username
-
-from django.contrib import admin
 
 
 def send_invitation(email):

@@ -169,6 +169,8 @@ LOGGING = {
 
 import os
 full_path = os.path.dirname(os.path.realpath(__file__))
+DEFAULT_USER_CONTEXT_STORAGE = (os.path.join(full_path, '..', 'user_resource_auth'),)
+
 STATICFILES_DIRS = (os.path.join(full_path, '..', 'site_media/'),)
 STATIC_URL = '/site_media/'
 INTERNAL_IPS = ('127.0.0.1',)

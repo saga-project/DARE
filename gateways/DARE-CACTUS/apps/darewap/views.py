@@ -46,6 +46,11 @@ def view_logout(request):
     return HttpResponseRedirect('/')
 
 
+def view_manage_resources(request):
+    if request.method == 'POST':
+        pass
+
+
 @login_required
 def view_job_list(request):
     jobs = Job.objects.all()

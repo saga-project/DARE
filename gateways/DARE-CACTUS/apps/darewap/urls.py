@@ -8,5 +8,7 @@ urlpatterns = patterns('darewap.views',
     url(r'^login/$', 'view_login_all', name='dare_login'),
     url(r'^static/(?P<page_type>[-\w]+)/$', 'view_static'),
     url(r'^login/$', 'view_login_all', name='request_invite'),
+    url(r'^accounts/resources/$', 'view_manage_resources', name='manage_resources'),
+
 )
 urlpatterns += staticfiles_urlpatterns()

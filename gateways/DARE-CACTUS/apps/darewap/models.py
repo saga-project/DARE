@@ -1,5 +1,11 @@
 from django.db import models
+from django.contrib import admin
+from django.conf import settings
+
 import datetime
+from django.core.files.storage import FileSystemStorage
+import random
+import string
 
 
 class Job(models.Model):
@@ -68,15 +74,33 @@ class JobQueue(models.Model):
         super(JobQueue, self).save(*args, **kwargs)
 
 
+fs = FileSystemStorage(location="%s" % settings.DEFAULT_USER_CONTEXT_STORAGE)
+
+
+def get_path(instance, filename, ptype):
+    chars = string.letters + string.digits
+    name = string.join(random.sample(chars, 8), '')
+    extension = filename.split('.')[-1]
+    return '%s/%s/%s.%s' % (ptype, instance.user.id, name, extension)
+
+
+def get_usercert(instance, filename):
+    return get_path(instance, filename, 'usercert')
+
+
+def get_userproxy(instance, filename):
+    return get_path(instance, filename, 'userproxy')
+
+
 class UserContext(models.Model):
     '''  saga.Context() properties'''
     user = models.ForeignKey('auth.User', null=True, related_name='user_context')
     type = models.CharField(max_length=30, blank=True)
-    usercert = models.FileField(upload_to='usercert/%Y/%m/%d')
+    usercert = models.FileField(upload_to=get_usercert, storage=fs)
+    userproxy = models.FileField(upload_to=get_userproxy, storage=fs)
     userid = models.CharField(max_length=30, blank=True)
     userkey = models.CharField(max_length=30, blank=True)
     userpass = models.CharField(max_length=30, blank=True)
-    userproxy = models.FileField(upload_to='userproxy/%Y/%m/%d')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
@@ -86,3 +110,12 @@ class UserContext(models.Model):
             self.created = datetime.datetime.now()
         self.modified = datetime.datetime.now()
         super(UserContext, self).save(*args, **kwargs)
+
+
+class UserContextAdmin(admin.ModelAdmin):
+    list_display = ('user', 'type', 'userid', 'userkey', 'userpass', 'userproxy', 'usercert')
+
+    def save_model(self, *args, **kwargs):
+        return super(UserContextAdmin, self).save_model(*args, **kwargs)
+
+admin.site.register(UserContext, UserContextAdmin)

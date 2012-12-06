@@ -4,3 +4,4 @@ django-storages
 south==0.7.6
 django-celery
 django-social-auth
+bliss
