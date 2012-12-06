@@ -2,9 +2,12 @@
 import os
 import sys
 
-sys.path.append("app")
-#sys.path.append("deployment/env_settings")
+sys.path.append("apps")
+full_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(full_path, "deployment"))
+
+
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deployment.env_settings.local.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dare-site.settings")
     from django.core.management import execute_from_command_line
     execute_from_command_line(sys.argv)

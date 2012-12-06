@@ -96,7 +96,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.contrib.auth.backends.ModelBackend'
+    'django.contrib.auth.backends.ModelBackend',
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -128,11 +128,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'social_auth',
-#    'debug_toolbar',
+    'south',
     'darewap',
     'cactus',
     'chunks',
-    'storages'
+    'storages',
+    'djcelery',
+    'invitation',
+    'main'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -164,20 +167,11 @@ LOGGING = {
     }
 }
 
-##for django social auth
-ICATION_BACKENDS = ('social_auth.backends.contrib.github.GithubBackend', 'django.contrib.auth.backends.ModelBackend',)
-
-from django.template.defaultfilters import slugify
-SOCIAL_AUTH_ENABLED_BACKENDS = ('github',)
-SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
-SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'associate_complete'
-SOCIAL_AUTH_DEFAULT_USERNAME = lambda u: slugify(u)
-SOCIAL_AUTH_EXTRA_DATA = False
-SOCIAL_AUTH_CHANGE_SIGNAL_ONLY = True
-SOCIAL_AUTH_ASSOCIATE_BY_MAIL = True
 
 
-STATICFILES_DIRS = ('/opt/DARE/gateways/DARE-CACTUS-NEW/site_media/',)
+import os
+full_path = os.path.dirname(os.path.realpath(__file__))
+STATICFILES_DIRS = (os.path.join(full_path, '..', 'site_media/'),)
 STATIC_URL = '/site_media/'
 INTERNAL_IPS = ('127.0.0.1',)
 
@@ -198,8 +192,56 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
     'HIDE_DJANGO_SQL': False,
     'TAG': 'div',
-    'ENABLE_STACKTRACES' : True,
+    'ENABLE_STACKTRACES': True,
 }
+
+
+
+DB_FILES = {
+    'db_table': 'Thornfiles',
+    'fname_column':  'name',
+    'blob_column': 'thornfile',
+    'base_url': 'http://localhost/cactus/thornfiles/'
+}
+
+
+
+MEDIA_ROOT = STATICFILES_DIRS[0]
+MEDIA_URL = 'media'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'dare.users@gmail.com'
+
+
+
+
+
+
+
+
+
+
+
+
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL = '/accounts/login/'
+
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
+
+from django.template.defaultfilters import slugify
+SOCIAL_AUTH_ENABLED_BACKENDS = ('github',)
+SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
+SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'associate_complete'
+SOCIAL_AUTH_DEFAULT_USERNAME = lambda u: slugify(u)
+SOCIAL_AUTH_EXTRA_DATA = False
+SOCIAL_AUTH_CHANGE_SIGNAL_ONLY = True
+SOCIAL_AUTH_ASSOCIATE_BY_MAIL = True
+
+
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
@@ -218,19 +260,24 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+SOCIAL_AUTH_PIPELINE = (
+    'social_auth.backends.pipeline.social.social_auth_user',
+    #'main.pipeline.social_auth_user',
+    'social_auth.backends.pipeline.associate.associate_by_email',
+    'social_auth.backends.pipeline.misc.save_status_to_session',
+    'main.pipeline.redirect_to_form',
+    'main.pipeline.username',
+    #'social_auth.backends.pipeline.user.get_username',
+    'social_auth.backends.pipeline.user.create_user',
+    'social_auth.backends.pipeline.social.associate_user',
+    'social_auth.backends.pipeline.social.load_extra_data',
+    'social_auth.backends.pipeline.user.update_user_details',
+    'social_auth.backends.pipeline.misc.save_status_to_session',
+    'main.pipeline.redirect_to_form2',
+    #'main.pipeline.first_name',
+    'main.pipeline.email',
+)
+ 
+GOOGLE_OAUTH2_CLIENT_ID = '130016037963.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = '4-wWN2SjTl7pHiEezVfeW7mo'
 
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/home/'
-LOGIN_ERROR_URL = '/login-error/'
-
-#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
-
-DB_FILES = {
-    'db_table': 'Thornfiles',
-    'fname_column':  'name',
-    'blob_column': 'thornfile',
-    'base_url': 'http://localhost/cactus/thornfiles/'
-}
-
-MEDIA_ROOT = STATICFILES_DIRS[0]
-MEDIA_URL = 'media'

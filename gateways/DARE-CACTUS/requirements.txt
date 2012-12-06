@@ -1,8 +1,6 @@
 django==1.4.2
-django-social-auth
-django-debug-toolbar
 django-chunks
 django-storages
-https://github.com/msharath/django-chroniker/tarball/master
 south==0.7.6
-
+django-celery
+django-social-auth

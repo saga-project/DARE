@@ -8,7 +8,7 @@
  
 <script type='text/javascript'> 
 /* <![CDATA[ */
-document.write('<style type='text/css'>h1,h2,h3,h4,h5,#blurb,#site_name,#intro_blurb_title,#call_to_action,.light_gradient.dropcap1,.widgettitle,.dropcap2,.dark_gradient,th{text-indent:-9999px;}.noscript{display:none;}.bg_hover{background:none;}</style>');
+document.write('<style type="text/css">h1,h2,h3,h4,h5,#blurb,#site_name,#intro_blurb_title,#call_to_action,.light_gradient.dropcap1,.widgettitle,.dropcap2,.dark_gradient,th{text-indent:-9999px;}.noscript{display:none;}.bg_hover{background:none;}</style>');
 /* ]]> */
 </script> 
 
@@ -48,10 +48,17 @@ document.write('<style type='text/css'>h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
 
      Hello  {{request.user.get_full_name|title}}  <a href='/logout'>Logout</a><br/>
 {{social_auth.associated }}
-    {% else %}Login via:
-            <a href="{% url socialauth_begin 'yahoo' %}?{{ redirect_querystring }}"> Yahoo </a>|
+    {% else %}Login:
+
+    {% comment %}
+    <a href='/accounts/login/'>Login</a> | <a href='/accounts/register/'>Register </a>
+    {% endcomment %}
+
+    <a href="{% url socialauth_begin 'yahoo' %}?{{ redirect_querystring }}"> Yahoo </a>|
     <a href="{% url socialauth_begin 'google-oauth2' %}?{{ redirect_querystring }}"> Google</a>
+    
     {% endif %}
+
             </div>      
             
             <!-- navigation -->
@@ -83,7 +90,7 @@ document.write('<style type='text/css'>h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
         </ul>
       </li>
       <li><a href='/static/software'>SOFTWARE</a></li>
-      <li><a href='/stati c/contact'>CONTACT</a></li>
+      <li><a href='/static/contact'>CONTACT</a></li>
 
                 </ul>
             </div> 
@@ -108,6 +115,9 @@ document.write('<style type='text/css'>h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
                 {% block body %}
                 {% endblock %}
           
+                {% block content %}
+                {% endblock %}
+
             </div><!-- inner --> 
         </div><!-- intro_blurb --> 
                                 
