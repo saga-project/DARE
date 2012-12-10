@@ -1,4 +1,5 @@
 user_resource_auth
 DARE_JOBS
+site_media/thornfiles/*
 celerybeat-schedule.db
 dump.rdb
