@@ -2,17 +2,25 @@ from celery.decorators import task
 from dare.core.dare_manager import DareManager
 from darewap.models import Job
 from dare.helpers.cfgparser import CfgWriter
+import os
+from django.conf import settings
 
 
 @task
 def add_dare_job(job_id):
     config_file = create_job_config_file(job_id)
-    #DareManager(config_file)
-    return config_file
+    if config_file:
+        DareManager(config_file)
+        return True
+    return False
 
 
 def create_job_config_file(jobid):
-    conf_file = jobid
+    directory = os.path.join(str(settings.DARE_JOB_DIR), str(jobid))
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    conf_file = os.path.join(directory, "%s.dare" % jobid)
+
     jb_conf = CfgWriter(conf_file)
     section = {'name': 'main',
             'jobid': jobid,
@@ -38,4 +46,6 @@ def create_job_config_file(jobid):
                'input_args': 'hello_world_one, hello_world_two, hello_world_three'}
     jb_conf.add_section(section)
 
-    return jb_conf.write()
+    if jb_conf.write():
+        return conf_file
+    return False

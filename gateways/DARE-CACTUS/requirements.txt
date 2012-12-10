@@ -14,4 +14,5 @@ celery-with-redis
 redis
 celerymon
 
-dare
+#dare
+git+https://github.com/saga-project/bigjob.git#egg=bigjob

@@ -1,0 +1,20 @@
+[main]
+used_pilots = localhost_pilot
+webupdate = False
+steps = step_hello_world_1
+jobid = 1
+
+[localhost_pilot]
+service_url = fork://localhost/
+number_of_processes = 1
+working_directory = /tmp/
+
+[step_hello_world_1]
+number_of_processes = 1
+input_args = hello_world_one, hello_world_two, hello_world_three
+cu_type = echo_hello_cu
+
+[echo_hello_cu]
+executable = /bin/echo
+input_args = hello_world_one, hello_world_two, hello_world_three
+
