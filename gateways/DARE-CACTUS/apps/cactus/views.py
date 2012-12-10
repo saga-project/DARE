@@ -19,7 +19,7 @@ def view_create_job_cactus(request):
             messages.error(request, "Error in creating job: Inavlid Form")
     else:
         form = CactusJobForm(request.user)
-    print form.as_table()
+
     return render_to_response('cactus/create_job.html', {'form': form}, context_instance=RequestContext(request))
 
 

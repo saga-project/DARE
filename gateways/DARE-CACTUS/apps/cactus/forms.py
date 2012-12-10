@@ -49,7 +49,10 @@ class CactusJobForm(forms.Form):
                 newdoc.save()
                 jobinfo = JobInfo(key=key, value=newdoc.id, job=job)
             else:
-                jobinfo = JobInfo(key=key, value=value, job=job)
+                if hasattr(value, 'id'):
+                    jobinfo = JobInfo(key=key, value=value.id, job=job)
+                else:
+                    jobinfo = JobInfo(key=key, value=value, job=job)
                 jobinfo.save()
 
         add_dare_job.delay(job)

@@ -18,11 +18,7 @@ class Job(models.Model):
     modified = models.DateTimeField()
 
     def __repr__(self):
-        return "%s-%s" % (self.id, self.type)
-
-    #@property
-    #def status(self):
-    #    return 'm'
+        return "%s-%s" % (self.id, self.name)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''

@@ -5,14 +5,13 @@ webupdate= False
 used_pilots = lonestar_pilot
 
 [lonestar_pilot]
-number_of_processes = 1 
 working_directory = /work/01395/smaddi2/dare/
 data_service_url= ssh://smaddi2@lonestar.tacc.utexas.edu
 number_of_processes=12
 service_url=sge+ssh://smaddi2@lonestar.tacc.utexas.edu
 allocation= TG-MCB090174
 queue=development
-cores_per_node=4
+cores_per_node=12
 affinity_name=
 
 
