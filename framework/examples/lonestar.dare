@@ -1,15 +1,34 @@
 [main]
-steps = hello_1
+steps = step_hello_world_1, step_hello_world_2
 jobid = 1
 webupdate= False
-used_pilots = lonestar
+used_pilots = lonestar_pilot
 
-[lonestar]
-number_of_processes = 12 
-walltime = 10 
+[lonestar_pilot]
+number_of_processes = 1 
+working_directory = /work/01395/smaddi2/dare/
+data_service_url= ssh://smaddi2@lonestar.tacc.utexas.edu
+number_of_processes=12
+service_url=sge+ssh://smaddi2@lonestar.tacc.utexas.edu
+allocation= TG-MCB090174
+queue=development
+cores_per_node=4
+affinity_name=
 
-[hello_1]
-step_name = hello_1
-cu_type = echo_hello
-input_names = one
+
+
+[step_hello_world_1]
+cu_type = echo_hello_cu
+input_args = hello_world_one, hello_world_two, hello_world_three
 step_cfg_file = default
+
+
+[step_hello_world_2]
+cu_type = echo_hello_cu
+input_args = hello_world_two_one, hello_world_two_two, hello_world_two_three
+step_cfg_file = default
+
+[echo_hello_cu]
+executable = /bin/echo
+number_of_processes = 1
+

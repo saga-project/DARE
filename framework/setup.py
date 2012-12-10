@@ -7,7 +7,7 @@ distribute_setup.use_setuptools()
 import dare
 
 
-setup(name='DARE-test',
+setup(name='DARE',
     version=dare.__version__,
     description='Dynamic Application Runtime Environment',
     author='Sharath Maddineni',
