@@ -3,13 +3,11 @@
 from setuptools import setup, find_packages
 import distribute_setup
 distribute_setup.use_setuptools()
+import dare
 
-import os
-fn = os.path.join(os.path.abspath('.'), 'dare', 'VERSION')
-version = open(fn).read().strip()
 
 setup(name='DARE',
-    version=version,
+    version=dare.__version__,
     description='Dynamic Application Runtime Environment',
     author='Sharath Maddineni',
     author_email='smaddineni@cct.lsu.edu',
@@ -18,7 +16,7 @@ setup(name='DARE',
     url='https://github.com/saga-project/DARE',
     license="MIT",
     package_dir={'': 'dare'},
-    data_files=['dare.conf', 'dare/VERSION'],
+    data_files=['dare.conf'],
     package_data={'': ['*.cfg'], '': ['*.cu'], 'dare': ['daredb/*.cu'],
                  'dare': ['daredb/*.cfg']},
     install_requires=['bigjob'],

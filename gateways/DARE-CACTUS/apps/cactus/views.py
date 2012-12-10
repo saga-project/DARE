@@ -1,22 +1,21 @@
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.conf import settings
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from darewap.models import Job
 from .models import Thornfiles
 from .forms import ThornfilesForm, CactusJobForm
 from django.contrib import messages
+from .tasks import add_dare_job
+
 
 @login_required
 def view_create_job_cactus(request):
     if request.method == 'POST':
         form = CactusJobForm(request.user, request.POST, request.FILES)
         if form.is_valid():
-            form.save(request)
+            job_id = form.save(request)
+            add_dare_job.delay(job_id)
             messages.success(request, "Job Succesfully created")
         else:
             messages.error(request, "Error in creating job: Inavlid Form")

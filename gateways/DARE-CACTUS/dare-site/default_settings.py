@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'djcelery',
     'invitation',
     'django_tables2',
+    'django_extensions',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -206,7 +207,7 @@ DB_FILES = {
 
 
 MEDIA_ROOT = STATICFILES_DIRS[0]
-MEDIA_URL = 'media'
+MEDIA_URL = '/media/'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

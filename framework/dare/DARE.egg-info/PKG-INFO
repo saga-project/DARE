@@ -1,8 +1,8 @@
 Metadata-Version: 1.0
 Name: DARE
-Version: 0.8.005
+Version: 0.8.006
 Summary: Dynamic Application Runtime Environment
-Home-page: http=//dare.cct.lsu.edu/
+Home-page: https://github.com/saga-project/DARE
 Author: Sharath Maddineni
 Author-email: smaddineni@cct.lsu.edu
 License: MIT

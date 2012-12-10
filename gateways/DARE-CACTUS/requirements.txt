@@ -2,7 +2,16 @@ django==1.4.2
 django-chunks
 django-storages
 south==0.7.6
-django-celery
 django-social-auth
 bliss
 git+https://github.com/bradleyayers/django-tables2.git#egg=django-tables2
+django-extensions
+
+#for celery
+celery
+django-celery
+celery-with-redis
+redis
+celerymon
+
+dare

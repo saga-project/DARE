@@ -3,22 +3,15 @@ __author__ = "Sharath Maddineni"
 __copyright_ = "Copyright 2011-2012, Sharath Maddineni"
 __license__ = "MIT"
 
+__version_info__ = ('0', '8', '007')
+__version__ = '.'.join(__version_info__)
 
 import os
 import ConfigParser
 
 from .helpers.misc import darelogger
 
-version = "latest"
-
-try:
-    version_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'VERSION')
-    version = open(version_file).read().strip()
-    darelogger.info("Loading DARE version: " + version)
-
-except IOError:
-    darelogger.error("Cannot read the verison file %s" % version_file)
-
+darelogger.info("Loading DARE version: " + __version__)
 
 try:
     _conf_file = os.path.expanduser('~/.darerc')

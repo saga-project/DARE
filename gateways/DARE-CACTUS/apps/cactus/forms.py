@@ -3,6 +3,7 @@ from django.forms.widgets import Select
 from .models import Thornfiles, Paramfiles
 from darewap.models import Job, JobQueue, JobInfo
 
+
 class ThornfilesForm(forms.Form):
     docfile = forms.FileField(
         label='Select a file',
