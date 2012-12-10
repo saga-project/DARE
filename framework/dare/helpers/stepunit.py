@@ -23,15 +23,16 @@ class StepUnit(object):
 
     def define_param(self, step_info):
         self.UnitInfo = {
-            "step_id": step_info["step_id"],
-            "dare_web_id": step_info["dare_web_id"],
-            "name": step_info["name"],
-            "status": step_info["status"],
-            "compute_units": step_info["compute_units"],
-            "transfer_input_data_units": step_info["transfer_input_data_units"],
-            "transfer_output_data_units":  step_info["transfer_output_data_units"],
-            "start_after_steps": step_info["start_after_steps"]
+            "step_id": step_info.get("step_id"),
+            "dare_web_id": step_info.get("dare_web_id"),
+            "name": step_info.get("name").strip(),
+            "status": step_info.get("status"),
+            "compute_units": step_info.get("compute_units"),
+            "transfer_input_data_units": step_info.get("transfer_input_data_units"),
+            "transfer_output_data_units":  step_info.get("transfer_output_data_units"),
+            "start_after_steps": step_info.get("start_after_steps")
         }
+        print self.UnitInfo
 
     def get_step_id(self):
         return self.UnitInfo['step_id']

@@ -1,5 +1,5 @@
 [main]
-steps = step_hello_world_1, step_hello_world_2
+steps = step_hello_world_1
 jobid = 1
 webupdate= False
 used_pilots = localhost_pilot
@@ -12,12 +12,6 @@ number_of_processes = 1
 [step_hello_world_1]
 cu_type = echo_hello_cu
 input_args = hello_world_one, hello_world_two, hello_world_three
-step_cfg_file = default
-
-
-[step_hello_world_2]
-cu_type = echo_hello_cu
-input_args = hello_world_two_one, hello_world_two_two, hello_world_two_three
 step_cfg_file = default
 
 [echo_hello_cu]

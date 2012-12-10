@@ -11,10 +11,10 @@ DARE_test.egg-info/dependency_links.txt
 DARE_test.egg-info/entry_points.txt
 DARE_test.egg-info/requires.txt
 DARE_test.egg-info/top_level.txt
+bin/__init__.py
+bin/dare_run.py
 dare/__init__.py
-dare/api.py
-dare/bin/__init__.py
-dare/bin/darerun.py
+dare/states.py
 dare/core/__init__.py
 dare/core/dare_manager.py
 dare/daredb/__init__.py

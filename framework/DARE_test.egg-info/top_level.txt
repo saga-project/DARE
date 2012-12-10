@@ -1,4 +1,4 @@
-dare/bin
+bin
 dare/core
 dare/daredb
 dare/helpers

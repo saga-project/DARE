@@ -5,7 +5,6 @@ __license__ = "MIT"
 
 
 import ConfigParser
-from ConfigParser import NoSectionError
 import os
 import sys
 from dare import darelogger
