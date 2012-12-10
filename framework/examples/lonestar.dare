@@ -16,7 +16,6 @@ cores_per_node=4
 affinity_name=
 
 
-
 [step_hello_world_1]
 cu_type = echo_hello_cu
 input_args = hello_world_one, hello_world_two, hello_world_three
