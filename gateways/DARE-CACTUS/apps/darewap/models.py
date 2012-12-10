@@ -9,34 +9,27 @@ import string
 
 
 class Job(models.Model):
-    status = models.CharField(max_length=30, blank=True)
+    user = models.ForeignKey('auth.User', null=True, related_name='user_jobs')
+    name = models.CharField(max_length=30, blank=True)
     job_type = models.CharField(max_length=30, blank=True)
     detail_status = models.CharField(max_length=30, blank=True)
-    dareprocess_id = models.CharField(max_length=30, blank=True)
-    user = models.ForeignKey('auth.User', null=True, related_name='user_jobs')
+    status = models.CharField(max_length=30, blank=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
     def __repr__(self):
         return "%s-%s" % (self.id, self.type)
 
-    @property
-    def app_type(self):
-        return JobInfo.objects.filter(id=self.id).filter(key='app_type')
-
-    @property
-    def status(self):
-        return JobInfo.objects.filter(id=self.id).filter(key='status')
-
-    @property
-    def description(self):
-        return JobInfo.objects.filter(id=self.id).filter(key='description')
+    #@property
+    #def status(self):
+    #    return 'm'
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
             self.created = datetime.datetime.now()
         self.modified = datetime.datetime.now()
+        self.status = 'New'
         super(Job, self).save(*args, **kwargs)
 
 
@@ -126,9 +119,9 @@ admin.site.register(UserContext, UserContextAdmin)
 
 class UserResource(models.Model):
     user = models.ForeignKey('auth.User', null=True, related_name='user_resource')
-    hostname = models.CharField(max_length=30, blank=True, null=True)
-    username = models.CharField(max_length=30, blank=True)
-    data_service_url = models.CharField(max_length=200)
+    name = models.CharField(max_length=10)
+    service_url = models.CharField(max_length=256, blank=True)
+    data_service_url = models.CharField(max_length=200,  blank=True)
     working_directory = models.CharField(max_length=30, blank=True)
     allocation = models.CharField(max_length=30, blank=True)
     cores_per_node = models.IntegerField(default=1)
@@ -143,9 +136,14 @@ class UserResource(models.Model):
         self.modified = datetime.datetime.now()
         super(UserResource, self).save(*args, **kwargs)
 
+    def __unicode__(self):
+        if self.name:
+            return self.name
+        return str(self.id)
+
 
 class UserResourceAdmin(admin.ModelAdmin):
-    list_display = ('user', 'data_service_url', 'hostname', 'username', 'cores_per_node', 'queue', 'modified')
+    list_display = ('user', 'data_service_url', 'service_url', 'cores_per_node', 'queue', 'modified')
 
     def save_model(self, *args, **kwargs):
         return super(UserContextAdmin, self).save_model(*args, **kwargs)

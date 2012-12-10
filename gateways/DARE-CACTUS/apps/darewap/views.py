@@ -81,10 +81,9 @@ def view_manage_resources(request):
     return render_to_response("darewap/context_form.html", context, context_instance=RequestContext(request))
 
 
-
 @login_required
 def view_job_list(request):
-    jobs = Job.objects.all()
+    jobs = Job.objects.filter(user=request.user)
     paginator = Paginator(jobs, 10)
     page = request.GET.get('page')
     try:

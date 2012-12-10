@@ -7,23 +7,25 @@ from django.conf import settings
 
 
 @task
-def add_dare_job(job_id):
-    config_file = create_job_config_file(job_id)
+def add_dare_job(job):
+    if not hasattr(job, 'id'):
+        job = Job.objects.get(id=id)
+    config_file = create_job_config_file(job)
     if config_file:
         DareManager(config_file)
         return True
     return False
 
 
-def create_job_config_file(jobid):
-    directory = os.path.join(str(settings.DARE_JOB_DIR), str(jobid))
+def create_job_config_file(job):
+    directory = os.path.join(str(settings.DARE_JOB_DIR), str(job.id))
     if not os.path.exists(directory):
         os.makedirs(directory)
-    conf_file = os.path.join(directory, "%s.dare" % jobid)
+    conf_file = os.path.join(directory, "%s.dare" % job.id)
 
     jb_conf = CfgWriter(conf_file)
     section = {'name': 'main',
-            'jobid': jobid,
+            'jobid': job.id,
             'steps': 'step_hello_world_1',
             'webupdate': False,
             'used_pilots': 'localhost_pilot'}

@@ -2,6 +2,8 @@ from django import forms
 from django.forms.widgets import Select
 from .models import Thornfiles, Paramfiles
 from darewap.models import Job, JobQueue, JobInfo
+from .tasks import add_dare_job
+from darewap.models import UserResource
 
 
 class ThornfilesForm(forms.Form):
@@ -20,26 +22,28 @@ time_list = [['120', '2 Hours'], \
 
 
 class CactusJobForm(forms.Form):
-    description = forms.CharField(initial='Test')
-    appname = forms.CharField(initial='test')
-    thornlist = forms.ModelChoiceField(Thornfiles, label='Select Thorn')
+    name = forms.CharField(initial='test')
+    #thornlist = forms.ModelChoiceField(Thornfiles, label='Select Thorn')
     corecount = forms.CharField(initial=1, label='Core Count')
     parameterfile = forms.FileField(label='Parmeter File')
     walltime = forms.ChoiceField(widget=Select(), label='Expected Runtime', \
                                 choices=time_list, initial='2879')
-    machine = forms.ChoiceField(widget=Select(), label='Resource', \
-                                choices=machines_list)
+    pilot = forms.ModelChoiceField(UserResource.objects, label='Select Resource')
 
     def __init__(self, user, *args, **kwargs):
         super(CactusJobForm, self).__init__(*args, **kwargs)
-        self.fields['thornlist'].queryset = Thornfiles.objects.filter(user=user)
-        self.fields['thornlist'].error_messages['required'] = 'Please select a Thornfile or upload Thornfiles in Manage Thorn List'
+        self.fields['pilot'].queryset = UserResource.objects.filter(user=user)
+        self.fields['pilot'].error_messages['required'] = 'Please select a Resource or Create a new resource'
+
+        #self.fields['thornlist'].queryset = Thornfiles.objects.filter(user=user)
+        #self.fields['thornlist'].error_messages['required'] = 'Please select a Thornfile or upload Thornfiles in Manage Thorn List'
 
     def save(self, request):
-        job = Job(user=request.user, status="New")
+        job = Job(user=request.user, status="New", name=self.cleaned_data['name'])
         job.save()
-        for key, value in self.fields.items():
-            print key, value
+        for key, value in self.cleaned_data.items():
+            if key in ['name']:
+                continue
             if key == 'parameterfile':
                 newdoc = Paramfiles(paramfile=request.FILES['parameterfile'], job=job)
                 newdoc.save()
@@ -48,7 +52,5 @@ class CactusJobForm(forms.Form):
                 jobinfo = JobInfo(key=key, value=value, job=job)
                 jobinfo.save()
 
-        jobq = JobQueue(job=job)
-        jobq.save()
+        add_dare_job.delay(job)
         return job
-

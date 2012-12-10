@@ -3,16 +3,16 @@ django-chunks
 django-storages
 south==0.7.6
 django-social-auth
-bliss
 git+https://github.com/bradleyayers/django-tables2.git#egg=django-tables2
 django-extensions
+
+#dare
+git+https://github.com/saga-project/bigjob.git#egg=bigjob
+bliss
 
 #for celery
 celery
 django-celery
 celery-with-redis
-redis
 celerymon
-
-#dare
-git+https://github.com/saga-project/bigjob.git#egg=bigjob
+redis==2.7.2

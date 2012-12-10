@@ -4,13 +4,11 @@
 <table border="0"  cellspacing="0" cellpadding="5">
     <tr>
         <th>Job ID</th>
-        <th>Description</th>
-        <th>App-Type</th>
+        <th>Name</th>
         <th>Status</th>
         <th>Submitted-Time</th>
         <th>Actions</th>
     </tr>
-
     {% for job in jobs %}
         {% if job.status == 1  %}
                <tr  bgcolor="#FFFFEE" >
@@ -22,21 +20,22 @@
              <tr  bgcolor="white" >  
         {% endif  %}
         <td> {{ job.id}}  </td>
-        <td>  {{ job.description}} </td>
-        <td><span style="text-transform: uppercase"> {{ job.app_type}} </span> </td>
-        <td>  {{ jobinfo.status }}</td>
+        <td><span style="text-transform: uppercase"> {{ job.name}} </span> </td>
+        <td>  {{ job.status }}</td>
         <td width="10%" > {{job.modified}} </td>
-        <td width="25%"><font size='2'>
-            <a href='{{ jobinfo.description}}'> "View Thorn" </a>         <br/> 
-            <a href='{{ jobinfo.description}}'> "View Parameter File" </a>         <br/> 
-            <a href='{{ jobinfo.description}}'> "Update Status" </a>         <br/> 
-            <a href='{{ jobinfo.description}}'> "Download Output file" </a>         <br/> 
-            <a href='{{ jobinfo.description}}'> "Delete Job" </a>         <br/> 
+        <td width="25%">
+            <font size='2'>
+                <a href=''> View Thorn </a> <br/> 
+                <a href=''> View Parameter File </a> <br/> 
+                <a href=''> Update Status </a> <br/> 
+                <a href=''> Download Output file </a> <br/> 
+                <a href=''> Delete Job </a> <br/> 
             </font>
         </td>
         </tr>
     {% endfor %}
 </table>
+
 <div class="pagination">
     <span class="step-links">
         {% if jobs.has_previous %}
@@ -54,4 +53,3 @@
 </div>
 
 {% endblock%}
- 

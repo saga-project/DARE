@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse
 from .models import Thornfiles
 from .forms import ThornfilesForm, CactusJobForm
 from django.contrib import messages
-from .tasks import add_dare_job
 
 
 @login_required
@@ -14,14 +13,13 @@ def view_create_job_cactus(request):
     if request.method == 'POST':
         form = CactusJobForm(request.user, request.POST, request.FILES)
         if form.is_valid():
-            job_id = form.save(request)
-            add_dare_job.delay(job_id)
+            form.save(request)
             messages.success(request, "Job Succesfully created")
         else:
             messages.error(request, "Error in creating job: Inavlid Form")
     else:
         form = CactusJobForm(request.user)
-
+    print form.as_table()
     return render_to_response('cactus/create_job.html', {'form': form}, context_instance=RequestContext(request))
 
 

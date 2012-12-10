@@ -1,1 +1,4 @@
 user_resource_auth
+DARE_JOBS
+celerybeat-schedule.db
+dump.rdb
