@@ -1,7 +1,5 @@
-include dare/*.py
-include dare/daredb/*
-include dare/core/*.py
-include dare/helpers/*.py
+include *.py
+recursive-include dare *.py *.cu *.cfg
+recursive-include examples *.dare 
 
-
-include MANIFEST.in README.md LICENSE.md CHANGES.md
+include MANIFEST.in README.md LICENSE.md CHANGES.md dare.conf

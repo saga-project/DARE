@@ -3,7 +3,7 @@ __author__ = "Sharath Maddineni"
 __copyright_ = "Copyright 2011-2012, Sharath Maddineni"
 __license__ = "MIT"
 
-__version_info__ = ('0', '8', '007')
+__version_info__ = ('0', '8', '015')
 __version__ = '.'.join(__version_info__)
 
 import os

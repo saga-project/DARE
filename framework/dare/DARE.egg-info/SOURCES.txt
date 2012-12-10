@@ -1,6 +1,5 @@
 CHANGES.md
 MANIFEST.in
-README
 README.md
 setup.py
 dare/__init__.py
