@@ -60,4 +60,4 @@ Building PyPi package
 
 Upload to PyPi
 
-	python setup.py bdist_egg upload
+	python setup.py sdist upload
