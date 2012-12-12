@@ -44,10 +44,11 @@ class CactusJobForm(forms.Form):
         for key, value in self.cleaned_data.items():
             if key in ['name']:
                 continue
-            if key == 'parameterfile':
+            if key.lower() == 'parameterfile':
                 newdoc = Paramfiles(paramfile=request.FILES['parameterfile'], job=job)
                 newdoc.save()
                 jobinfo = JobInfo(key=key, value=newdoc.id, job=job)
+                jobinfo.save()
             else:
                 if hasattr(value, 'id'):
                     jobinfo = JobInfo(key=key, value=value.id, job=job)

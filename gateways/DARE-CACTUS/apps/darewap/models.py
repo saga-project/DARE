@@ -18,8 +18,8 @@ class Job(models.Model):
     modified = models.DateTimeField()
 
     @property
-    def parameter_file(self):
-        pp = JobInfo.objects.filter(job=self, key='parameter_file')
+    def parameterfile(self):
+        pp = JobInfo.objects.filter(job=self, key='parameterfile')
         if len(pp) > 0:
             return pp[0].value
 

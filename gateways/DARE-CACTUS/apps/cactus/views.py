@@ -27,7 +27,7 @@ def view_create_job_cactus(request):
 @login_required
 def view_job_actions(request):
     job_id = request.GET.get('job_id')
-    action = (str(request.GET.get('job_id'))).strip()
+    action = (str(request.GET.get('action'))).strip()
     if job_id:
         job = Job.objects.filter(id=job_id, user=request.user)[0]
         if action == 'delete':
