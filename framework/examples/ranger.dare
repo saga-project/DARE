@@ -1,0 +1,32 @@
+[main]
+steps = step_hello_world_1, step_hello_world_2
+jobid = 1
+webupdate= False
+used_pilots = ranger_pilot
+
+[ranger_pilot]
+working_directory = /work/01395/smaddi2/dare/
+data_service_url= ssh://smaddi2@ranger.tacc.utexas.edu
+number_of_processes=12
+service_url=sge+ssh://smaddi2@ranger.tacc.utexas.edu
+allocation= TG-MCB090174
+queue=development
+cores_per_node=12
+affinity_name=
+
+
+[step_hello_world_1]
+cu_type = echo_hello_cu
+input_args = hello_world_one, hello_world_two, hello_world_three
+step_cfg_file = default
+
+
+[step_hello_world_2]
+cu_type = echo_hello_cu
+input_args = hello_world_two_one, hello_world_two_two, hello_world_two_three
+step_cfg_file = default
+
+[echo_hello_cu]
+executable = /bin/echo
+number_of_processes = 1
+

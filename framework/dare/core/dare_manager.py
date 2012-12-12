@@ -45,11 +45,12 @@ class DareManager(object):
         for compute_pilot, desc in self.workflow.compute_pilot_repo.items():
             self.pilot_compute_service.create_pilot(pilot_compute_description=desc)
 
-        #for data_pilot, desc in self.workflow.data_pilot_repo.items():
-         #   self.data_pilot_service_repo.append(self.pilot_data_service.create_pilot(pilot_data_description=desc))
+        for data_pilot, desc in self.workflow.data_pilot_repo.items():
+            self.data_pilot_service_repo.append(self.pilot_data_service.create_pilot(pilot_data_description=desc))
+
         self.compute_data_service = ComputeDataService()
         self.compute_data_service.add_pilot_compute_service(self.pilot_compute_service)
-       # self.compute_data_service.add_pilot_data_service(self.pilot_data_service)
+        self.compute_data_service.add_pilot_data_service(self.pilot_data_service)
 
         ### run the steps
         self.step_start_lock = threading.RLock()
@@ -105,19 +106,26 @@ class DareManager(object):
         self.updater.update_status(this_su['dare_web_id'], "%s in step %s" % ('Running',  this_su['name']))
 
         darelogger.info(" Started running %s " % step_id)
-        for du_id in self.workflow.step_units_repo[step_id].UnitInfo['transfer_input_data_units']:
-            #data_unit = self.compute_data_service.submit_data_unit(self.workflow.data_units_repo[du_id])
-            #darelogger.debug("Pilot Data URL: %s Description: \n%s"%(data_unit, str(self.workflow.data_units_repo[du_id])))
-            #data_unit.wait()
-            #self.compute_data_service.wait()
-            darelogger.debug(" input tranfer for step %s complete" % step_id)
 
         jobs = []
         job_start_times = {}
         job_states = {}
         NUMBER_JOBS = len(self.workflow.step_units_repo[step_id].UnitInfo['compute_units'])
         for cu_id in self.workflow.step_units_repo[step_id].UnitInfo['compute_units']:
-            compute_unit = self.compute_data_service.submit_compute_unit(self.workflow.compute_units_repo[cu_id])
+            compute_unit_desc = self.workflow.compute_units_repo[cu_id]
+            input_dus = compute_unit_desc.pop('input_data_units')
+            output_dus = compute_unit_desc.pop('output_data_units')
+            input_data_units = []
+            for du_id in input_dus:
+                input_data_units.append(self.compute_data_service.submit_data_unit(self.workflow.data_units_repo[du_id]))
+            output_data_units = []
+            for du_id in output_dus:
+                output_data_units.append(self.compute_data_service.submit_data_unit(self.workflow.data_units_repo[du_id]))
+
+            compute_unit_desc["input_data"] = [du.get_url() for du in input_data_units]
+            compute_unit_desc["output_data"] = [{du.get_url(): ['std*']} for du in output_data_units]
+            compute_unit = self.compute_data_service.submit_compute_unit(compute_unit_desc)
+
             darelogger.info("Compute Unit: Description: \n%s" % (str(self.workflow.compute_units_repo[cu_id])))
             jobs.append(compute_unit)
             job_start_times[compute_unit] = time.time()
@@ -152,14 +160,6 @@ class DareManager(object):
 
         #self.compute_data_service.wait()
         darelogger.debug(" Compute jobs for step %s complete" % step_id)
-
-        #for du_id in self.workflow.step_units_repo[step_id].UnitInfo['transfer_output_data_units']:
-    #        data_unit = self.compute_data_service.submit_data_unit(self.workflow.data_units_repo[du_id])
-    #        darelogger.debug("Pilot Data URL: %s Description: \n%s"%(data_unit, str(pilot_data_description)))
-    #        data_unit.wait()
-        #darelogger.debug(" Output tranfer for step %s complete"%step_id)
-
-        #        self.compute_data_service.wait()
 
         #runtime = time.time()-starttime
 

@@ -1,26 +1,37 @@
 [main]
-steps = step_hello_world_1, step_hello_world_2
+steps = step_hello_world_1
 jobid = 1
 webupdate= False
 used_pilots = localhost_pilot
 
 [localhost_pilot]
-working_directory = /tmp/
+working_directory = /tmp/pilot-data/
 service_url=fork://localhost/
+data_service_url=ssh://localhost/tmp/pilot-data/
 number_of_processes = 1 
 
 [step_hello_world_1]
-cu_type = echo_hello_cu
-input_args = hello_world_one, hello_world_two, hello_world_three
-step_cfg_file = default
+compute_units = cu_cat_hello_world_1, cu_cat_hello_world_2
 
-
-[step_hello_world_2]
-cu_type = echo_hello_cu
-input_args = hello_world_two_one, hello_world_two_two, hello_world_two_three
-step_cfg_file = default
-
-[echo_hello_cu]
-executable = /bin/echo
+[cu_cat_hello_world_1]
+executable = /bin/cat
+arguments = hello_world1.txt
 number_of_processes = 1
+transfer_input_data=/Users/Sharath/workspace/projects/DARE/framework/examples/hello_world1.txt
+transfer_output_data=
 
+
+[cu_cat_hello_world_2]
+executable = /bin/cat
+arguments = hello_world2.txt
+number_of_processes = 1
+transfer_input_data=/Users/Sharath/workspace/projects/DARE/framework/examples/hello_world2.txt
+transfer_output_data=
+
+
+[cu_echo_hello_world_1]
+executable = /bin/echo
+arguments = hello_world1
+number_of_processes = 1
+transfer_input_data=
+transfer_output_data=
