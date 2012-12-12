@@ -15,4 +15,4 @@
 framework/envdare
 framework/build
 framework/dist
-framework/DARE.egg-info
+framework/*.egg-info

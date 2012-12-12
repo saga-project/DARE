@@ -6,8 +6,8 @@ used_pilots = localhost_pilot
 
 [localhost_pilot]
 working_directory = /work/smaddi2/dare/
-service_url=pbs+ssh://smaddi2@qb1.loni.org/
-data_service_url=ssh://smaddi2@qb1.loni.org/work/smaddi2/dare/
+service_url=pbs+ssh://smaddi2@qb3.loni.org/
+data_service_url=ssh://smaddi2@qb3.loni.org/work/smaddi2/dare/
 number_of_processes = 1 
 
 [step_hello_world_1]
