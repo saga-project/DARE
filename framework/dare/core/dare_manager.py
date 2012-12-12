@@ -15,7 +15,7 @@ from dare.helpers.prepareworkflow import PrepareWorkFlow
 from dare.helpers.updater import Updater
 from dare import COORDINATION_URL
 
-from pilot import PilotComputeService, PilotDataService, ComputeDataService
+from pilot import PilotComputeService, PilotDataService, ComputeDataServiceDecentral
 
 
 class DareManager(object):
@@ -48,7 +48,7 @@ class DareManager(object):
         for data_pilot, desc in self.workflow.data_pilot_repo.items():
             self.data_pilot_service_repo.append(self.pilot_data_service.create_pilot(pilot_data_description=desc))
 
-        self.compute_data_service = ComputeDataService()
+        self.compute_data_service = ComputeDataServiceDecentral()
         self.compute_data_service.add_pilot_compute_service(self.pilot_compute_service)
         self.compute_data_service.add_pilot_data_service(self.pilot_data_service)
 
