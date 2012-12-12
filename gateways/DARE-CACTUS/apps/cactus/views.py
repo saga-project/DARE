@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from .models import Thornfiles
 from .forms import ThornfilesForm, CactusJobForm
 from django.contrib import messages
+from .models import Job
 
 
 @login_required
@@ -21,6 +22,22 @@ def view_create_job_cactus(request):
         form = CactusJobForm(request.user)
 
     return render_to_response('cactus/create_job.html', {'form': form}, context_instance=RequestContext(request))
+
+
+@login_required
+def view_job_actions(request):
+    job_id = request.GET.get('job_id')
+    action = (str(request.GET.get('job_id'))).strip()
+    if job_id:
+        job = Job.objects.filter(id=job_id, user=request.user)[0]
+        if action == 'delete':
+            job.delete()
+            return render_to_response('cactus/job_actions.html', {'message': 'Job %s Deleted' % job_id}, context_instance=RequestContext(request))
+        else:
+            return render_to_response('cactus/job_actions.html', {'job': job}, context_instance=RequestContext(request))
+
+    else:
+        return render_to_response('cactus/job_actions.html', {'message': 'Job not found'}, context_instance=RequestContext(request))
 
 
 @login_required

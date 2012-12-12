@@ -17,6 +17,30 @@ class Job(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
+    @property
+    def parameter_file(self):
+        pp = JobInfo.objects.filter(job=self, key='parameter_file')
+        if len(pp) > 0:
+            return pp[0].value
+
+    @property
+    def pilot(self):
+        pp = JobInfo.objects.filter(job=self, key='pilot')
+        if len(pp) > 0:
+            return UserResource.objects.get(id=pp[0].value).name
+
+    @property
+    def corecount(self):
+        pp = JobInfo.objects.filter(job=self, key='corecount')
+        if len(pp) > 0:
+            return pp[0].value
+
+    @property
+    def walltime(self):
+        pp = JobInfo.objects.filter(job=self, key='walltime')
+        if len(pp) > 0:
+            return pp[0].value
+
     def __repr__(self):
         return "%s-%s" % (self.id, self.name)
 
