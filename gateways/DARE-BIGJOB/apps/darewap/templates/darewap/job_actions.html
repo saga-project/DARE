@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block body%}
+
+        {% if job %}
+            <h2>{{job|pprint}}</h2>
+            <ul>
+                <li>ID: {{job.id}}</li>
+                <li>Status: {{job.status}}</li>
+                <li>Pilot: {{job.pilot}}</li>
+                <li>Core Count: {{job.corecount}}</li>
+                <li>Walltime: {{job.walltime}}</li>
+                <li>Parameter File: {{job.parameterfile}}</li>
+            </ul>
+        {% else %}
+            <ul>
+                {{ message}}
+            </ul>
+        {% endif %}
+
+{% endblock%}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block body%}
+
+ <div>   
+    
+    {% if request.session.invitation_key %}
+
+        Your invitation is validated
+    {% else %}
+        Currently all registration are through invite only. Please  <a href='/invite/request/'> click here </a> to request one!
+    {% endif%}
+</div>
+<div>
+    <h2>
+    Invited users can Register/Login  using 
+    <h2>
+    <h4>
+        <a href="{% url socialauth_begin 'yahoo' %}?{{ redirect_querystring }}"> Yahoo </a>|
+        <a href="{% url socialauth_begin 'google-oauth2' %}?{{ redirect_querystring }}"> Google</a>
+    </h4>
+</div>
+{% endblock %}
+
+ 

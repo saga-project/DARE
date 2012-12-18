@@ -17,7 +17,7 @@ compute_units = cu_cat_hello_world_1, cu_cat_hello_world_2
 executable = /bin/cat
 arguments = hello_world1.txt
 number_of_processes = 1
-transfer_input_data=/path/to/hello_world1.txt
+transfer_input_data=/Users/Sharath/workspace/projects/DARE/framework/examples/hello_world1.txt
 transfer_output_data=
 
 
@@ -25,5 +25,5 @@ transfer_output_data=
 executable = /bin/cat
 arguments = hello_world2.txt
 number_of_processes = 1
-transfer_input_data=/path/to//hello_world2.txt
+transfer_input_data=/Users/Sharath/workspace/projects/DARE/framework/examples/hello_world2.txt
 transfer_output_data=

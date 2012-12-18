@@ -1,0 +1,24 @@
+django==1.4.2
+django-chunks
+django-storages
+south==0.7.6
+django-social-auth
+git+https://github.com/bradleyayers/django-tables2.git#egg=django-tables2
+django-extensions
+
+#dare
+git+https://github.com/saga-project/BigJob.git#egg=BigJob
+bliss
+dare
+
+#for celery
+celery
+django-celery
+celery-with-redis
+#celerymon
+redis==2.7.2
+
+
+#test
+#django-grappelli
+django-tinymce
