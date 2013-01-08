@@ -53,7 +53,6 @@
               </fieldset>
       </form>
       </div>
-
       <div class='span4'>
         <div class='well'>
           <p>Pilot Status</p>
@@ -63,7 +62,7 @@
             <div class="progress">
                <div class="bar" style="width: 100%;"> Ready </div> 
             </div> 
-            
+            <button class="btn btn-danger"> Stop Pilot</button>
             </div>
 
             <div class='well'>
@@ -71,13 +70,63 @@
               <div class="progress">
                  <div class="bar" style="width: 100%;"> Ready</div>
               </div>
+              <button class="btn btn-danger"> Stop Pilot</button>
+
             </div>
           </div>
         <div>
       </div>
     </div>
+
+    </div>
   </div>
 </div>
+
+<div class='row'>
+      <div class='span7'>
+      <form action="" method="post" enctype="multipart/form-data" class="well form-horizontal">
+          {% csrf_token %}
+          
+              <fieldset>
+                <legend>Task 2</legend>
+                <div class="control-group">  
+                  <label class="control-label" for="textarea">Command</label>  
+                  <div class="controls">  
+                    <textarea class="input-xlarge" id="textarea" rows="3"></textarea>  
+                  </div>  
+                </div>  
+                <div class="control-group">
+                  <label class="control-label" for="input01">Num. of Cores</label>
+                  <div class="controls">
+                    <input type="text" class="input-medium" id="input01" placeholder="16">
+                  </div>
+                </div>
+
+                <div class="control-group">  
+                  <label class="control-label" for="select01">Pilot</label>  
+                  <div class="controls">  
+                    <select id="select01">  
+                      <option>Any</option>  
+                      <option>Ranger</option>  
+                      <option>Lonestar</option>  
+                    </select>  
+                  </div>  
+                </div> 
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Submit Task</button>
+                  <button class="btn">Cancel</button>
+                </div>
+
+              </fieldset>
+      </form>
+      </div>
+</div>
+
+
+    <a class="btn btn-large btn-success" href="/invite/request/">Add One More Task</a>
+
+
 
 {% endblock%}
 
