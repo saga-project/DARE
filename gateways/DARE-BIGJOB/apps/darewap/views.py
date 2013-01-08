@@ -100,21 +100,6 @@ def view_job_list(request):
 
 
 @login_required
-def view_create_job_bigjob(request):
-    if request.method == 'POST':
-        form = BigJobForm(request.user, request.POST, request.FILES)
-        if form.is_valid():
-            form.save(request)
-            messages.success(request, "Job Succesfully created")
-        else:
-            messages.error(request, "Error in creating job: Inavlid Form")
-    else:
-        form = BigJobForm(request.user)
-
-    return render_to_response('darewap/create_job_pilot.html', {'form': form}, context_instance=RequestContext(request))
-
-
-@login_required
 def view_job_actions(request):
     job_id = request.GET.get('job_id')
     action = (str(request.GET.get('action'))).strip()
@@ -130,6 +115,21 @@ def view_job_actions(request):
         return render_to_response('darewap/job_actions.html', {'message': 'Job not found'}, context_instance=RequestContext(request))
 
 
+@login_required
+def view_create_job_bigjob(request):
+    if request.method == 'POST':
+        form = BigJobForm(request.user, request.POST, request.FILES)
+        if form.is_valid():
+            form.save(request)
+            messages.success(request, "Job Succesfully created")
+        else:
+            messages.error(request, "Error in creating job: Inavlid Form")
+    else:
+        form = BigJobForm(request.user)
+
+    return render_to_response('darewap/create_job_pilot.html', {'form': form}, context_instance=RequestContext(request))
 
 
-
+@login_required
+def view_resource_edit_conf(request):
+    return render_to_response('darewap/resource_edit_conf.html', context_instance=RequestContext(request))

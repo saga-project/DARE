@@ -22,8 +22,11 @@
           <div class="control-group">
             <label class="control-label" for="optionsCheckbox">Resources</label>
             <div class="controls">
-            <label class="checkbox"><input type="checkbox" id="optionsCheckbox" value="option1"> Ranger <a class='editconf' href=""> Edit Conf</a></label>
-            <label class="checkbox"><input type="checkbox" id="optionsCheckbox" value="option1"> Lonestar <a class='editconf' href=""> Edit Conf</a></label>
+            <label class="checkbox"><input type="checkbox" id="optionsCheckbox" value="option1"> Ranger 
+                <a class="editconf" href="/job/resource-edit-conf/" data-toggle="modal" data-target="#editconfModal"> Edit Conf</a></label>
+            <label class="checkbox"><input type="checkbox" id="optionsCheckbox" value="option1"> Lonestar 
+                <a class="editconf" href="/job/resource-edit-conf/" data-toggle="modal" data-target="#editconfModal"> Edit Conf</a></label>
+            </label>
             </div>
           </div>
           <div class="form-actions">
@@ -32,6 +35,8 @@
           </div>
         </fieldset>
 </form>
+<div id="editconfModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
 {% endblock%}
 
 
