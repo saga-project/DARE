@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block body%}
+<ul class="breadcrumb">  
+  <li>  
+    <a href="#">Job</a> <span class="divider">></span>  
+  </li>  
+  <li class="active"> Pilots  </li>  
+</ul>   
+
+<form action="" method="post" enctype="multipart/form-data" class="well form-horizontal">
+    {% csrf_token %}
+    
+        <fieldset>
+          <legend>Pilots</legend>
+          <div class="control-group">
+            <label class="control-label" for="input01">Job Title</label>
+            <div class="controls">
+              <input type="text" class="input-medium" id="input01" placeholder="Test">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="optionsCheckbox">Resources</label>
+            <div class="controls">
+            <label class="checkbox"><input type="checkbox" id="optionsCheckbox" value="option1"> Ranger <a class='editconf' href=""> Edit Conf</a></label>
+            <label class="checkbox"><input type="checkbox" id="optionsCheckbox" value="option1"> Lonestar <a class='editconf' href=""> Edit Conf</a></label>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Next</button>
+            <button class="btn">Cancel</button>
+          </div>
+        </fieldset>
+</form>
+{% endblock%}
+
+
