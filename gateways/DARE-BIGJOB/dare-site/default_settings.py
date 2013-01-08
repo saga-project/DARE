@@ -176,8 +176,8 @@ DEFAULT_USER_CONTEXT_STORAGE = (os.path.join(full_path, '..', 'user_resource_aut
 DARE_JOB_DIR = os.path.join(full_path, '..', 'DARE_JOBS/')
 
 
-STATICFILES_DIRS = (os.path.join(full_path, '..', 'site_media/'),)
-STATIC_URL = '/site_media/'
+STATICFILES_DIRS = (os.path.join(full_path, '..', 'site_media/assets/'),)
+STATIC_URL = '/assets/'
 INTERNAL_IPS = ('127.0.0.1',)
 
 

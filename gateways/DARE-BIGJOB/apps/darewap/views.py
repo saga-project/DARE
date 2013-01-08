@@ -128,3 +128,8 @@ def view_job_actions(request):
 
     else:
         return render_to_response('darewap/job_actions.html', {'message': 'Job not found'}, context_instance=RequestContext(request))
+
+
+
+
+

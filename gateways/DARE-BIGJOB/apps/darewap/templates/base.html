@@ -1,47 +1,73 @@
-<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'> 
-<html xmlns='http://www.w3.org/1999/xhtml' dir='ltr' lang='en-US'> 
-<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /> 
- 
-<title>DARE-Cactus</title> 
 
-<meta name='disable_cufon' content='' />
-<meta name='slider_speed' content='7000' />
-<meta name='slider_disable' content='false' />
-<meta name='slider_type' content='fading' />
- 
-<link rel='stylesheet' href='/site_media/daresite/css/style000.css' type='text/css' media='screen' />
-<link rel='stylesheet' type='text/css' media='all' href='/site_media/daresite/css/minimal_.css' />
- 
-<script type='text/javascript'> 
-/* <![CDATA[ */
-document.write('<style type="text/css">h1,h2,h3,h4,h5,#blurb,#site_name,#intro_blurb_title,#call_to_action,.light_gradient.dropcap1,.widgettitle,.dropcap2,.dark_gradient,th{text-indent:-9999px;}.noscript{display:none;}.bg_hover{background:none;}</style>');
-/* ]]> */
-</script> 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  
+    <meta charset="utf-8">
+    <title>DARE-BIGJOB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<script type='text/javascript' SRC='/site_media/daresite/js/jquery00.js'></script>
-<script type='text/javascript' SRC='/site_media/daresite/js/custom00.js'></script>
-<script type='text/javascript' SRC='/site_media/daresite/js/cufon-yu.js'></script>
+    <!-- Le styles -->
+    <link href="/assets/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+  
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-</head> 
- 
-<body > 
- 
-<div class='body_background'> 
-    <div id='header'> 
-        <div class='inner'> 
-        
-            <!-- logo -->
-            <div id='logo'> 
-                <a HREF='/'><img SRC='/site_media/daresite/img/DARE0000.png' alt='' width='178' height='72' /></a>
-            </div> 
-            
-            <!-- LOGIN -->
-            <div id='social_header' style='top:121px;'>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">DARE-BIGJOB</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href='/static/about'>About</a></li>
+
+              <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown">Account Management<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+            <li ><a title='Pipeline'  href='/accounts/resources/' > Resources</a></li>
+            <li ><a title='Pipeline'  href='/accounts/contexts/' > Contexts</a></li>
+                </ul>
+              </li>
+
+              <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown">Job Submission<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li ><a title='Pipeline'  href='/create-job' >BigJob</a></li>
+                    <li><a href='/view-job-list'>Job Table View</a></li>
+                </ul>
+              </li>
+              <li><a href='/static/software'>Software</a></li>
+              <li><a href='/static/contact'>Contact</a></li>
+            </ul>
+
+            <div class="navbar-form pull-right">
     {% if request.user.is_authenticated %}
 
      Hello  {{request.user.get_full_name|title}}  <a href='/logout'>Logout</a><br/>
 {{social_auth.associated }}
-    {% else %}Login:
+    {% else %}
+    Login:
 
     {% comment %}
     <a href='/accounts/login/'>Login</a> | <a href='/accounts/register/'>Register </a>
@@ -52,57 +78,17 @@ document.write('<style type="text/css">h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
     <br/><a href="{% url request_invite %}">  Request Invite</a>
     
     {% endif %}
+            </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
 
-            </div>      
-            
-            <!-- navigation -->
-            <div id='main_navigation' class='jqueryslidemenu unitPng'>
-                <ul>
-                      <li><a href='/'>HOME</a>
-                      
-                      </li>
-                      <li><a href='/static/about'>ABOUT DARE-Bigjob</a>
-                         <ul>
-                          <li><a title='Pipeline'  href='/static/resources' >Resources</a></li>
-                        </ul>
- 
-                      </li>
+    <div class="container">
 
-
-      <li>
-          <a title='Pipeline'  href='/accounts/resources/'> Account Management  </a> 
-          <ul>
-            <li ><a title='Pipeline'  href='/accounts/resources/' > Manage Resources</a></li>
-            <li ><a title='Pipeline'  href='/accounts/contexts/' > Manage Contexts</a></li>
-          </ul>
-      </li>
-
-
-      <li><a class='MenuBarItemSubmenu'> JOB SUBMISSION </a>
-        <ul>
-
-          <li ><a title='Pipeline'  href='/create-job' >BigJob</a></li>
-
-          <li><a href='/view-job-list'>Job Table View</a></li>
-          
-        </ul>
-      </li>
-      <li><a href='/static/software'>SOFTWARE</a></li>
-      <li><a href='/static/contact'>CONTACT</a></li>
-
-                </ul>
-            </div> 
-        </div><!-- inner --> 
-    </div><!-- header --> 
-
-    <div id='body_block' class='full_width fading framed minimal_soft_green'> 
-    
-            
-        <div id='intro_blurb'>
-
-            <div class='inner'> 
-            <!--    <a class='button_link alignright large_button' href=''><span>Learn More</span></a> -->  
-                {% if messages %}
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+                          {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}
                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -116,16 +102,23 @@ document.write('<style type="text/css">h1,h2,h3,h4,h5,#blurb,#site_name,#intro_b
                 {% block content %}
                 {% endblock %}
 
-            </div><!-- inner --> 
-        </div><!-- intro_blurb --> 
-                                
-    </div><!-- body_block --> 
- 
-    <div id='footer'> 
+      </div>
 
-    </div><!-- footer --> 
- 
-</div><!-- body_background --> 
+      <!-- Example row of columns -->
+      <hr>
 
-</body> 
+      <footer>
+        <p>&copy; DARE 2010-2012</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type='text/javascript' src='/assets/js/jquery-1.8.3.js'></script>
+    <script type='text/javascript' src='/assets/js/jquery-ui.js'></script>
+    <script src="/assets/js/bootstrap.js"></script>
+
+  </body>
 </html>
