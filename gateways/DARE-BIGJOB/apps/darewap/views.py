@@ -118,6 +118,7 @@ def view_job_actions(request):
 @login_required
 def view_create_job_bigjob(request):
     if request.method == 'POST':
+        return HttpResponseRedirect('/job/tasks/')
         form = BigJobForm(request.user, request.POST, request.FILES)
         if form.is_valid():
             form.save(request)
@@ -133,3 +134,8 @@ def view_create_job_bigjob(request):
 @login_required
 def view_resource_edit_conf(request):
     return render_to_response('darewap/resource_edit_conf.html', context_instance=RequestContext(request))
+
+
+@login_required
+def view_create_tasks(request):
+    return render_to_response('darewap/create_tasks.html', context_instance=RequestContext(request))

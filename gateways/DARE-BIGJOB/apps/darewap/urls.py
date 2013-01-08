@@ -18,7 +18,9 @@ urlpatterns = patterns('darewap.views',
 
 urlpatterns += patterns('darewap.views',
     url(r'^job/create/$', 'view_create_job_bigjob', name='createbigjob'),
-    url(r'^job/resource-edit-conf/$', 'view_resource_edit_conf', name='createbigjob'),
+    url(r'^job/resource-edit-conf/$', 'view_resource_edit_conf', name='redit'),
+    url(r'^job/tasks/$', 'view_create_tasks', name='createtasks'),
+
 
     url(r'^job-actions/$', 'view_job_actions', name='jobactions'),)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block body%}
+<ul class="breadcrumb">  
+  <li>  
+    <a href="#">Job</a> <span class="divider">></span>  
+  </li>  
+  <li>  
+    <a href="#">Pilots</a> <span class="divider">></span>  
+  </li>  
+
+  <li class="active"> Tasks </li>  
+</ul>   
+
+
+<div class="progress">
+  <div class="bar" style="width: 60%;"></div>
+</div>
+
+<form action="" method="post" enctype="multipart/form-data" class="well form-horizontal">
+    {% csrf_token %}
+    
+        <fieldset>
+          <legend>Task 1</legend>
+          <div class="control-group">  
+            <label class="control-label" for="textarea">Command</label>  
+            <div class="controls">  
+              <textarea class="input-xlarge" id="textarea" rows="3"></textarea>  
+            </div>  
+          </div>  
+          <div class="control-group">
+            <label class="control-label" for="input01">Num. of Cores</label>
+            <div class="controls">
+              <input type="text" class="input-medium" id="input01" placeholder="16">
+            </div>
+          </div>
+
+          <div class="control-group">  
+            <label class="control-label" for="select01">Pilot</label>  
+            <div class="controls">  
+              <select id="select01">  
+                <option>Any</option>  
+                <option>Ranger</option>  
+                <option>Lonestar</option>  
+              </select>  
+            </div>  
+          </div> 
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit Task</button>
+            <button class="btn">Cancel</button>
+          </div>
+
+        </fieldset>
+</form>
+
+
+
+{% endblock%}
+
+
