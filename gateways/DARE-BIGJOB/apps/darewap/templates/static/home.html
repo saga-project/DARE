@@ -13,7 +13,8 @@
     
     <p><br class="clearfloat" />
     </p>
-
+{% if not request.user.is_authenticated %}
     <a class="btn btn-large btn-success" href="/invite/request/">Sign up today</a>
+{% endif %}
 {% endblock%}
  

@@ -1,11 +1,56 @@
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Modal header</h3>
+    <h3 id="myModalLabel">Edit Ranger Conf</h3>
   </div>
-  <div class="modal-body">
-    <p>One fine body…</p>
-  </div>
+<form action="" method="post" enctype="multipart/form-data" class="well form-horizontal">
+    {% csrf_token %}
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label" for="input01">Wall Time</label>
+            <div class="controls">
+              <input type="text" class="input-medium" id="input01" placeholder="100"> Minutes
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="input01">Num. of Cores</label>
+            <div class="controls">
+              <input type="text" class="input-medium" id="input01" placeholder="16">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="input01">Username</label>
+            <div class="controls">
+              <input type="text" class="input-medium" id="input01" placeholder="smaddi2">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="input01">Working Directory</label>
+            <div class="controls">
+              <input type="text" class="input-medium" id="input01" placeholder="/work/smaddi2/dare/">
+            </div>
+          </div>
+
+          <div class="control-group">  
+            <label class="control-label" for="select01">Context</label>  
+            <div class="controls">  
+              <select id="select01">  
+                <option>default</option>  
+                <option>2</option>  
+                <option>3</option>  
+              </select>  
+            </div>  
+          </div> 
+
+
+        </fieldset>
+
+
+
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     <button class="btn btn-primary">Save changes</button>
   </div>
+
+</form>
