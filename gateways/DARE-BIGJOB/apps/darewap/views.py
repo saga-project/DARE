@@ -119,11 +119,11 @@ def view_job_actions(request):
 @login_required
 def view_create_job_bigjob(request):
     if request.method == 'POST':
-        #return HttpResponseRedirect('/job/tasks/')
         form = BigJobForm_1(request.user, request.POST, request.FILES)
         if form.is_valid():
-            #form.save(request)
-            messages.success(request, "Job Succesfully created")
+            form.save(request)
+            return HttpResponseRedirect('/job/tasks/')
+            #messages.success(request, "Job Succesfully created")
         else:
             messages.error(request, "Error in creating job: Inavlid Form")
     else:

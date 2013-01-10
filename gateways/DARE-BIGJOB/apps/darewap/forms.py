@@ -55,21 +55,22 @@ class BigJobForm_1(forms.Form):
     #thornlist = forms.ModelChoiceField(Thornfiles, label='Select Thorn')
     #corecount = forms.CharField(initial=1, label='Core Count')
     #walltime = forms.ChoiceField(widget=Select(), label='Expected Runtime', choices=time_list, initial='2879')
-    pilot = forms.ModelChoiceField(UserResource.objects, label='Select Resource',  widget=forms.CheckboxSelectMultiple)
+    pilots = forms.ModelMultipleChoiceField(UserResource.objects, label='Select Resource')
 
     def __init__(self, user, *args, **kwargs):
         super(BigJobForm_1, self).__init__(*args, **kwargs)
-        self.fields['pilot'].queryset = UserResource.objects.filter(user=user)
-        self.fields['pilot'].error_messages['required'] = 'Please select atleast Resource'
+        self.fields['pilots'].queryset = UserResource.objects.filter(user=user)
+        self.fields['pilots'].error_messages['required'] = 'Please select atleast Resource'
         self.fields['title'].widget.attrs['class'] = 'input-medium'
 
     def save(self, request):
-        job = Job(user=request.user, status="New", name=self.cleaned_data['name'])
+        job = Job(user=request.user, status="New", title=self.cleaned_data['title'])
         job.save()
-        for key, value in self.cleaned_data.items():
-                jobinfo = JobInfo(key=key, value=value, job=job)
-                jobinfo.save()
-        add_dare_job.delay(job)
+        for key in self.cleaned_data.get('pilots'):
+            jobinfo = JobInfo(itype='pilot', job=job)
+            jobinfo.save()
+
+        #add_dare_job.delay(job)
         return job
 
 
