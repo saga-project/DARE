@@ -11,7 +11,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Job, UserContext, UserResource
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm
-from .forms import BigJobForm
+from .forms import BigJobForm_1, BigJobForm_2
+#BigJobForm_3
 
 
 def view_home(request):
@@ -118,16 +119,17 @@ def view_job_actions(request):
 @login_required
 def view_create_job_bigjob(request):
     if request.method == 'POST':
-        return HttpResponseRedirect('/job/tasks/')
-        form = BigJobForm(request.user, request.POST, request.FILES)
+        #return HttpResponseRedirect('/job/tasks/')
+        form = BigJobForm_1(request.user, request.POST, request.FILES)
         if form.is_valid():
-            form.save(request)
+            #form.save(request)
             messages.success(request, "Job Succesfully created")
         else:
             messages.error(request, "Error in creating job: Inavlid Form")
     else:
-        form = BigJobForm(request.user)
+        form = BigJobForm_1(request.user)
 
+    #import pdb;pdb.set_trace()
     return render_to_response('darewap/create_job_pilot.html', {'form': form}, context_instance=RequestContext(request))
 
 

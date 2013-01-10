@@ -10,21 +10,33 @@
 
 <form action="" method="post" enctype="multipart/form-data" class="well form-horizontal">
     {% csrf_token %}
-    
+    {% if  form.errors %}
+      {% for key, value in form.errors.items %}
+      <p> Please correct the following errors</p>
+        <p class="text-error" > {{key }} : {{value.0}}</p>
+      {% endfor%}
+    {% endif %}
         <fieldset>
           <div class="control-group">
-            <label class="control-label" for="input01">Job Title</label>
+            <label class="control-label" for="title">Job Title</label>
             <div class="controls">
-              <input type="text" class="input-medium" id="input01" placeholder="Test">
+               {{ form.title }}
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label" for="optionsCheckbox">Resources</label>
+            <label class="control-label" for="id_pilot_1">Resources</label>
             <div class="controls">
-            <label class="checkbox"><input type="checkbox" id="optionsCheckbox" value="option1"> Ranger 
-                <a class="editconf" href="/job/resource-edit-conf/" data-toggle="modal" data-target="#editconfModal"> Edit Conf</a></label>
-            <label class="checkbox"><input type="checkbox" id="optionsCheckbox" value="option1"> Lonestar 
-                <a class="editconf" href="/job/resource-edit-conf/" data-toggle="modal" data-target="#editconfModal"> Edit Conf</a></label>
+              {{form.pilot}}
+              {% for k in form.fields.pilot.choices %}
+                {% if k.0 %}
+                <label class="checkbox">
+                  
+                  <input type="checkbox" name="pilot" value="{{k.0}}" id="id_pilot_{{k.0|default:0}}" /> {{k.1}}
+                  <a class="editconf" href="/job/resource-edit-conf/" data-toggle="modal" data-target="#editconfModal"> Edit Conf</a>
+                </label>
+                {% endif %}
+                {% endfor %}
+
             </label>
             </div>
           </div>

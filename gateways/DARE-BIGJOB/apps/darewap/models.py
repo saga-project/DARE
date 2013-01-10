@@ -10,18 +10,10 @@ import string
 
 class Job(models.Model):
     user = models.ForeignKey('auth.User', null=True, related_name='user_jobs')
-    name = models.CharField(max_length=30, blank=True)
-    job_type = models.CharField(max_length=30, blank=True)
-    detail_status = models.CharField(max_length=30, blank=True)
+    title = models.CharField(max_length=30, blank=True)
     status = models.CharField(max_length=30, blank=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
-
-    @property
-    def parameterfile(self):
-        pp = JobInfo.objects.filter(job=self, key='parameterfile')
-        if len(pp) > 0:
-            return pp[0].value
 
     @property
     def pilot(self):
@@ -55,9 +47,27 @@ class Job(models.Model):
 
 class JobInfo(models.Model):
     description = models.CharField(max_length=200, blank=True)
+    itype = models.CharField(max_length=200, blank=True)  # task or pilot
+    job = models.ForeignKey('Job', null=True, related_name='job_info')
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
+
+    def __repr__(self):
+        return self.itype
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = datetime.datetime.now()
+        self.modified = datetime.datetime.now()
+        super(JobInfo, self).save(*args, **kwargs)
+
+
+class JobDetailedInfo(models.Model):
+    description = models.CharField(max_length=200, blank=True)
     key = models.CharField(max_length=200, blank=True)
     value = models.CharField(max_length=200, blank=True)
-    job = models.ForeignKey('Job', null=True, related_name='job_info')
+    jobinfo = models.ForeignKey('JobInfo', null=True, related_name='job_detailed_info')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
@@ -69,22 +79,7 @@ class JobInfo(models.Model):
         if not self.id:
             self.created = datetime.datetime.now()
         self.modified = datetime.datetime.now()
-        super(JobInfo, self).save(*args, **kwargs)
-
-
-class JobQueue(models.Model):
-    qstatus = models.CharField(max_length=200, blank=True)
-    jobq_type = models.CharField(max_length=30, blank=True)
-    job = models.ForeignKey('Job', null=True, related_name='job_in_queue')
-    created = models.DateTimeField(editable=False)
-    modified = models.DateTimeField()
-
-    def save(self, *args, **kwargs):
-        ''' On save, update timestamps '''
-        if not self.id:
-            self.created = datetime.datetime.now()
-        self.modified = datetime.datetime.now()
-        super(JobQueue, self).save(*args, **kwargs)
+        super(JobDetailedInfo, self).save(*args, **kwargs)
 
 
 fs = FileSystemStorage(location="%s" % settings.DEFAULT_USER_CONTEXT_STORAGE)

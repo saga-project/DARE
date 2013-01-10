@@ -50,21 +50,18 @@ class UserResourceTable(tables.Table):
         exclude = ('user', 'created')
 
 
-class BigJobForm(forms.Form):
-    name = forms.CharField(initial='test')
+class BigJobForm_1(forms.Form):
+    title = forms.CharField(initial='test')
     #thornlist = forms.ModelChoiceField(Thornfiles, label='Select Thorn')
-    corecount = forms.CharField(initial=1, label='Core Count')
-    walltime = forms.ChoiceField(widget=Select(), label='Expected Runtime', \
-                                choices=time_list, initial='2879')
-    pilot = forms.ModelChoiceField(UserResource.objects, label='Select Resource')
+    #corecount = forms.CharField(initial=1, label='Core Count')
+    #walltime = forms.ChoiceField(widget=Select(), label='Expected Runtime', choices=time_list, initial='2879')
+    pilot = forms.ModelChoiceField(UserResource.objects, label='Select Resource',  widget=forms.CheckboxSelectMultiple)
 
     def __init__(self, user, *args, **kwargs):
-        super(BigJobForm, self).__init__(*args, **kwargs)
+        super(BigJobForm_1, self).__init__(*args, **kwargs)
         self.fields['pilot'].queryset = UserResource.objects.filter(user=user)
-        self.fields['pilot'].error_messages['required'] = 'Please select a Resource or Create a new resource'
-
-        #self.fields['thornlist'].queryset = Thornfiles.objects.filter(user=user)
-        #self.fields['thornlist'].error_messages['required'] = 'Please select a Thornfile or upload Thornfiles in Manage Thorn List'
+        self.fields['pilot'].error_messages['required'] = 'Please select atleast Resource'
+        self.fields['title'].widget.attrs['class'] = 'input-medium'
 
     def save(self, request):
         job = Job(user=request.user, status="New", name=self.cleaned_data['name'])
@@ -76,11 +73,11 @@ class BigJobForm(forms.Form):
         return job
 
 
-class SubJobForm(forms.Form):
+class BigJobForm_2(forms.Form):
     name = forms.CharField(initial='test')
 
     def __init__(self, user, *args, **kwargs):
-        super(BigJobForm, self).__init__(*args, **kwargs)
+        super(BigJobForm_2, self).__init__(*args, **kwargs)
         self.fields['pilot'].queryset = UserResource.objects.filter(user=user)
         self.fields['pilot'].error_messages['required'] = 'Please select a Resource or Create a new resource'
 

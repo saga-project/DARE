@@ -1,4 +1,4 @@
-django==1.4.2
+django==1.4.3
 django-chunks
 django-storages
 south==0.7.6
