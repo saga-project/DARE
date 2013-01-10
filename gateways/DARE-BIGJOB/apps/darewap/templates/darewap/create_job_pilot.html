@@ -10,23 +10,19 @@
 
 <form action="" method="post" enctype="multipart/form-data" class="well form-horizontal">
     {% csrf_token %}
-    {% if  form.errors %}
-      {% for key, value in form.errors.items %}
-      <p> Please correct the following errors</p>
-        <p class="text-error" > {{key }} : {{value.0}}</p>
-      {% endfor%}
-    {% endif %}
+
         <fieldset>
           <div class="control-group">
             <label class="control-label" for="title">Job Title</label>
             <div class="controls">
-               {{ form.title }}
+               {{ form.title }}<p class="text-error" >  {{ form.errors.title.0 }}</p>
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="id_pilot_1">Resources</label>
             <div class="controls">
               {{field.pilots}}
+
               {% for k in form.fields.pilots.choices %}
                 {% if k.0 %}
                 <label class="checkbox">
@@ -35,8 +31,9 @@
                   <a class="editconf" href="/job/resource-edit-conf/" data-toggle="modal" data-target="#editconfModal"> Edit Conf</a>
                 </label>
                 {% endif %}
+                
                 {% endfor %}
-
+                <p class="text-error" >  {{ form.errors.pilots.0 }}</p>
             </label>
             </div>
           </div>
