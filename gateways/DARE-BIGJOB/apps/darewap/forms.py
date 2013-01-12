@@ -59,7 +59,7 @@ class BigJobForm_1(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(BigJobForm_1, self).__init__(*args, **kwargs)
-        self.fields['pilots'].queryset = UserResource.objects.filter(user=user)
+        self.fields['pilots'].queryset = UserResource.objects.filter(user__isnull=True) | UserResource.objects.filter(user=user)
         self.fields['pilots'].error_messages['required'] = 'Please select atleast one Resource'
         self.fields['title'].widget.attrs['class'] = 'input-medium'
 

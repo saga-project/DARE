@@ -1,1 +1,98 @@
-[{"pk": 2, "model": "sites.site", "fields": {"domain": "http://gw68.quarry.iu.teragrid.org/", "name": "quarry"}}, {"pk": 1, "model": "sites.site", "fields": {"domain": "localhost:8000", "name": "localhost"}}, {"pk": 1, "model": "chunks.chunk", "fields": {"content": "    <H2 align=\"justify\"><br />\r\n      <font color='#00007A'> DARE-BIGJOB </font> <br />\r\n      <span class=\"twoColHybRtHdr\">\r\n      </H2>\r\n<p>\r\nDARE-BIGJOB is a Gateway for BigJob based applications which builds upon the Dynamic Application Runtime-Environment (DARE) Framework.\r\n</p>\r\n\r\n\r\nAt the moment, there are no general-purpose community accounts, and it requires registrations contacting us before using services. \r\nFor more information, contact us. For information about SAGA and SAGA-Bigjob, please visit this link\r\n<a href=\"http://saga-project.org/\">link</a></font></p>\r\n    </p>\r\n    <table width=\"725\" border=\"0\">\r\n      <tr>\r\n        <td width=\"332\"><img src=\"/site_media/daresite/DAREOutilne.png\" width=\"500\" height=\"420\" alt=\"DARE\" /></td>\r\n      </tr>\r\n      <tr>\r\n        <td><span style=\" font-size:11px\">Dynamic Application Runtime Environment(DARE)</span></td>\r\n      </tr>\r\n    </table>\r\n    <p><br class=\"clearfloat\" />\r\n    </p>\r\n\r\n", "key": "about"}}, {"pk": 2, "model": "chunks.chunk", "fields": {"content": "<p> \r\nThis project is being developed by Cyber-Infrastructure Develop (CyD) Group at Center for Computational Technology(CCT)</p>\r\n \r\n <p>\r\n\r\n<b>Project Lead:</b><br />\r\n      Dr. Shantenu Jha (<a href=\"mailto:sjha@cct.lsu.edu\">sjha@cct.lsu.edu</a>)\r\n\r\n</p>\r\n\r\n\r\n\r\n\r\n<div>\r\n<b>Team:</b> <br />\r\n<div>\r\n       Steve Brandt (<a href=\"mailto:sbrandt@cct.lsu.edu\">sbrandt@cct.lsu.edu</a>)\r\n</div>\r\n<div> \r\n      Ole  Weidner (<a href=\"mailto:oweidner@cct.lsu.edu\">oweidner@cct.lsu.edu</a>)\r\n</div>\r\n<div>\r\n       Sharath Maddineni (<a href=\"mailto:smaddineni@cct.lsu.edu\">smaddineni@cct.lsu.edu</a>)\r\n</div>\r\n</div>\r\n\r\n<p>\r\n<b>\r\nFunding:\r\n</b>  \r\n<a href='https://sites.google.com/site/extenci/' >ExTENCI</a>\r\n<br />\r\n</p>", "key": "contact"}}, {"pk": 3, "model": "chunks.chunk", "fields": {"content": "    <H2 align=\"justify\"><br />\r\n      <font color='#00007A'> DARE-BIGJOB </font> <br />\r\n      <span class=\"twoColHybRtHdr\">\r\n      </H2>\r\n<p>\r\nDARE-BIGJOB is a Gateway for BigJob based applications which builds upon the Dynamic Application Runtime-Environment (DARE) Framework.\r\n</p>\r\n\r\nAt the moment, there are no general-purpose community accounts, and it requires registrations contacting us before using services. \r\nFor more information, contact us. For information about SAGA and SAGA-Bigjob, please visit this\r\n<a href=\"http://saga-project.org/\">Link</a></font></p>\r\n    </p>\r\n    \r\n    <p><br class=\"clearfloat\" />\r\n    </p>\r\n\r\n\r\n\r\n", "key": "index"}}, {"pk": 4, "model": "chunks.chunk", "fields": {"content": "\r\n   <table >\r\n      <tr>\r\n        <th >  Machine          </th>\r\n        <th >  Location          </th>\r\n        <th >  Info             </th>\r\n        <th >  Job Submission Type   </th>\r\n\r\n      </tr>\r\n\r\n      <tr>\r\n        <td > Cyder   </td>\r\n        <td > LSU/CCT  </td>\r\n        <td > 12 core, 5.2 TB HD  </td>\r\n        <td > SAGA/SSH   </td>\r\n      </tr>\r\n      <tr>\r\n        <td >  Queen Bee   </td>\r\n        <td > LONI  </td>\r\n        <td > 8 core/node, 512 Nodes   </td>\r\n        <td >  GLOBUS/SAGA   </td>\r\n      </tr>\r\n      <tr>\r\n        <td >  OSG   </td>\r\n        <td >    </td>\r\n        <td >    </td>\r\n        <td >  Condor/glidein/SAGA   </td>\r\n      </tr>\r\n\r\n\r\n\r\n    </table>\r\n\r\n", "key": "resources"}}, {"pk": 5, "model": "chunks.chunk", "fields": {"content": "\t<br/>\r\n\t<br/>\r\n\r\nAll scripts are now under testing(beta), however  please contact <a href=\"mailto:smaddineni@cct.lsu.edu\">  smaddineni@cct.lsu.edu </a> for information about the available scripts.", "key": "software"}}, {"pk": 6, "model": "chunks.chunk", "fields": {"content": "    <H2 align=\"justify\"><br />\r\n      <font color='#00007A'> DARE-BIGJOB </font> <br />\r\n     </H2>\r\n<ul>\r\n<li><H4>How cactus is carried out?</H4>\r\n<p>\r\n<ul>\r\n\r\n<li>Launching optimum size of resources</li>\r\n\r\n</ul>\r\n</p>\r\n</li>\r\n<li><H4>Input DATA:</H4>\r\n<p>\r\nWill be provided by the user while submitting a job(thorn file, parameter file)\r\n</p>\r\n</li>\r\n\r\n<li><H4>Features</H4>\r\n<p>\r\nDistributed  Computing\r\n</p>\r\n\r\n</li>\r\n\r\n<li>\r\n\t<H4>Steps</H4>\r\n\t<H5>Stage-1</H5>\t\r\n\t\t<b>Step-1:</b> Create DARE working directories and cactus build directories<br/>\r\n\t\t<b>Step-2:</b> Transfer thorn-file and parameter-file to remote machine<br/>\r\n\t\t<b>Step-3:</b> Downnload Getcomponents via WGET<br/>\r\n\t\t<b>Step-4:</b> Run Getcomponents with the given thornfile <br/>\r\n\t\t<b>Step-5:</b> Now transfer the cactus_installer.py file (\"cactus_installer.py\" checks for the executable 'cactus_sim' exists or not and builds cactus if necessary.)<br/>\r\n\t\t<b>Step-6:</b> run cactus_installer.py to actually build cactus with downloded thorns if necessary.<br/>\r\n\r\n\t<H5>Stage-2</H5>\t                  \r\n\t\t<b>Step-1(7):</b> Create cactus simulation directory<br/>\r\n\t\t<b>Step-2(8):</b> Run cactus simulation through cactus mpi and given parameter file<br/>\r\n\t\t<b>Step-3(9):</b> Tar the output parameter file<br/>\r\n\t\t<b>Step-4(10):</b>Transfer the output file back to this server. <br/>\r\n\r\n\t\r\n</li>\r\n\r\n\r\n\r\n\r\n<li>\r\n\t<H4>Advantages</H4>\r\n\t<p>\r\n\t\tUsability and Scalability along with faster results due to Distributed Computing\r\n\t</p>\r\n</li>\r\n\r\n</ul>", "key": "about-dare-cactus"}}, {"pk": 7, "model": "chunks.chunk", "fields": {"content": "    <H2 align=\"justify\"><br />\r\n      <font color='#00007A'> DARE-BIGJOB </font> <br />\r\n      <span class=\"twoColHybRtHdr\">\r\n      </H2>\r\n<p>\r\nDARE-BIGJOB is a Gateway for BigJob based applications which builds upon the Dynamic Application Runtime-Environment (DARE) Framework.\r\n</p>\r\n\r\nAt the moment, there are no general-purpose community accounts, and it requires registrations contacting us before using services. \r\nFor more information, contact us. For information about SAGA and SAGA-Bigjob, please visit this\r\n<a href=\"http://saga-project.org/\">Link</a></font></p>\r\n    </p>\r\n    \r\n    <p><br class=\"clearfloat\" />\r\n    </p>\r\n\r\n\r\n\r\n", "key": "home"}}]
+[
+   {
+      "pk":1,
+      "model":"darewap.userresource",
+      "fields":{
+         "name":"ranger",
+         "service_url":"sge+ssh://smaddi2@ranger.tacc.utexas.edu",
+         "data_service_url":"ssh://smaddi2@ranger.tacc.utexas.edu/work/01395/smaddi2/dare/",
+         "working_directory":"/work/01395/smaddi2/dare/",
+         "allocation":"TG-MCB090174",
+         "cores_per_node":"16",
+         "queue":"development",
+         "created":"2012-12-12",
+         "modified": "2012-12-12"
+      }
+   },
+   {
+      "pk":2,
+      "model":"darewap.userresource",
+      "fields":{
+         "name":"lonestar",
+         "service_url":"sge+ssh://smaddi2@lonestar.tacc.utexas.edu",
+         "data_service_url":"ssh://smaddi2@lonestar.tacc.utexas.edu/work/01395/smaddi2/dare/",
+         "working_directory":"/work/01395/smaddi2/dare/",
+         "allocation":"TG-MCB090174",
+         "cores_per_node":"16",
+         "queue":"development",
+         "created":"2012-12-12",
+         "modified": "2012-12-12"
+      }
+   },
+
+   {
+      "pk":2,
+      "model":"sites.site",
+      "fields":{
+         "domain":"http://gw68.quarry.iu.teragrid.org/",
+         "name":"quarry"
+      }
+   },
+   {
+      "pk":1,
+      "model":"sites.site",
+      "fields":{
+         "domain":"localhost:8000",
+         "name":"localhost"
+      }
+   },
+   {
+      "pk":1,
+      "model":"chunks.chunk",
+      "fields":{
+         "content":"    <H2 align=\"justify\"><br />\r\n      <font color='#00007A'> DARE-BIGJOB </font> <br />\r\n      <span class=\"twoColHybRtHdr\">\r\n      </H2>\r\n<p>\r\nDARE-BIGJOB is a Gateway for BigJob based applications which builds upon the Distributed Application Runtime-Environment (DARE) Framework.\r\n</p>\r\n\r\n\r\nAt the moment, there are no general-purpose community accounts, and it requires registrations contacting us before using services. \r\nFor more information, contact us. For information about SAGA and SAGA-Bigjob, please visit this link\r\n<a href=\"http://saga-project.org/\">link</a></font></p>\r\n    </p>\r\n    <table width=\"725\" border=\"0\">\r\n      <tr>\r\n        <td width=\"332\"><img src=\"/site_media/daresite/DAREOutilne.png\" width=\"500\" height=\"420\" alt=\"DARE\" /></td>\r\n      </tr>\r\n      <tr>\r\n        <td><span style=\" font-size:11px\">Distributed Application Runtime Environment(DARE)</span></td>\r\n      </tr>\r\n    </table>\r\n    <p><br class=\"clearfloat\" />\r\n    </p>\r\n\r\n",
+         "key":"about"
+      }
+   },
+   {
+      "pk":2,
+      "model":"chunks.chunk",
+      "fields":{
+         "content":"<p> \r\nThis project is being developed by Cyber-Infrastructure Develop (CyD) Group at Center for Computational Technology(CCT)</p>\r\n \r\n <p>\r\n\r\n<b>Project Lead:</b><br />\r\n      Dr. Shantenu Jha (<a href=\"mailto:sjha@cct.lsu.edu\">sjha@cct.lsu.edu</a>)\r\n\r\n</p>\r\n\r\n\r\n\r\n\r\n<div>\r\n<b>Team:</b> <br />\r\n<div>\r\n       Steve Brandt (<a href=\"mailto:sbrandt@cct.lsu.edu\">sbrandt@cct.lsu.edu</a>)\r\n</div>\r\n<div> \r\n      Ole  Weidner (<a href=\"mailto:oweidner@cct.lsu.edu\">oweidner@cct.lsu.edu</a>)\r\n</div>\r\n<div>\r\n       Sharath Maddineni (<a href=\"mailto:smaddineni@cct.lsu.edu\">smaddineni@cct.lsu.edu</a>)\r\n</div>\r\n</div>\r\n\r\n<p>\r\n<b>\r\nFunding:\r\n</b>  \r\n<a href='https://sites.google.com/site/extenci/' >ExTENCI</a>\r\n<br />\r\n</p>",
+         "key":"contact"
+      }
+   },
+   {
+      "pk":3,
+      "model":"chunks.chunk",
+      "fields":{
+         "content":"    <H2 align=\"justify\"><br />\r\n      <font color='#00007A'> DARE-BIGJOB </font> <br />\r\n      <span class=\"twoColHybRtHdr\">\r\n      </H2>\r\n<p>\r\nDARE-BIGJOB is a Gateway for BigJob based applications which builds upon the Distributed Application Runtime-Environment (DARE) Framework.\r\n</p>\r\n\r\nAt the moment, there are no general-purpose community accounts, and it requires registrations contacting us before using services. \r\nFor more information, contact us. For information about SAGA and SAGA-Bigjob, please visit this\r\n<a href=\"http://saga-project.org/\">Link</a></font></p>\r\n    </p>\r\n    \r\n    <p><br class=\"clearfloat\" />\r\n    </p>\r\n\r\n\r\n\r\n",
+         "key":"index"
+      }
+   },
+
+   {
+      "pk":5,
+      "model":"chunks.chunk",
+      "fields":{
+         "content":"\t<br/>\r\n\t<br/>\r\n\r\nAll scripts are now under testing(beta), however  please contact <a href=\"mailto:smaddineni@cct.lsu.edu\">  smaddineni@cct.lsu.edu </a> for information about the available scripts.",
+         "key":"software"
+      }
+   },
+   {
+      "pk":6,
+      "model":"chunks.chunk",
+      "fields":{
+         "content":"    <H2 align=\"justify\"><br />\r\n      <font color='#00007A'> DARE-BIGJOB </font> <br />\r\n     </H2>\r\n<ul>\r\n<li><H4>How cactus is carried out?</H4>\r\n<p>\r\n<ul>\r\n\r\n<li>Launching optimum size of resources</li>\r\n\r\n</ul>\r\n</p>\r\n</li>\r\n<li><H4>Input DATA:</H4>\r\n<p>\r\nWill be provided by the user while submitting a job(thorn file, parameter file)\r\n</p>\r\n</li>\r\n\r\n<li><H4>Features</H4>\r\n<p>\r\nDistributed  Computing\r\n</p>\r\n\r\n</li>\r\n\r\n<li>\r\n\t<H4>Steps</H4>\r\n\t<H5>Stage-1</H5>\t\r\n\t\t<b>Step-1:</b> Create DARE working directories and cactus build directories<br/>\r\n\t\t<b>Step-2:</b> Transfer thorn-file and parameter-file to remote machine<br/>\r\n\t\t<b>Step-3:</b> Downnload Getcomponents via WGET<br/>\r\n\t\t<b>Step-4:</b> Run Getcomponents with the given thornfile <br/>\r\n\t\t<b>Step-5:</b> Now transfer the cactus_installer.py file (\"cactus_installer.py\" checks for the executable 'cactus_sim' exists or not and builds cactus if necessary.)<br/>\r\n\t\t<b>Step-6:</b> run cactus_installer.py to actually build cactus with downloded thorns if necessary.<br/>\r\n\r\n\t<H5>Stage-2</H5>\t                  \r\n\t\t<b>Step-1(7):</b> Create cactus simulation directory<br/>\r\n\t\t<b>Step-2(8):</b> Run cactus simulation through cactus mpi and given parameter file<br/>\r\n\t\t<b>Step-3(9):</b> Tar the output parameter file<br/>\r\n\t\t<b>Step-4(10):</b>Transfer the output file back to this server. <br/>\r\n\r\n\t\r\n</li>\r\n\r\n\r\n\r\n\r\n<li>\r\n\t<H4>Advantages</H4>\r\n\t<p>\r\n\t\tUsability and Scalability along with faster results due to Distributed Computing\r\n\t</p>\r\n</li>\r\n\r\n</ul>",
+         "key":"about-dare-cactus"
+      }
+   },
+   {
+      "pk":7,
+      "model":"chunks.chunk",
+      "fields":{
+         "content":"    <H2 align=\"justify\"><br />\r\n      <font color='#00007A'> DARE-BIGJOB </font> <br />\r\n      <span class=\"twoColHybRtHdr\">\r\n      </H2>\r\n<p>\r\nDARE-BIGJOB is a Gateway for BigJob based applications which builds upon the Distributed Application Runtime-Environment (DARE) Framework.\r\n</p>\r\n\r\nAt the moment, there are no general-purpose community accounts, and it requires registrations contacting us before using services. \r\nFor more information, contact us. For information about SAGA and SAGA-Bigjob, please visit this\r\n<a href=\"http://saga-project.org/\">Link</a></font></p>\r\n    </p>\r\n    \r\n    <p><br class=\"clearfloat\" />\r\n    </p>\r\n\r\n\r\n\r\n",
+         "key":"home"
+      }
+   }
+]

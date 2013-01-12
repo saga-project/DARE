@@ -259,3 +259,5 @@ INVITE_MODE = True
 
 DEBUG = True
 SITE_ID = 1
+
+#FIXTURE_DIRS=('apps/darewap/fixtures/')
