@@ -2,7 +2,7 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Edit Ranger Conf</h3>
   </div>
-<form action="" method="post" enctype="multipart/form-data" class="well form-horizontal">
+<form action="/job/resource-edit-conf/" method="post" enctype="multipart/form-data" class="well form-horizontal">
     {% csrf_token %}
         <fieldset>
           <div class="control-group">
@@ -21,7 +21,7 @@
           <div class="control-group">
             <label class="control-label" for="input01">Username</label>
             <div class="controls">
-              <input type="text" class="input-medium" id="input01" placeholder="smaddi2">
+              <input placeholder="smaddi2" class="string optional disabled" disabled="disabled" id="username_disabled_text" name="username[disabled_text]" size="50" type="text">
             </div>
           </div>
 
@@ -35,7 +35,7 @@
           <div class="control-group">  
             <label class="control-label" for="select01">Context</label>  
             <div class="controls">  
-              <select id="select01">  
+              <select class="optional" disabled="disabled" id="select01">  
                 <option>default</option>  
                 <option>2</option>  
                 <option>3</option>  
