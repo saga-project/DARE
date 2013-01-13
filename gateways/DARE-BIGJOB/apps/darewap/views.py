@@ -134,23 +134,7 @@ def view_create_job_bigjob(request):
 
 
 @login_required
-def view_resource_edit_conf(request):
-    if request.method == 'POST':
-        print "submitted"
-        form = ResourceEditConf(request.user, request.POST, request.FILES)
-        if form.is_valid():
-            form.save(request)
-            #messages.success(request, "Job Succesfully created")
-        else:
-            messages.error(request, "Error in creating job: Inavlid Form")
-    else:
-        form = ResourceEditConf(request.user)
-    return render_to_response('darewap/resource_edit_conf.html', context_instance=RequestContext(request))
-
-
-@login_required
 def view_create_tasks(request):
-    print request.method
     if request.method == 'POST':
         print "submitted"
         form = ResourceEditConf(request.user, request.POST, request.FILES)
@@ -162,3 +146,21 @@ def view_create_tasks(request):
     else:
         form = ResourceEditConf(request.user)
     return render_to_response('darewap/create_tasks.html', {'form': form}, context_instance=RequestContext(request))
+
+
+@login_required
+def view_resource_edit_conf(request, pilot):
+    if request.method == 'POST':
+        form = ResourceEditConf(request.user, request.POST, request.FILES, pilot=pilot)
+        print form.is_valid(), form.errors
+        if form.is_valid():
+            form.save(request)
+            #messages.success(request, "Job Succesfully created")
+        else:
+            messages.error(request, "Error in creating job: Inavlid Form")
+    else:
+        form = ResourceEditConf(request.user, pilot=pilot)
+    return render_to_response('darewap/resource_edit_conf.html', {'form': form, 'pilot': pilot}, context_instance=RequestContext(request))
+
+
+

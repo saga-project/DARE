@@ -2,33 +2,26 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Edit Ranger Conf</h3>
   </div>
-<form action="/job/resource-edit-conf/" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
+<form action="/job/resource-edit-conf/{{pilot}}/" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
     {% csrf_token %}
         <fieldset>
           <div class="control-group">
             <label class="control-label" for="input01">Wall Time</label>
             <div class="controls">
-              <input type="text" class="input-medium" id="input01" placeholder="100"> Minutes
+              {{ form.walltime }} Minutes
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="input01">Num. of Cores</label>
             <div class="controls">
-              <input type="text" class="input-medium" id="input01" placeholder="16">
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label class="control-label" for="input01">Username</label>
-            <div class="controls">
-              <input placeholder="smaddi2" class="string optional disabled" disabled="disabled" id="username_disabled_text" name="username[disabled_text]" size="50" type="text">
+              {{ form.num_of_cores }}
             </div>
           </div>
 
           <div class="control-group">
             <label class="control-label" for="input01">Working Directory</label>
             <div class="controls">
-              <input type="text" class="input-medium" id="input01" placeholder="/work/smaddi2/dare/">
+              {{ form.working_directory }}
             </div>
           </div>
 

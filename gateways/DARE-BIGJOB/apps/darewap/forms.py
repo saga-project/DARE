@@ -84,26 +84,29 @@ class PilotForm(forms.Form):
 
 
 class ResourceEditConf(forms.Form):
-    pass
+    num_of_cores = forms.CharField(label='Num of Cores', required=False)
+    walltime = forms.CharField(initial=100, label='Walltime', required=False)
+    #username = forms.CharField(initial=1, label='username', required=False)
+    working_directory = forms.CharField(initial=1, label='Working Directory', required=False)
+    context = forms.ModelChoiceField(UserContext, label='Select Thorn', required=False)
 
-    def save(self, request):
-        pass
-
-
-class daslkd():
     def __init__(self, user, *args, **kwargs):
-        super(ResourceEditConf, self).__init__(*args, **kwargs)
-        self.fields['pilot'].queryset = UserResource.objects.filter(user=user)
-        self.fields['pilot'].error_messages['required'] = 'Please select a Resource or Create a new resource'
+        pilot = kwargs.pop('pilot')
+        self.pilot = UserResource.objects.get(id=pilot)
+        self.job = Job.objects.get()
+        self.jobinfo = JobInfo.objects.filter(itype='pilot', job=self.job)
 
-        #self.fields['thornlist'].queryset = Thornfiles.objects.filter(user=user)
-        #self.fields['thornlist'].error_messages['required'] = 'Please select a Thornfile or upload Thornfiles in Manage Thorn List'
+        super(ResourceEditConf, self).__init__(*args, **kwargs)
+        self.fields['walltime'].widget.attrs['class'] = 'input-medium'
+        self.fields['num_of_cores'].widget.attrs['class'] = 'input-medium'
+        self.fields['num_of_cores'].initial = pilot.cores_per_node
+        self.fields['working_directory'].widget.attrs['class'] = 'input-large'
+        self.fields['working_directory'].initial = pilot.working_directory
 
     def save(self, request):
-        job = Job(user=request.user, status="New", name=self.cleaned_data['name'])
-        job.save()
-        for key, value in self.cleaned_data.items():
-                jobinfo = JobInfo(key=key, value=value, job=job)
-                jobinfo.save()
-        add_dare_job.delay(job)
-        return job
+        #pilot_params = ["walltime", "num_of_cores"]
+        print self.cleaned_data
+        for pilot_param, value in self.cleaned_data.items():
+            if not JobDetailedInfo.objects.filter(jobinfo=jobinfo, key=pilot_param):
+                jdi = JobDetailedInfo(key=pilot_param, value=value)
+                jdi.save()
