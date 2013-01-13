@@ -49,6 +49,7 @@ class JobInfo(models.Model):
     description = models.CharField(max_length=200, blank=True)
     itype = models.CharField(max_length=200, blank=True)  # task or pilot
     job = models.ForeignKey('Job', null=True, related_name='job_info')
+    #user_resource = models.ForeignKey('UserResource', null=True, related_name='user_resource')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 

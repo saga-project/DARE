@@ -11,7 +11,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Job, UserContext, UserResource
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm
-from .forms import BigJobForm_1, BigJobForm_2
+from .forms import PilotForm, ResourceEditConf
 #BigJobForm_3
 
 
@@ -119,7 +119,7 @@ def view_job_actions(request):
 @login_required
 def view_create_job_bigjob(request):
     if request.method == 'POST':
-        form = BigJobForm_1(request.user, request.POST, request.FILES)
+        form = PilotForm(request.user, request.POST, request.FILES)
         if form.is_valid():
             form.save(request)
             return HttpResponseRedirect('/job/tasks/')
@@ -127,7 +127,7 @@ def view_create_job_bigjob(request):
         else:
             messages.error(request, "Error in creating job: Inavlid Form")
     else:
-        form = BigJobForm_1(request.user)
+        form = PilotForm(request.user)
 
     #import pdb;pdb.set_trace()
     return render_to_response('darewap/create_job_pilot.html', {'form': form}, context_instance=RequestContext(request))
@@ -135,9 +135,30 @@ def view_create_job_bigjob(request):
 
 @login_required
 def view_resource_edit_conf(request):
+    if request.method == 'POST':
+        print "submitted"
+        form = ResourceEditConf(request.user, request.POST, request.FILES)
+        if form.is_valid():
+            form.save(request)
+            #messages.success(request, "Job Succesfully created")
+        else:
+            messages.error(request, "Error in creating job: Inavlid Form")
+    else:
+        form = ResourceEditConf(request.user)
     return render_to_response('darewap/resource_edit_conf.html', context_instance=RequestContext(request))
 
 
 @login_required
 def view_create_tasks(request):
-    return render_to_response('darewap/create_tasks.html', context_instance=RequestContext(request))
+    print request.method
+    if request.method == 'POST':
+        print "submitted"
+        form = ResourceEditConf(request.user, request.POST, request.FILES)
+        if form.is_valid():
+            form.save(request)
+            #messages.success(request, "Job Succesfully created")
+        else:
+            messages.error(request, "Error in creating job: Inavlid Form")
+    else:
+        form = ResourceEditConf(request.user)
+    return render_to_response('darewap/create_tasks.html', {'form': form}, context_instance=RequestContext(request))
