@@ -127,31 +127,33 @@ def view_create_job_bigjob(request):
         else:
             messages.error(request, "Error in creating job: Inavlid Form")
     else:
+        job = Job(user=request.user, status="New")
+        job.save()
         form = PilotForm(request.user)
 
     #import pdb;pdb.set_trace()
-    return render_to_response('darewap/create_job_pilot.html', {'form': form}, context_instance=RequestContext(request))
+    return render_to_response('darewap/create_job_pilot.html', {'form': form, 'job_id': job.id}, context_instance=RequestContext(request))
 
 
 @login_required
 def view_create_tasks(request):
-    if request.method == 'POST':
-        print "submitted"
-        form = ResourceEditConf(request.user, request.POST, request.FILES)
-        if form.is_valid():
-            form.save(request)
+    #if request.method == 'POST':
+        #print "submitted"
+        #form = TaskForm(request.user, request.POST, request.FILES)
+        #if form.is_valid():
+        #    form.save(request)
             #messages.success(request, "Job Succesfully created")
-        else:
-            messages.error(request, "Error in creating job: Inavlid Form")
-    else:
-        form = ResourceEditConf(request.user)
-    return render_to_response('darewap/create_tasks.html', {'form': form}, context_instance=RequestContext(request))
+        #else:
+        #    messages.error(request, "Error in creating job: Inavlid Form")
+    #else:
+        #form = TaskForm(request.user)
+    return render_to_response('darewap/create_tasks.html', context_instance=RequestContext(request))
 
 
 @login_required
-def view_resource_edit_conf(request, pilot):
+def view_resource_edit_conf(request, job_id, pilot):
     if request.method == 'POST':
-        form = ResourceEditConf(request.user, request.POST, request.FILES, pilot=pilot)
+        form = ResourceEditConf(request.user, request.POST, request.FILES, job_id=job_id, pilot=pilot)
         print form.is_valid(), form.errors
         if form.is_valid():
             form.save(request)
@@ -159,8 +161,8 @@ def view_resource_edit_conf(request, pilot):
         else:
             messages.error(request, "Error in creating job: Inavlid Form")
     else:
-        form = ResourceEditConf(request.user, pilot=pilot)
-    return render_to_response('darewap/resource_edit_conf.html', {'form': form, 'pilot': pilot}, context_instance=RequestContext(request))
+        form = ResourceEditConf(request.user, job_id=job_id, pilot=pilot)
+    return render_to_response('darewap/resource_edit_conf.html', {'form': form, 'pilot': pilot, 'job_id': job_id}, context_instance=RequestContext(request))
 
 
 

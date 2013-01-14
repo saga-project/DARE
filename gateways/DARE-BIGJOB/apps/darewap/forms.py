@@ -52,6 +52,7 @@ class UserResourceTable(tables.Table):
 
 class PilotForm(forms.Form):
     title = forms.CharField(initial='test')
+    jobid = forms.CharField(initial='0')
     #thornlist = forms.ModelChoiceField(Thornfiles, label='Select Thorn')
     #corecount = forms.CharField(initial=1, label='Core Count')
     #walltime = forms.ChoiceField(widget=Select(), label='Expected Runtime', choices=time_list, initial='2879')
@@ -64,9 +65,8 @@ class PilotForm(forms.Form):
         self.fields['title'].widget.attrs['class'] = 'input-medium'
 
     def save(self, request):
-        job = Job(user=request.user, status="New", title=self.cleaned_data['title'])
-        #import pdb;pdb.set_trace()
-        job.save()
+        job = Job.objects.get(id=self.cleaned_data.get('jobid'))
+        job.title = self.cleaned_data.get('title')
         for pilot in self.cleaned_data.get('pilots'):
             jobinfo = JobInfo(itype='pilot', job=job)
             jobinfo.user_resource = pilot
@@ -93,20 +93,23 @@ class ResourceEditConf(forms.Form):
     def __init__(self, user, *args, **kwargs):
         pilot = kwargs.pop('pilot')
         self.pilot = UserResource.objects.get(id=pilot)
-        self.job = Job.objects.get()
-        self.jobinfo = JobInfo.objects.filter(itype='pilot', job=self.job)
+        job_id = kwargs.pop('job_id')
+        self.job = Job.objects.get(id=job_id)
 
         super(ResourceEditConf, self).__init__(*args, **kwargs)
         self.fields['walltime'].widget.attrs['class'] = 'input-medium'
         self.fields['num_of_cores'].widget.attrs['class'] = 'input-medium'
-        self.fields['num_of_cores'].initial = pilot.cores_per_node
+        self.fields['num_of_cores'].initial = self.pilot.cores_per_node
         self.fields['working_directory'].widget.attrs['class'] = 'input-large'
-        self.fields['working_directory'].initial = pilot.working_directory
+        self.fields['working_directory'].initial = self.pilot.working_directory
 
     def save(self, request):
         #pilot_params = ["walltime", "num_of_cores"]
-        print self.cleaned_data
+
+        jobinfo, _ = JobInfo.objects.get_or_create(itype='pilot', user_resource=self.pilot, job=self.job)
+
         for pilot_param, value in self.cleaned_data.items():
-            if not JobDetailedInfo.objects.filter(jobinfo=jobinfo, key=pilot_param):
-                jdi = JobDetailedInfo(key=pilot_param, value=value)
+            if value is not None:
+                jdi, _ = JobDetailedInfo.objects.get_or_create(jobinfo=jobinfo, key=pilot_param)
+                jdi.value = value
                 jdi.save()

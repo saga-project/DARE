@@ -2,7 +2,7 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Edit Ranger Conf</h3>
   </div>
-<form action="/job/resource-edit-conf/{{pilot}}/" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
+<form action="/job/resource-edit-conf/{{job_id}}/{{pilot}}/" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
     {% csrf_token %}
         <fieldset>
           <div class="control-group">

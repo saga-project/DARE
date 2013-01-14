@@ -34,7 +34,10 @@ class Job(models.Model):
             return pp[0].value
 
     def __repr__(self):
-        return "%s-%s" % (self.id, self.name)
+        return "%s-%s" % (self.id, self.title)
+
+    def __unicode__(self):
+        return "%s-%s" % (self.id, self.title)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
@@ -49,12 +52,12 @@ class JobInfo(models.Model):
     description = models.CharField(max_length=200, blank=True)
     itype = models.CharField(max_length=200, blank=True)  # task or pilot
     job = models.ForeignKey('Job', null=True, related_name='job_info')
-    #user_resource = models.ForeignKey('UserResource', null=True, related_name='user_resource')
+    user_resource = models.ForeignKey('UserResource', null=True, related_name='user resource')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
     def __repr__(self):
-        return self.itype
+        return "%s-%s-%s" % (self.itype, self.user_resource, self.job)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
