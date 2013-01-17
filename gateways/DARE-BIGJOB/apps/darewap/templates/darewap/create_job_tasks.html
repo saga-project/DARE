@@ -92,7 +92,7 @@
       <form action="" method="post" enctype="multipart/form-data" class="well form-horizontal">
           {% csrf_token %}
           
-                <legend>Task-set 1</legend>
+                <legend>Task-set 2</legend>
                 <div class="control-group">  
                   <label class="control-label" for="select01"> Select Tasks</label>  
                   <div class="controls">  
@@ -120,6 +120,16 @@
                   <div class="controls">  
                     <input class="input-small" id="textarea" rows="3"></input>  
                   </div>  
+                </div>  
+
+               <div class="control-group">  
+                  <label class="control-label" for="select01">Dependent</label>  
+                   <div class="controls">  
+                    <select id="select01">  
+                      <option>None</option>  
+                      <option>Task Set 1</option>  
+                    </select> 
+                  </div>
                 </div>  
 
                 <div class="form-actions">

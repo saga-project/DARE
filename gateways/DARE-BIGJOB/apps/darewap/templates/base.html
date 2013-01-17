@@ -77,14 +77,14 @@
               <p class="text-info">
                   {% if request.user.is_authenticated %}
                   {% if request.user.get_full_name %}
-                   Hello  {{request.user.get_full_name|title}}  {% endif %}
-                   <a href='/logout'>Logout</a>
+                   Hello  <span class="badge"> {{request.user.get_full_name|title}} </span> {% endif %}
+                   <a href='/logout'> <span class="label label-warning">Logout </span></a>
               {{social_auth.associated }}
                   {% else %}
-                  Login:
-                  <a href="{% url socialauth_begin 'yahoo' %}?{{ redirect_querystring }}"> Yahoo </a> |
-                  <a href="{% url socialauth_begin 'google-oauth2' %}?{{ redirect_querystring }}"> Google </a> |
-                  <a href="{% url request_invite %}"> Signup Today </a>
+                  <span class="label">Login: </span>
+                  <a href="{% url socialauth_begin 'yahoo' %}?{{ redirect_querystring }}"> <span class="label label-success">Yahoo </span></a> |
+                  <a href="{% url socialauth_begin 'google-oauth2' %}?{{ redirect_querystring }}"> <span class="label label-success">Google </span> </a> |
+                  <a href="{% url request_invite %}"> <span class="label label-success"> Signup Today </span></a>
                                     {% endif %}
               </p>
 
