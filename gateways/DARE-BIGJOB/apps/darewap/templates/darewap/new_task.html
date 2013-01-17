@@ -1,0 +1,104 @@
+
+
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Task (Compute Unit)</h3>
+  </div>
+
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+<div>
+
+{{form.non_field_errors}}
+        <form action="/my-tasks/{% if tid %}?id={{tid}}{% endif%}" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
+            {% csrf_token %}
+            
+                <fieldset>
+                  <div class="control-group">  
+                    <label class="control-label" for="textarea">Name</label>  
+                    <div class="controls">  
+                      {{ form.name }} <p class="text-error" > {{form.errors.name}}</p>
+                    </div>  
+                  </div>  
+
+                  <div class="control-group">  
+                    <label class="control-label" for="textarea">Executable</label>  
+                    <div class="controls">  
+                      {{ form.executable }}    <p class="text-error" > {{form.errors.executable}}</p>
+                    </div>  
+                  </div>  
+
+                  <div class="control-group">  
+                    <label class="control-label" for="textarea">Arguements</label>  
+                    <div class="controls">  
+                     {{ form.args }}  <p class="text-error" > {{form.errors.args}}</p>
+                    </div>  
+                  </div>  
+
+                  <div class="control-group">  
+                    <label class="control-label" for="textarea">Env. Variables</label>  
+                    <div class="controls">  
+                      {{ form.env }}    <p class="text-error" > {{form.errors.env}}</p>
+                    </div>  
+                  </div>                  
+
+                  <div class="control-group">
+                    <label class="control-label" for="input01">Num. of Cores</label>
+                    <div class="controls">
+                       {{ form.num_of_cores }}  <p class="text-error" > {{form.errors.num_of_cores}}</p>
+                    </div>
+                  </div>
+
+
+                  <div class="control-group">  
+                    <label class="control-label" for="select01">SPMD Variation</label>  
+                    <div class="controls"> 
+                       {{ form.spmd_variation }}   <p class="text-error" > {{form.errors.spmd_variation}}</p>
+                    </div>  
+                  </div> 
+
+                  <div class="control-group">  
+                    <label class="control-label" for="select01">Input File/s</label>  
+                    <div class="controls">  
+                      <select id="select01">  
+                        <option>Single</option>  
+                        <option>MPI</option>  
+                      </select>  
+                    </div>  
+                  </div> 
+
+
+  <div class="modal-footer">
+    <button class="btn close_button" data-dismiss="modal" aria-hidden="true">Close</button>
+    <input class="btn btn-primary" id='save_button' type="submit" value="Save changes" />
+  </div>
+        </fieldset>
+
+</form>
+</div>
+
+<script type="text/javascript">
+$(".close_button").click(function(event) {
+    event.preventDefault();
+    $('#taskModal').modal('hide');
+    location.reload();
+
+});
+
+
+ $('#modal_form').live('submit', function() {
+        $.ajax({ 
+            type: $(this).attr('method'), 
+            url: this.action, 
+            data: $(this).serialize(),
+            context: this,
+            success: function(data, status) {$('#taskModal').html(data);}
+        });
+        return false;
+    });
+
+
+</script>

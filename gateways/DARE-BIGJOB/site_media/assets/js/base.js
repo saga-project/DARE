@@ -10,4 +10,13 @@ $("a[data-toggle=modal]").click(function(){
 
 });
 
+
+$("a[data-toggle=taskmodal]").click(function(){
+  var target = $(this).attr('data-target');
+  var url = $(this).attr('href');
+  $(target).load(url);
+  return false;
+});
+  
+
  });

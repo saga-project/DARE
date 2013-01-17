@@ -9,8 +9,8 @@ from django.core.urlresolvers import reverse
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Job, UserContext, UserResource
-from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm
+from .models import Job, UserContext, UserResource, UserTasks
+from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserTasksForm
 from .forms import PilotForm, ResourceEditConf
 #BigJobForm_3
 
@@ -165,4 +165,52 @@ def view_resource_edit_conf(request, job_id, pilot):
     return render_to_response('darewap/resource_edit_conf.html', {'form': form, 'pilot': pilot, 'job_id': job_id}, context_instance=RequestContext(request))
 
 
+@login_required
+def view_manage_tasks(request):
 
+    if request.GET.get('del') == 'true':
+        tid = request.GET.get('id')
+        try:
+            ll = UserTasks.objects.get(id=tid)
+            ll.delete()
+        except:
+            pass
+        return HttpResponseRedirect("/my-tasks/")
+
+    if request.GET.get('new') == 'true':
+        form = UserTasksForm()
+        return render_to_response('darewap/new_task.html', {'form': form},  context_instance=RequestContext(request))
+
+    if request.GET.get('edit') == 'true':
+        tid = request.GET.get('id')
+        try:
+            task = UserTasks.objects.get(id=tid)
+        except:
+            task = None
+        if task:
+            form = UserTasksForm(instance=task)
+            return render_to_response('darewap/new_task.html', {'form': form, 'tid': tid},  context_instance=RequestContext(request))
+
+    if request.method == 'POST':
+
+        tid = request.GET.get('id')
+        if tid:
+            try:
+                task = UserTasks.objects.get(id=tid)
+            except:
+                task = None
+            if task:
+                form = UserTasksForm(request.POST, request.FILES, instance=task)
+        if not form:
+            form = UserTasksForm(request.POST, request.FILES)
+
+        #import pdb;pdb.set_trace()
+        if form.is_valid():
+            form.save(request=request)
+            messages.success(request, "Task Succesfully Saved")
+            return render_to_response('darewap/new_task.html', {'form': form},  context_instance=RequestContext(request))
+        else:
+            return render_to_response('darewap/new_task.html', {'form': form},  context_instance=RequestContext(request))
+
+    mytasks = UserTasks.objects.all()
+    return render_to_response('darewap/manage_tasks.html', {'mytasks': mytasks}, context_instance=RequestContext(request))

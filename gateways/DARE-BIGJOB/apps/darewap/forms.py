@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserContext, UserResource
+from .models import UserContext, UserResource, UserTasks, spmd_type
 import datetime
 from django.forms.widgets import Select
 from darewap.models import Job, JobInfo, JobDetailedInfo
@@ -8,6 +8,25 @@ from .tasks import add_dare_job
 import django_tables2 as tables
 
 time_list = [[10, 10]]
+
+
+class UserTasksForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UserTasksForm, self).__init__(*args, **kwargs)
+        self.fields['spmd_variation'] = forms.ChoiceField(widget=Select(), choices=spmd_type, initial='10')
+
+    class Meta:
+        model = UserTasks
+        exclude = ('user')
+
+    def save(self, commit=True, *args, **kwargs):
+        request = kwargs.pop('request')
+        self.instance.user = request.user
+        self.instance.created = datetime.datetime.now()
+        self.instance.modified = datetime.datetime.now()
+        #import pdb;pdb.set_trace()
+        super(UserTasksForm, self).save(commit=commit, *args, **kwargs)
 
 
 class UserContextForm(forms.ModelForm):

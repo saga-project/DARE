@@ -168,3 +168,40 @@ class UserResourceAdmin(admin.ModelAdmin):
         return super(UserContextAdmin, self).save_model(*args, **kwargs)
 
 admin.site.register(UserResource, UserResourceAdmin)
+
+
+spmd_type = (('Single', 'single'), ('MPI', 'mpi'))
+
+
+class UserTasks(models.Model):
+    user = models.ForeignKey('auth.User', null=True, related_name='user_tasks')
+    name = models.CharField(max_length=10)
+    executable = models.CharField(max_length=256)
+    args = models.CharField(max_length=200, blank=True)
+    inputfiles = models.CharField(max_length=30, blank=True)
+    env = models.CharField(max_length=30, blank=True)
+    spmd_variation = models.CharField(max_length=30, choices=spmd_type, default='single')
+    num_of_cores = models.CharField(max_length=30, blank=True)
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField(blank=True)
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = datetime.datetime.now()
+        self.modified = datetime.datetime.now()
+        super(UserTasks, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        if self.name:
+            return self.name
+        return str(self.id)
+
+
+class UserTasksAdmin(admin.ModelAdmin):
+    list_display = ('user', 'name', 'executable', 'args', 'spmd_variation', 'modified')
+
+    def save_model(self, *args, **kwargs):
+        return super(UserTasksAdmin, self).save_model(*args, **kwargs)
+
+admin.site.register(UserTasks, UserTasksAdmin)
