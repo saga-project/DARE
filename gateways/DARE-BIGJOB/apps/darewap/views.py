@@ -24,6 +24,25 @@ def view_static(request, page_type):
     return render(request, template)
 
 
+def view_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                messages.success(request, "You're successfully logged in!")
+            else:
+                messages.success(request, "Your account is not active, please contact the site admin.")
+            return HttpResponseRedirect("/")
+        else:
+            messages.success(request, "Your username and/or password were incorrect.")
+
+    return render_to_response('static/login_form.html', context_instance=RequestContext(request))
+
+
 def view_login_all(request):
     """Logs out user"""
     page_type = "login"
@@ -179,9 +198,9 @@ def view_manage_tasks(request):
         tid = request.GET.get('id')
         try:
             ll = UserTasks.objects.get(id=tid)
-            #ll.delete()
+            ll.delete()
         except:
-            pass
+            messages.failure(request, "Task Succesfully Deleted")
         return HttpResponseRedirect("/my-tasks/")
 
     if request.GET.get('new') == 'true':

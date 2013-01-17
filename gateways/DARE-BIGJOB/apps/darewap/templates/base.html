@@ -82,9 +82,10 @@
               {{social_auth.associated }}
                   {% else %}
                   <span class="label">Login: </span>
+                  <a href="{% url dare_login_in %}"> <span class="label label-success"> Normal </span></a> |
                   <a href="{% url socialauth_begin 'yahoo' %}?{{ redirect_querystring }}"> <span class="label label-success">Yahoo </span></a> |
                   <a href="{% url socialauth_begin 'google-oauth2' %}?{{ redirect_querystring }}"> <span class="label label-success">Google </span> </a> |
-                  <a href="{% url request_invite %}"> <span class="label label-success"> Signup Today </span></a>
+                  <a href="{% url request_invite %}"> <span class="label label-success"> Signup Today </span></a> 
                                     {% endif %}
               </p>
 
