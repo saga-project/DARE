@@ -25,9 +25,9 @@
             <td>{{task.executable}}</td>  
             <td>
 
-<a class="btn btn-small btn-success" href="/my-tasks?edit=true&id={{task.id}}" data-toggle="modal" data-target="#taskModal"> Edit</a>
+<a class="btn btn-small btn-info" href="/my-tasks?edit=true&id={{task.id}}" data-toggle="modal" data-target="#taskModal"> Edit</a>
 
-        <a class="btn btn-small btn-failure" data-toggle="deletetask" href='/my-tasks?del=true&id={{task.id}}'>Delete</a></td>  
+        <a class="btn btn-small btn-danger" data-toggle="deletetask" href='/my-tasks?del=true&id={{task.id}}'>Delete</a></td>  
           </tr>   
           {% endfor %}
         </tbody> 
