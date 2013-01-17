@@ -194,6 +194,7 @@ def view_manage_tasks(request):
     if request.method == 'POST':
 
         tid = request.GET.get('id')
+        form = None
         if tid:
             try:
                 task = UserTasks.objects.get(id=tid)
