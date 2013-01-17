@@ -118,7 +118,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
-DJANGO_WYSIWYG_FLAVOR = "ckeditor"
+#DJANGO_WYSIWYG_FLAVOR = "ckeditor"
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -136,7 +136,7 @@ INSTALLED_APPS = (
     'invitation',
     'django_tables2',
     'django_extensions',
-    'django_wysiwyg'
+#    'django_wysiwyg'
 )
 
 # A sample logging configuration. The only tangible logging
