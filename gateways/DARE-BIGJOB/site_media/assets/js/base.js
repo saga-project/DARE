@@ -18,5 +18,12 @@ $("a[data-toggle=taskmodal]").click(function(){
   return false;
 });
   
-
- });
+$("a[data-toggle=deletetask]").click(function(){
+  alert(hi);
+        jConfirm('Message', 'Title', function(confirmed){
+            if(confirmed){
+                alert('Delete confirmed');
+            }
+        });
+    });
+});

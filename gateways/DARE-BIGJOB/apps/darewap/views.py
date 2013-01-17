@@ -166,13 +166,20 @@ def view_resource_edit_conf(request, job_id, pilot):
 
 
 @login_required
+def view_job_tasks(request):
+    form = None
+    mytasks = UserTasks.objects.filter(user=request.user)
+    return render_to_response('darewap/create_job_tasks.html', {'form': form, 'tasks': mytasks}, context_instance=RequestContext(request))
+
+
+@login_required
 def view_manage_tasks(request):
 
     if request.GET.get('del') == 'true':
         tid = request.GET.get('id')
         try:
             ll = UserTasks.objects.get(id=tid)
-            ll.delete()
+            #ll.delete()
         except:
             pass
         return HttpResponseRedirect("/my-tasks/")
@@ -213,5 +220,5 @@ def view_manage_tasks(request):
         else:
             return render_to_response('darewap/new_task.html', {'form': form},  context_instance=RequestContext(request))
 
-    mytasks = UserTasks.objects.all()
+    mytasks = UserTasks.objects.filter(user=request.user)
     return render_to_response('darewap/manage_tasks.html', {'mytasks': mytasks}, context_instance=RequestContext(request))

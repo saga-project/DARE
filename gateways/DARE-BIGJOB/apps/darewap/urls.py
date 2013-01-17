@@ -20,7 +20,7 @@ urlpatterns += patterns('darewap.views',
     url(r'^my-tasks/$', 'view_manage_tasks', name='managetasks'),
     url(r'^job/create/$', 'view_create_job_bigjob', name='createbigjob'),
     url(r'^job/resource-edit-conf/(?P<job_id>[-\w]+)/(?P<pilot>[-\w]+)/$', 'view_resource_edit_conf', name='redit'),
-    url(r'^job/tasks/$', 'view_create_tasks', name='createtasks'),
+    url(r'^job/tasks/$', 'view_job_tasks', name='createtasks'),
 
 
     url(r'^job-actions/$', 'view_job_actions', name='jobactions'),)

@@ -179,6 +179,7 @@ class UserTasks(models.Model):
     executable = models.CharField(max_length=256)
     args = models.CharField(max_length=200, blank=True)
     inputfiles = models.CharField(max_length=30, blank=True)
+    outputfiles = models.CharField(max_length=30, blank=True)
     env = models.CharField(max_length=30, blank=True)
     spmd_variation = models.CharField(max_length=30, choices=spmd_type, default='single')
     num_of_cores = models.CharField(max_length=30, blank=True)

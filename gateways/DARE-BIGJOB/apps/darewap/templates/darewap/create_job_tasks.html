@@ -20,19 +20,17 @@
           {% csrf_token %}
           
               <fieldset>
-                <legend>Task 1</legend>
+                <legend>Task-set 1</legend>
                 <div class="control-group">  
-                  <label class="control-label" for="textarea">Command</label>  
+                  <label class="control-label" for="select01"> Select Tasks</label>  
                   <div class="controls">  
-                    <textarea class="input-xlarge" id="textarea" rows="3"></textarea>  
+                    <select id="select01">  
+                      {% for task in tasks %}
+                        <option>{{task}}</option>  
+                      {% endfor %}
+                    </select>  
                   </div>  
-                </div>  
-                <div class="control-group">
-                  <label class="control-label" for="input01">Num. of Cores</label>
-                  <div class="controls">
-                    <input type="text" class="input-medium" id="input01" placeholder="16">
-                  </div>
-                </div>
+                </div> 
 
                 <div class="control-group">  
                   <label class="control-label" for="select01">Pilot</label>  
@@ -44,6 +42,13 @@
                     </select>  
                   </div>  
                 </div> 
+
+                <div class="control-group">  
+                  <label class="control-label" for="textarea">Num. Of Tasks</label>  
+                  <div class="controls">  
+                    <input class="input-small" id="textarea" rows="3"></input>  
+                  </div>  
+                </div>  
 
                 <div class="form-actions">
                   <button type="submit" class="btn btn-primary">Submit Task</button>
@@ -87,20 +92,17 @@
       <form action="" method="post" enctype="multipart/form-data" class="well form-horizontal">
           {% csrf_token %}
           
-              <fieldset>
-                <legend>Task 2</legend>
+                <legend>Task-set 1</legend>
                 <div class="control-group">  
-                  <label class="control-label" for="textarea">Command</label>  
+                  <label class="control-label" for="select01"> Select Tasks</label>  
                   <div class="controls">  
-                    <textarea class="input-xlarge" id="textarea" rows="3"></textarea>  
+                    <select id="select01">  
+                      {% for task in tasks %}
+                        <option>{{task}}</option>  
+                      {% endfor %}
+                    </select>  
                   </div>  
-                </div>  
-                <div class="control-group">
-                  <label class="control-label" for="input01">Num. of Cores</label>
-                  <div class="controls">
-                    <input type="text" class="input-medium" id="input01" placeholder="16">
-                  </div>
-                </div>
+                </div> 
 
                 <div class="control-group">  
                   <label class="control-label" for="select01">Pilot</label>  
@@ -113,12 +115,18 @@
                   </div>  
                 </div> 
 
+                <div class="control-group">  
+                  <label class="control-label" for="textarea">Num. Of Tasks</label>  
+                  <div class="controls">  
+                    <input class="input-small" id="textarea" rows="3"></input>  
+                  </div>  
+                </div>  
+
                 <div class="form-actions">
                   <button type="submit" class="btn btn-primary">Submit Task</button>
                   <button class="btn">Cancel</button>
                 </div>
 
-              </fieldset>
       </form>
       </div>
 </div>
