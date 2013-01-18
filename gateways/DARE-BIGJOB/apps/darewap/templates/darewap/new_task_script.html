@@ -53,7 +53,7 @@
                       </div>
                     </div>
 
-  <div class="modal-footer">
+  <div class="modal-footer" id='spinner'>
     <button class="btn close_button" data-dismiss="modal" aria-hidden="true">Close</button>
     <input class="btn btn-primary" id='save_button' type="submit" value="Save changes" />
   </div>
@@ -62,7 +62,6 @@
 </form>
 
 
-    
 
     <script>
       var editor = CodeMirror.fromTextArea(document.getElementById("id_script"), {
@@ -81,21 +80,25 @@
     $(".close_button").click(function(event) {
         event.preventDefault();
         $('#taskModal').modal('hide');
-        $(this).parent().parent().location.reload();
+        location.reload();
 
     });
 
 
      $('#modal_form').live('submit', function() {
           //event.preventDefault();
+            var target = document.getElementById('spinner');
+            var spinner = new Spinner(opts).spin(target);
             $("#id_script").val(editor.getValue());
             $.ajax({ 
                 type: $(this).attr('method'), 
                 url: this.action, 
                 data: $(this).serialize(),
                 context: this,
-                success: function(data, status) {$('#taskModal').html(data);}
+                success: function(data, status) {$('#taskModal').html(data);  spinner.stop()}
             });
+
+
             return false;
         });
 
@@ -107,6 +110,8 @@
 
   // trigger an artificial keydown event with keyCode 64
   //$(".CodeMirror").trigger( alert('hi'));
+
+
 
     </script>
 </div>
