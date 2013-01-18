@@ -29,7 +29,7 @@ class UserTasksForm(forms.ModelForm):
         self.instance.created = datetime.datetime.now()
         self.instance.modified = datetime.datetime.now()
         #import pdb;pdb.set_trace()
-        super(UserTasksForm, self).save(commit=commit, *args, **kwargs)
+        return super(UserTasksForm, self).save(commit=commit, *args, **kwargs)
 
 
 class UserContextForm(forms.ModelForm):

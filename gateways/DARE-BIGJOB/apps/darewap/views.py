@@ -233,9 +233,9 @@ def view_manage_tasks(request):
 
         #import pdb;pdb.set_trace()
         if form.is_valid():
-            form.save(request=request)
+            task = form.save(request=request)
             messages.success(request, "Task Succesfully Saved")
-            return render_to_response('darewap/new_task_script.html', {'form': form},  context_instance=RequestContext(request))
+            return render_to_response('darewap/new_task_script.html', {'form': form, 'tid': task.id},  context_instance=RequestContext(request))
         else:
             return render_to_response('darewap/new_task_script.html', {'form': form},  context_instance=RequestContext(request))
 

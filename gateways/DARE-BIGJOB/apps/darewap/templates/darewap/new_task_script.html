@@ -81,7 +81,7 @@
     $(".close_button").click(function(event) {
         event.preventDefault();
         $('#taskModal').modal('hide');
-        location.reload();
+        $(this).parent().parent().location.reload();
 
     });
 

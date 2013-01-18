@@ -54,7 +54,7 @@
       "pk":2,
       "model":"sites.site",
       "fields":{
-         "domain":"http://gw68.quarry.iu.teragrid.org/",
+         "domain":"gw68.quarry.iu.teragrid.org",
          "name":"quarry"
       }
    },
