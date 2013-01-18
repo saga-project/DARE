@@ -205,7 +205,7 @@ def view_manage_tasks(request):
 
     if request.GET.get('new') == 'true':
         form = UserTasksForm()
-        return render_to_response('darewap/new_task.html', {'form': form},  context_instance=RequestContext(request))
+        return render_to_response('darewap/new_task_script.html', {'form': form},  context_instance=RequestContext(request))
 
     if request.GET.get('edit') == 'true':
         tid = request.GET.get('id')
@@ -215,7 +215,7 @@ def view_manage_tasks(request):
             task = None
         if task:
             form = UserTasksForm(instance=task)
-            return render_to_response('darewap/new_task.html', {'form': form, 'tid': tid},  context_instance=RequestContext(request))
+            return render_to_response('darewap/new_task_script.html', {'form': form, 'tid': tid},  context_instance=RequestContext(request))
 
     if request.method == 'POST':
 
@@ -235,9 +235,9 @@ def view_manage_tasks(request):
         if form.is_valid():
             form.save(request=request)
             messages.success(request, "Task Succesfully Saved")
-            return render_to_response('darewap/new_task.html', {'form': form},  context_instance=RequestContext(request))
+            return render_to_response('darewap/new_task_script.html', {'form': form},  context_instance=RequestContext(request))
         else:
-            return render_to_response('darewap/new_task.html', {'form': form},  context_instance=RequestContext(request))
+            return render_to_response('darewap/new_task_script.html', {'form': form},  context_instance=RequestContext(request))
 
     mytasks = UserTasks.objects.filter(user=request.user)
     return render_to_response('darewap/manage_tasks.html', {'mytasks': mytasks}, context_instance=RequestContext(request))

@@ -12,9 +12,12 @@ time_list = [[10, 10]]
 
 class UserTasksForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super(UserTasksForm, self).__init__(*args, **kwargs)
-        self.fields['spmd_variation'] = forms.ChoiceField(widget=Select(), choices=spmd_type, initial='10')
+    #def __init__(self, *args, **kwargs):
+     #   initial = kwargs.get('initial', {})
+     #   initial['script'] = ppp
+     #   kwargs['initial'] = initial
+     #   super(UserTasksForm, self).__init__(*args, **kwargs)
+     #   #self.fields['spmd_variation'] = forms.ChoiceField(widget=Select(), choices=spmd_type, initial='10')
 
     class Meta:
         model = UserTasks

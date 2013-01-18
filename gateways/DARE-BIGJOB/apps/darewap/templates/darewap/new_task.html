@@ -4,17 +4,16 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Task (Compute Unit)</h3>
   </div>
-
-                <ul class="messages">
-                    {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-<div>
-
-{{form.non_field_errors}}
-        <form action="/my-tasks/{% if tid %}?id={{tid}}{% endif%}" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
-            {% csrf_token %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  <div>
+        {{form.non_field_errors}}
+      <form action="/my-tasks/{% if tid %}?id={{tid}}{% endif%}" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
+          {% csrf_token %}  
+          <fieldset>
             
                 <fieldset>
                   <div class="control-group">  
@@ -76,16 +75,14 @@
                         {{ form.outputfiles }}
                     </div>  
                   </div> 
-
-
-  <div class="modal-footer">
-    <button class="btn close_button" data-dismiss="modal" aria-hidden="true">Close</button>
-    <input class="btn btn-primary" id='save_button' type="submit" value="Save changes" />
+ 
+            <div class="modal-footer">
+              <button class="btn close_button" data-dismiss="modal" aria-hidden="true">Close</button>
+              <input class="btn btn-primary" id='save_button' type="submit" value="Save changes" />
+            </div>
+          </fieldset>
+        </form>
   </div>
-        </fieldset>
-
-</form>
-</div>
 
 <script type="text/javascript">
 $(".close_button").click(function(event) {

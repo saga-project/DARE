@@ -8,9 +8,7 @@
         <thead>  
           <tr>  
             <th>Name</th>  
-            <th>Executable</th>  
-            <th>Args</th> 
-            <th>Num. of Cores</th> 
+            <th>Script</th>  
             <th>Input Files</th>  
             <th>Actions</th>  
           </tr>  
@@ -19,9 +17,7 @@
         {% for task in mytasks%} 
           <tr>  
             <td>{{task.name}}</td>  
-            <td>{{task.executable}}</td>  
-            <td>{{task.args}}</td>  
-            <td>{{task.num_of_cores}}</td>  
+            <td>{{task.script|truncatechars:30}}</td>   
             <td>{{task.executable}}</td>  
             <td>
 
@@ -36,6 +32,8 @@
 
 <div id="taskModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 </div>
+
+</form>
 
 {% endblock%}
 

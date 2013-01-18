@@ -172,17 +172,34 @@ admin.site.register(UserResource, UserResourceAdmin)
 
 spmd_type = (('Single', 'single'), ('MPI', 'mpi'))
 
+ppp = """def tasks(NUMBER_JOBS=1):
+    tasks = []
+    for i in range(NUMBER_JOBS):
+        compute_unit_description = {
+        "executable": "/bin/echo",
+        "arguments": ["Hello", "$ENV1", "$ENV2"],
+        "environment": ['ENV1=env_arg1', 'ENV2=env_arg2'],
+        "number_of_processes": 4,
+        "spmd_variation": "mpi",
+        "output": "stdout.txt",
+        "error": "stderr.txt"}
+        tasks.append(compute_unit_description)
+    return tasks
+"""
+
 
 class UserTasks(models.Model):
     user = models.ForeignKey('auth.User', null=True, related_name='user_tasks')
-    name = models.CharField(max_length=10)
-    executable = models.CharField(max_length=256)
+    name = models.CharField(max_length=30)
+    executable = models.CharField(max_length=256, blank=True)
     args = models.CharField(max_length=200, blank=True)
     inputfiles = models.CharField(max_length=30, blank=True)
     outputfiles = models.CharField(max_length=30, blank=True)
     env = models.CharField(max_length=30, blank=True)
-    spmd_variation = models.CharField(max_length=30, choices=spmd_type, default='single')
+    spmd_variation = models.CharField(max_length=30, choices=spmd_type, default='single', blank=True)
     num_of_cores = models.CharField(max_length=30, blank=True)
+    script = models.TextField(blank=True, default=ppp)
+
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(blank=True)
 

@@ -1,2 +1,15 @@
 .progress { width: 100%; border: 1px solid #000; height: 20px; }
 .bar { background: blue; line-height:130%; }
+
+.modal { width: 800px;  }
+
+.CodeMirror {
+    background:#fff;
+    height: auto;
+    width: 550px;
+}
+
+.CodeMirror pre { 
+    line-height: inherit; 
+    color: inherit; 
+} 
