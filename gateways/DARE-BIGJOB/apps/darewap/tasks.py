@@ -5,9 +5,46 @@ from dare.helpers.cfgparser import CfgWriter
 import os
 from django.conf import settings
 
+import bigjob
+from pilot import PilotComputeService, PilotCompute, ComputeUnit, State
+BIGJOB_DIRECTORY="~/.bigjob/" 
+
 
 @task
 def add_dare_job(job):
+    if not hasattr(job, 'id'):
+        job = Job.objects.get(id=job)
+    config_file = create_job_config_file(job)
+    if config_file:
+        DareManager(config_file)
+        return True
+    return False
+
+
+@task
+def get_pilot_status(job):
+    if not hasattr(job, 'id'):
+        job = Job.objects.get(id=job)
+    config_file = create_job_config_file(job)
+    if config_file:
+        DareManager(config_file)
+        return True
+    return False
+
+
+@task
+def submit_tasks(job):
+    if not hasattr(job, 'id'):
+        job = Job.objects.get(id=job)
+    config_file = create_job_config_file(job)
+    if config_file:
+        DareManager(config_file)
+        return True
+    return False
+
+
+@task
+def get_task_status(job):
     if not hasattr(job, 'id'):
         job = Job.objects.get(id=job)
     config_file = create_job_config_file(job)
@@ -58,3 +95,20 @@ def create_job_config_file(job):
     if jb_conf.write():
         return conf_file
     return False
+
+
+@task
+def start_pilot(pilot_compute_description, coordination_url="redis://localhost/"):
+
+    # create pilot job service and initiate a pilot job
+    pilot_compute_description = {"service_url": "fork://localhost",
+                         "number_of_processes": 1,
+                         "working_directory":  '/tmp/',
+                         "number_of_processes": 1,
+                         "processes_per_node": 1}
+
+    pilot_compute_service = PilotComputeService(coordination_url=coordination_url)
+    pilot_compute = pilot_compute_service.create_pilot(pilot_compute_description=pilot_compute_description)
+    pilot_url = pilot_compute.get_url()
+
+    print("Started Pilot: %s" % (pilot_url))

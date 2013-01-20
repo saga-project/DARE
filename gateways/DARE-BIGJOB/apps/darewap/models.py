@@ -12,26 +12,19 @@ class Job(models.Model):
     user = models.ForeignKey('auth.User', null=True, related_name='user_jobs')
     title = models.CharField(max_length=30, blank=True)
     status = models.CharField(max_length=30, blank=True)
+    cordination_url = models.CharField(max_length=150, blank=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
     @property
-    def pilot(self):
-        pp = JobInfo.objects.filter(job=self, key='pilot')
-        if len(pp) > 0:
-            return UserResource.objects.get(id=pp[0].value).name
+    def get_pilots_detail_info(self):
+        pilots = JobInfo.objects.filter(job=self, key='pilot')
+        all_pilots = []
+        for pilot in pilots:
+            pilot_info = UserResource.objects.get(id=pilot.user_resource)
+            all_pilots.append(pilot_info)
 
-    @property
-    def corecount(self):
-        pp = JobInfo.objects.filter(job=self, key='corecount')
-        if len(pp) > 0:
-            return pp[0].value
-
-    @property
-    def walltime(self):
-        pp = JobInfo.objects.filter(job=self, key='walltime')
-        if len(pp) > 0:
-            return pp[0].value
+        return all_pilots
 
     def __repr__(self):
         return "%s-%s" % (self.id, self.title)

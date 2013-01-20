@@ -11,8 +11,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Job, UserContext, UserResource, UserTasks
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserTasksForm
-from .forms import PilotForm, ResourceEditConf
-#BigJobForm_3
+from .forms import PilotForm, ResourceEditConf, BigJobForm
+from .tasks import start_pilot
 
 
 def view_home(request):
@@ -140,7 +140,8 @@ def view_create_job_bigjob(request):
     if request.method == 'POST':
         form = PilotForm(request.user, request.POST, request.FILES)
         if form.is_valid():
-            form.save(request)
+            job = form.save(request)
+            start_pilot(job)
             return HttpResponseRedirect('/job/tasks/')
             #messages.success(request, "Job Succesfully created")
         else:
@@ -241,3 +242,44 @@ def view_manage_tasks(request):
 
     mytasks = UserTasks.objects.filter(user=request.user)
     return render_to_response('darewap/manage_tasks.html', {'mytasks': mytasks}, context_instance=RequestContext(request))
+
+
+@login_required
+def view_bigjob(request):
+    if request.method == 'POST':
+        form = BigJobForm(request.user, request.POST, request.FILES)
+        if form.is_valid():
+            job = form.save(request)
+            return HttpResponseRedirect('/job/tasks/')
+            messages.success(request, "Job Title Succesfully Saved")
+        else:
+            messages.error(request, "Error in creating job: Inavlid Form")
+            retrun_dict = {}
+    else:
+        job = Job(user=request.user, status="New")
+        job.save()
+        job.title = "Bigjob-%s" % job.id
+        job.save()
+        bigjobform = BigJobForm(request.user)
+        pilotform = PilotForm(request.user)
+        mytasks = UserTasks.objects.filter(user=request.user)
+
+        retrun_dict = {'bigjobform': bigjobform, "pilotform": pilotform, 'job_id': job.id, "mytasks": mytasks}
+
+    return render_to_response('darewap/bigjob/main.html', retrun_dict, context_instance=RequestContext(request))
+
+
+@login_required
+def view_pilot_popup(request, job_id, pilot):
+    if request.method == 'POST':
+        form = ResourceEditConf(request.user, request.POST, request.FILES, job_id=job_id, pilot=pilot)
+        print form.is_valid(), form.errors
+        if form.is_valid():
+            form.save(request)
+            #messages.success(request, "Job Succesfully created")
+        else:
+            messages.error(request, "Error in creating job: Inavlid Form")
+    else:
+        form = ResourceEditConf(request.user, job_id=job_id, pilot=pilot)
+    return render_to_response('darewap/bigjob/pilot_popup.html', {'form': form, 'pilot': pilot, 'job_id': job_id}, context_instance=RequestContext(request))
+

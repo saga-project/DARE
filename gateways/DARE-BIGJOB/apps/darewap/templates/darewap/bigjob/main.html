@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block body%}
+<h2> Bigjob 
+<form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+    {% csrf_token %}
+        <input type='hidden' value='{{job_id}}' name='jobid' id='id_jobid'>
+        {{ bigjobform.title }}<p class="text-error" >  {{ bigjobform.errors.title.0 }}</p>
+</form>
+
+</h2> 
+
+<div class="accordion" id="accordion2">  
+      <div class="accordion-group">  
+        <div class="accordion-heading">  
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">  
+            Pilots
+          </a>  
+        </div>  
+        <div id="collapseOne" class="accordion-body collapse" style="height: 0px; ">    
+            <div class="accordion-inner">   
+            {% include "darewap/bigjob/pilots.html" %}
+            </div> 
+        </div>  
+      </div>
+</div>
+
+<div class="accordion" id="accordion3">  
+      <div class="accordion-group">  
+        <div class="accordion-heading">  
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">  
+            Tasks
+          </a>  
+        </div>  
+        <div id="collapseTwo" class="accordion-body collapse" style="height: 0px; ">   
+         <div class="accordion-inner">   
+            {% include "darewap/bigjob/tasks.html" %}
+          </div>  
+        </div>  
+      </div>
+</div>
+
+
+{% endblock%}
+
+

@@ -3,7 +3,6 @@ from .models import UserContext, UserResource, UserTasks, spmd_type
 import datetime
 from django.forms.widgets import Select
 from darewap.models import Job, JobInfo, JobDetailedInfo
-from .tasks import add_dare_job
 
 import django_tables2 as tables
 
@@ -135,3 +134,20 @@ class ResourceEditConf(forms.Form):
                 jdi, _ = JobDetailedInfo.objects.get_or_create(jobinfo=jobinfo, key=pilot_param)
                 jdi.value = value
                 jdi.save()
+
+
+class BigJobForm(forms.ModelForm):
+
+    def __init__(self, user, *args, **kwargs):
+        super(BigJobForm, self).__init__(*args, **kwargs)
+        #self.fields['title'].widget.attrs['class'] = 'input-medium'
+
+    class Meta:
+        model = UserTasks
+        exclude = ('user', 'created', 'modified')
+
+    def save(self, request):
+        job = Job.objects.get(id=self.cleaned_data.get('jobid'))
+        job.title = self.cleaned_data.get('title')
+        job.save()
+        return job
