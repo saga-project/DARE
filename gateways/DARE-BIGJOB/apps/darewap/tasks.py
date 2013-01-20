@@ -11,7 +11,7 @@ BIGJOB_DIRECTORY="~/.bigjob/"
 
 
 @task
-def start_pilot(job_id, ur_id, coordination_url="redis://localhost/"):
+def start_pilot(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:2525/"):
 
     job = Job.objects.get(id=job_id)
     pilot = job.get_pilot_with_ur(ur_id)
@@ -33,7 +33,7 @@ def start_pilot(job_id, ur_id, coordination_url="redis://localhost/"):
 
 
 @task
-def stop_pilot(job_id, ur_id, coordination_url="redis://localhost/"):
+def stop_pilot(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:2525/"):
 
     job = Job.objects.get(id=job_id)
     pilot = job.get_pilot_with_ur(ur_id)
@@ -50,7 +50,7 @@ def stop_pilot(job_id, ur_id, coordination_url="redis://localhost/"):
 
 
 @task
-def get_pilot_status(job_id, ur_id, coordination_url="redis://localhost/"):
+def get_pilot_status(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:2525/"):
 
     job = Job.objects.get(id=job_id)
     pilot = job.get_pilot_with_ur(ur_id)
