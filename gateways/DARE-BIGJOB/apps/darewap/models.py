@@ -6,6 +6,7 @@ import datetime
 from django.core.files.storage import FileSystemStorage
 import random
 import string
+from picklefield.fields import PickledObjectField
 
 
 class Job(models.Model):
@@ -26,6 +27,44 @@ class Job(models.Model):
 
         return all_pilots
 
+    def get_pilot_with_ur(self, ur_id):
+        jobinfo = JobInfo.objects.filter(job=self, user_resource=ur_id)
+        #print self.id, ur_id, "im in get_pilot", len(jobinfo)
+        if len(jobinfo) > 0:
+            return jobinfo[0]
+        else:
+            ur = UserResource.objects.get(id=ur_id)
+            pilot_compute_description = {"service_url": getattr(ur, "service_url", "fork://localhost"),
+                         "working_directory":  getattr(ur, "working_directory", '/tmp/'),
+                         "number_of_processes": getattr(ur, "cores_per_node", 1),
+                         "processes_per_node": getattr(ur, "processes_per_node", 1),
+                         "ur_id": ur.id}
+
+            return self.save_pilot(pilot_compute_description)
+
+    def save_pilot(self, pilot_desc={}):
+        ur_id = pilot_desc.get("ur_id", 0)
+        pilot_compute_description = {"service_url": pilot_desc.get("service_url", "fork://localhost"),
+                     "number_of_processes": pilot_desc.get("number_of_processes", 1),
+                     "working_directory":  pilot_desc.get("working_directory", '/tmp/'),
+                     "processes_per_node": pilot_desc.get("processes_per_node", 1),
+                     "user_resource_id": ur_id}
+
+        ur = UserResource.objects.get(id=ur_id)
+        jobinfo_r = JobInfo.objects.filter(job=self, user_resource=ur_id)
+        if len(jobinfo_r) > 0:
+            jobinfo = jobinfo_r[0]
+        else:
+            jobinfo = JobInfo()
+        jobinfo.detail = pilot_compute_description
+        jobinfo.job = self
+        #jobinfo.itype = 'pilot'
+        jobinfo.user_resource = ur
+        jobinfo.save()
+        print self.id, ur_id, jobinfo.id, "im saving pilot"
+
+        return jobinfo
+
     def __repr__(self):
         return "%s-%s" % (self.id, self.title)
 
@@ -42,12 +81,13 @@ class Job(models.Model):
 
 
 class JobInfo(models.Model):
+    job = models.ForeignKey('Job', null=True, related_name='job_info')
     description = models.CharField(max_length=200, blank=True)
     itype = models.CharField(max_length=200, blank=True)  # task or pilot
-    job = models.ForeignKey('Job', null=True, related_name='job_info')
     user_resource = models.ForeignKey('UserResource', null=True, related_name='user resource')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
+    detail = PickledObjectField(null=True)
 
     def __repr__(self):
         return "%s-%s-%s" % (self.itype, self.user_resource, self.job)
@@ -67,7 +107,7 @@ class JobDetailedInfo(models.Model):
     jobinfo = models.ForeignKey('JobInfo', null=True, related_name='job_detailed_info')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
-
+    
     def __repr__(self):
         return self.key
 
@@ -137,6 +177,7 @@ class UserResource(models.Model):
     working_directory = models.CharField(max_length=30, blank=True)
     allocation = models.CharField(max_length=30, blank=True)
     cores_per_node = models.IntegerField(default=1)
+    processes_per_node = models.IntegerField(default=1)
     queue = models.CharField(max_length=30, blank=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
@@ -155,7 +196,7 @@ class UserResource(models.Model):
 
 
 class UserResourceAdmin(admin.ModelAdmin):
-    list_display = ('user', 'data_service_url', 'service_url', 'cores_per_node', 'queue', 'modified')
+    list_display = ('user', 'data_service_url', 'service_url', 'processes_per_node', 'queue', 'modified')
 
     def save_model(self, *args, **kwargs):
         return super(UserContextAdmin, self).save_model(*args, **kwargs)

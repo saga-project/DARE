@@ -20,9 +20,10 @@ urlpatterns = patterns('darewap.views',
 urlpatterns += patterns('darewap.views',
     url(r'^my-tasks/$', 'view_manage_tasks', name='managetasks'),
     url(r'^job/bigjob/$', 'view_bigjob', name='bigjob'),
+    url(r'^job/celery_tasks/$', 'view_celery_tasks', name='celery_tasks'),
     url(r'^job/create/$', 'view_create_job_bigjob', name='createbigjob'),
-    url(r'^job/pilot_popup/(?P<job_id>[-\w]+)/(?P<pilot>[-\w]+)/$', 'view_pilot_popup', name='pilot_popup'),
-    url(r'^job/task_popup/(?P<job_id>[-\w]+)/(?P<job_task_id>[-\w]+)/$', 'view_pilot_popup', name='pilot_popup'),
+    url(r'^job/pilot_popup/(?P<job_id>[-\w]+)/(?P<ur_id>[-\w]+)/$', 'view_pilot_popup', name='pilot_popup'),
+    url(r'^job/task_popup/(?P<job_id>[-\w]+)/(?P<job_task_id>[-\w]+)/$', 'view_pilot_popup', name='task_popup'),
 
     url(r'^job/tasks/$', 'view_job_tasks', name='createtasks'),
 

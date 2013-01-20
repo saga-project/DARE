@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate
@@ -8,12 +8,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.forms import UserCreationForm
+
 from django.contrib import messages
 from .models import Job, UserContext, UserResource, UserTasks
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserTasksForm
-from .forms import PilotForm, ResourceEditConf, BigJobForm
-from .tasks import start_pilot
-
+from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
+from .tasks import start_pilot, stop_pilot, get_pilot_status
+import json
 
 def view_home(request):
     return render(request, 'static/home.html')
@@ -270,9 +271,9 @@ def view_bigjob(request):
 
 
 @login_required
-def view_pilot_popup(request, job_id, pilot):
+def view_pilot_popup(request, job_id, ur_id):
     if request.method == 'POST':
-        form = ResourceEditConf(request.user, request.POST, request.FILES, job_id=job_id, pilot=pilot)
+        form = PilotPopup(request.user, request.POST, request.FILES, job_id=job_id, ur_id=ur_id)
         print form.is_valid(), form.errors
         if form.is_valid():
             form.save(request)
@@ -280,6 +281,27 @@ def view_pilot_popup(request, job_id, pilot):
         else:
             messages.error(request, "Error in creating job: Inavlid Form")
     else:
-        form = ResourceEditConf(request.user, job_id=job_id, pilot=pilot)
-    return render_to_response('darewap/bigjob/pilot_popup.html', {'form': form, 'pilot': pilot, 'job_id': job_id}, context_instance=RequestContext(request))
+        form = PilotPopup(request.user, job_id=job_id, ur_id=ur_id)
+    return render_to_response('darewap/bigjob/pilot_popup.html', {'form': form, 'ur_id': ur_id, 'job_id': job_id}, context_instance=RequestContext(request))
+
+
+@login_required
+def view_celery_tasks(request):
+    jobid = request.GET.get("jobid")
+    task_type = request.GET.get("ttype")
+    if task_type == "start_pilot":
+        pilotid = request.GET.get("pilotid")
+        start_pilot(jobid, pilotid)
+
+    if task_type == "stop_pilot":
+        pilotid = request.GET.get("pilotid")
+        stop_pilot(jobid, pilotid)
+
+    if task_type == 'get_pilot_status':
+        pilotid = request.GET.get("pilotid")
+        return HttpResponse(json.dumps(get_pilot_status(jobid, pilotid)))
+
+    return HttpResponse()
+
+
 

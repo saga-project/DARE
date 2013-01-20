@@ -2,7 +2,7 @@
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
   <h3 id="myModalLabel">Edit Ranger Conf</h3>
 </div>
-<form action="/job/pilot_popup/{{job_id}}/{{pilot}}/" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
+<form action="/job/pilot_popup/{{job_id}}/{{ur_id}}/" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
     {% csrf_token %}
         <fieldset>
           <div class="control-group">
@@ -14,7 +14,7 @@
           <div class="control-group">
             <label class="control-label" for="input01">Num. of Cores</label>
             <div class="controls">
-              {{ form.num_of_cores }}
+              {{ form.number_of_processes }}
             </div>
           </div>
 
@@ -41,7 +41,7 @@
   <div class="modal-footer">
     <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Cancel</button>
     <input class="btn btn-success" id='save_button' type="submit" value="Save" />
-    <input class="btn btn-success" id='save_button' type="submit" value="Save as New" />
+    <input class="btn btn-success" id='save_button_p' type="submit" value="Save as New" />
   </div>
         
 
@@ -49,8 +49,9 @@
 <script type="text/javascript">
 $("#save_button").click(function(event) {
     event.preventDefault();
-
-    //$.ajax({ type: "POST", url: $form.attr("action"), data: formdata,});
+    $form = $('#modal_form');
+    var formdata = $form.serialize();
+    $.ajax({ type: "POST", url: $form.attr("action"), data: formdata,});
     $('#editconfModal').modal('hide')
 
 });

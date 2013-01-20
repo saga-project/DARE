@@ -151,3 +151,30 @@ class BigJobForm(forms.ModelForm):
         job.title = self.cleaned_data.get('title')
         job.save()
         return job
+
+
+class PilotPopup(forms.Form):
+    number_of_processes = forms.CharField(label='Num of Cores', required=False)
+    walltime = forms.CharField(initial=100, label='Walltime', required=False)
+    #username = forms.CharField(initial=1, label='username', required=False)
+    working_directory = forms.CharField(initial=1, label='Working Directory', required=False)
+    context = forms.ModelChoiceField(UserContext, label='Select Thorn', required=False)
+
+    def __init__(self, user, *args, **kwargs):
+        ur_id = kwargs.pop('ur_id')
+        job_id = kwargs.pop('job_id')
+        super(PilotPopup, self).__init__(*args, **kwargs)
+
+        self.job = Job.objects.get(id=job_id)
+        self.pilot = self.job.get_pilot_with_ur(ur_id)
+        self.fields['walltime'].widget.attrs['class'] = 'input-medium'
+        self.fields['walltime'].initial = self.pilot.detail.get('walltime', 1)
+        self.fields['number_of_processes'].widget.attrs['class'] = 'input-medium'
+        self.fields['number_of_processes'].initial = self.pilot.detail.get('number_of_processes', 1)
+        self.fields['working_directory'].widget.attrs['class'] = 'input-large'
+        self.fields['working_directory'].initial = self.pilot.detail.get('working_directory', "/tmp/")
+
+    def save(self, request):
+        self.pilot.detail.update(self.cleaned_data)
+        self.pilot.save()
+
