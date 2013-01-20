@@ -5,12 +5,12 @@
             <th>Type</th>  
             <th></th>  
             <th></th>
-            <th>Status</th>
+            <th></th>
           </tr>  
         <tr>  
           <td> 1</td>  
           <td> <select id="select01">  {% for task in mytasks %} <option>{{task}}</option> {% endfor %} </td>  
-          <td>  <a class="btn btn-info" id="editconf" href="/job/pilot_popup/{{job_id}}/{{pilot.0}}/" data-toggle="modal" data-target="#editconfModal" checkme='id_pilots_{{k.0|default:0}}' > Edit Conf</a>
+          <td>  <a class="btn btn-info" id="editconf" href="/job/task_popup/{{job_id}}/{{task.id}}/" data-toggle="modal" data-target="#editconfModal" checkme='id_pilots_{{k.0|default:0}}' > Edit Conf</a>
 
           </td>  
           <td>  <button type="submit" class="btn btn-primary">Submit Task</button>   </td>  
