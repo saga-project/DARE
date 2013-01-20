@@ -256,16 +256,21 @@ def view_bigjob(request):
         else:
             messages.error(request, "Error in creating job: Inavlid Form")
             retrun_dict = {}
+    elif request.GET.get('job_id'):
+        job_id = request.GET.get('job_id')
+        job = Job.objects.get(id=job_id)
+        bigjobform = BigJobForm(request.user, instance=job)
+        pilotform = PilotForm(request.user)
+        mytasks = UserTasks.objects.filter(user=request.user)
+
+        retrun_dict = {'bigjobform': bigjobform, "pilotform": pilotform, 'job_id': job.id, "mytasks": mytasks}
+
     else:
         job = Job(user=request.user, status="New")
         job.save()
         job.title = "Bigjob-%s" % job.id
         job.save()
-        bigjobform = BigJobForm(request.user)
-        pilotform = PilotForm(request.user)
-        mytasks = UserTasks.objects.filter(user=request.user)
-
-        retrun_dict = {'bigjobform': bigjobform, "pilotform": pilotform, 'job_id': job.id, "mytasks": mytasks}
+        return HttpResponseRedirect("/job/bigjob/?job_id=%s" % job.id)
 
     return render_to_response('darewap/bigjob/main.html', retrun_dict, context_instance=RequestContext(request))
 

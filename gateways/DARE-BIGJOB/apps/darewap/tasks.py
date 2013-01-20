@@ -7,7 +7,7 @@ from django.conf import settings
 
 import bigjob
 from pilot import PilotComputeService, PilotCompute, ComputeUnit, State
-BIGJOB_DIRECTORY="~/.bigjob/" 
+BIGJOB_DIRECTORY = "~/.bigjob/"
 
 
 @task

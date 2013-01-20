@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block body%}
+
+<div class='main_bigjob_page'>
 <h2> Bigjob 
 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
     {% csrf_token %}
-        <input type='hidden' value='{{job_id}}' name='jobid' id='id_jobid'>
+        <input type='hidden' class='input-small job_id' value='{{job_id}}' name='jobid' id='id_jobid'>
         {{ bigjobform.title }}<p class="text-error" >  {{ bigjobform.errors.title.0 }}</p>
 </form>
 
@@ -40,7 +42,7 @@
       </div>
 </div>
 
-
+</div>
 {% endblock%}
 
 

@@ -1,6 +1,7 @@
  $(document).ready(function(){
-  //setProgress();
+  setProgress();
   setInterval('setProgress()', 2000);
+  //addJobid();
     $("a[data-toggle=modal]").click(function(){
       var target = $(this).attr('data-target');
       var url = $(this).attr('href');
@@ -14,15 +15,11 @@
       url =  url + "&ttype=" + ttype;
       $.ajax({ type: "GET", url: url});
       if (ttype=="start_pilot"){
-        $(this).text("Stop Pilot");
-        $(this).attr('class', "btn btn-danger");
-       $(this).attr('ttype', "stop_pilot");
+        change_button($(this).attr('id'), 'stop');
 
       }
       else{
-        $(this).text("Start Pilot");
-        $(this).attr('class', "btn btn-success");
-        $(this).attr('ttype', "start_pilot");
+        change_button($(this).attr('id'), 'start');
       }
       return false;
     });
@@ -85,6 +82,13 @@ var setProgress = function() {
             var id  = "progress_celery_task_" + msg.ur_id;
             $('#' + id).attr("style", "width: " + msg.percentage + "%");
             $("#status-bar-" + msg.ur_id).text(msg.state);
+            //console.log(msg.state);
+            if (msg.state=='Stopped'|  msg.state=='Unknown'){
+              change_button("celery_task_" + msg.ur_id, 'start');
+            }
+            else{
+              change_button("celery_task_" + msg.ur_id, 'stop');
+            }
             //console.log(msg.percentage);
 
         }
@@ -93,5 +97,25 @@ var setProgress = function() {
  });
 };
 
+var addJobid = function() {
+  var trail = '?job_id=' +  $(".job_id").val();
+  var url = $.url('window.location');
+  job_id = url.param('job_id');
+};
 
- //setProgress();
+
+var change_button = function(element, type) {
+//console.log(element + '  '+ type);
+  if (type=='stop'){
+        $('#' + element).text("Stop Pilot");
+        $('#' + element).attr('class', "btn btn-danger");
+        $('#' + element).attr('ttype', "stop_pilot");
+    }
+  else{
+        $('#' + element).text("Start Pilot");
+        $('#' + element).attr('class', "btn btn-success");
+        $('#' + element).attr('ttype', "start_pilot");
+
+  }
+};
+

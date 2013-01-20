@@ -143,7 +143,7 @@ class BigJobForm(forms.ModelForm):
         #self.fields['title'].widget.attrs['class'] = 'input-medium'
 
     class Meta:
-        model = UserTasks
+        model = Job
         exclude = ('user', 'created', 'modified')
 
     def save(self, request):
