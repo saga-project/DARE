@@ -17,6 +17,16 @@ class Job(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
+
+
+    @property
+    def get_status(self):
+        pilots = JobInfo.objects.filter(job=self, itype='pilot')
+        if len(pilots) > 0:
+            return pilots[0].detail.get('status')
+        else:
+            return "New"
+
     @property
     def get_pilots_detail_info(self):
         pilots = JobInfo.objects.filter(job=self, key='pilot')
@@ -56,12 +66,12 @@ class Job(models.Model):
             jobinfo = jobinfo_r[0]
         else:
             jobinfo = JobInfo()
+            jobinfo.job = self
+            jobinfo.itype = 'pilot'
+            jobinfo.user_resource = ur
+
         jobinfo.detail = pilot_compute_description
-        jobinfo.job = self
-        #jobinfo.itype = 'pilot'
-        jobinfo.user_resource = ur
         jobinfo.save()
-        print self.id, ur_id, jobinfo.id, "im saving pilot"
 
         return jobinfo
 
