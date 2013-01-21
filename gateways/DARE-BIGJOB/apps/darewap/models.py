@@ -59,6 +59,14 @@ class Job(models.Model):
         new_jobtask.save()
         return new_jobtask
 
+    def get_pilot_url(self, pilot=None):
+        if pilot:
+            pilot = JobInfo.objects.get(id=pilot)
+        else:
+            pilot = JobInfo.objects.filter(job=self, itype='pilot')[0]
+
+        return pilot.detail.get('pilot_url')
+
     def get_pilot_with_ur(self, ur_id):
         jobinfo = JobInfo.objects.filter(job=self, user_resource=ur_id)
         #print self.id, ur_id, "im in get_pilot", len(jobinfo)

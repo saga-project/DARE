@@ -327,7 +327,7 @@ def view_celery_tasks(request):
         return HttpResponse(json.dumps(get_pilot_status(jobid, pilotid)))
 
     if task_type == 'start_task':
-        staskid = request.GET.get("subtaskid")
-        start_task(jobid, staskid)
+        staskid = request.GET.get("staskid")
+        start_task(staskid)
 
     return HttpResponse()

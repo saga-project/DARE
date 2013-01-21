@@ -8,11 +8,11 @@
       {% for task in jobtasks%}  
           <tr>  
             <td> 1 </td>  
-            <td> <select id="select_task">  {% for mytask in mytasks %} <option value='{{task.id}}'>{{mytask}}</option> {% endfor %} </select> </td>  
+            <td> <select id="select_task">  {% for mytask in mytasks %} <option value='{{mytask.id}}'>{{mytask}}</option> {% endfor %} </select> </td>  
             <td>  <a class="btn btn-info" id="selecttaskmodal" href="/my-tasks?edit=true&id=" is-task='true' data-toggle="modal" data-target="#taskModal" checkme='id_pilots_{{k.0|default:0}}' > Edit Conf</a>
 
             </td>  
-            <td>  <button type="submit" class="btn btn-primary">Submit Task</button>   </td>  
+            <td>  <a href="/job/celery_tasks?staskid={{task.id}}&ttype=start_task" class="btn btn-primary" id='start_task_{{task.id}}'>Submit Task</a>   </td>  
             <td>   <div class="progress">
                  <div class="bar" style="width: 100%;"> New </div> 
               </div> 

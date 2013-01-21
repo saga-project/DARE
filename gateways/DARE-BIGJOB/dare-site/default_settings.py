@@ -78,7 +78,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'compressor.finders.CompressorFinder',
+
 )
+
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '^e(^@3x3km*p20m&amp;4pdk3=-#r#+casf544n-g+h@xyqkee^7f6'
@@ -136,7 +139,7 @@ INSTALLED_APPS = (
     'invitation',
     'django_tables2',
     'django_extensions',
-#    'django_wysiwyg'
+    'compressor',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -261,3 +264,10 @@ DEBUG = True
 SITE_ID = 1
 
 #FIXTURE_DIRS=('apps/darewap/fixtures/')
+
+
+COMPRESS_ENABLED = True
+
+
+import djcelery
+djcelery.setup_loader()

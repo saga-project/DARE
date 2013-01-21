@@ -3,12 +3,17 @@
   //setInterval('setProgress()', 2000);
   //addJobid();
 
+
+
+
+
     $("a[data-toggle=modal]").click(function(){
       var target = $(this).attr('data-target');
       var url = $(this).attr('href');
       var is_task = $(this).attr('is-task');
       if (is_task){
           url = url + $('#select_task').val();
+          //alert(url);
       }
       $(target).load(url);
     });

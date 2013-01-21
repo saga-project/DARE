@@ -177,4 +177,3 @@ class PilotPopup(forms.Form):
     def save(self, request):
         self.pilot.detail.update(self.cleaned_data)
         self.pilot.save()
-
