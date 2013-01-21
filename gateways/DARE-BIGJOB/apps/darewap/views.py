@@ -13,7 +13,7 @@ from django.contrib import messages
 from .models import Job, UserContext, UserResource, UserTasks, JobInfo
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserTasksForm
 from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
-from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task
+from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task, get_task_status
 import json
 
 def view_home(request):
@@ -329,5 +329,9 @@ def view_celery_tasks(request):
     if task_type == 'start_task':
         staskid = request.GET.get("staskid")
         start_task(staskid)
+
+    if task_type == 'get_task_status':
+        staskid = request.GET.get("staskid")
+        return HttpResponse(json.dumps(get_task_status(staskid)))
 
     return HttpResponse()

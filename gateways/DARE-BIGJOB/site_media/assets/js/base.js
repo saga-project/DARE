@@ -1,9 +1,23 @@
  $(document).ready(function(){
   setProgress();
-  //setInterval('setProgress()', 2000);
+  setInterval('setProgress()', 2000);
   //addJobid();
 
+    $(".starttask").click(function(){
+      var ttype = $(this).attr('ttype');
 
+      var url = $(this).attr('href');
+      url =  url + "&ttype=" + ttype;
+      $.ajax({ type: "GET", url: url});
+      if (ttype=="start_task"){
+        change_task_button($(this).attr('id'), 'stop');
+
+      }
+      else{
+        change_task_button($(this).attr('id'), 'start');
+      }
+      return false;
+    });
 
 
 
@@ -81,11 +95,9 @@
 
 
 var setProgress = function() {
+
   $(".progress-bars").each(function(){
-
    url = $(this).attr('href') + "&ttype=get_pilot_status";
-
-
     $.ajax({
         url: url ,
         success: function(data)
@@ -106,8 +118,32 @@ var setProgress = function() {
 
         }
     });
+  });
 
- });
+  $(".task-progress-bars").each(function(){
+   url = $(this).attr('href') + "&ttype=get_task_status";
+    $.ajax({
+        url: url ,
+        success: function(data)
+        {
+          //console.log(data);
+            var msg = $.parseJSON(data);
+            var id  = "progress_task_" + msg.staskid;
+            $('#' + id).attr("style", "width: " + msg.percentage + "%");
+            $("#status-task-text-" + msg.staskid).text(msg.state);
+            console.log(msg.state);
+            if (msg.state=='Done'|  msg.state=='Unknown'){
+              change_task_button("task_action_" + msg.staskid, 'start');
+            }
+            else{
+              change_task_button("task_action_" + msg.staskid, 'stop');
+            }
+            //console.log(msg.percentage);
+
+        }
+    });
+  });
+
 };
 
 var addJobid = function() {
@@ -132,3 +168,18 @@ var change_button = function(element, type) {
   }
 };
 
+
+var change_task_button = function(element, type) {
+//console.log(element + '  '+ type);
+  if (type=='stop'){
+        $('#' + element).text("Stop Task");
+        $('#' + element).attr('class', "btn btn-danger");
+        $('#' + element).attr('ttype', "stop_task");
+    }
+  else{
+        $('#' + element).text("Start Task");
+        $('#' + element).attr('class', "btn btn-success");
+        $('#' + element).attr('ttype', "start_task");
+
+  }
+};

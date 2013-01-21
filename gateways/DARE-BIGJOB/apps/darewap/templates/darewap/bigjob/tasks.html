@@ -7,20 +7,25 @@
 
       {% for task in jobtasks%}  
           <tr>  
-            <td> 1 </td>  
-            <td> <select id="select_task">  {% for mytask in mytasks %} <option value='{{mytask.id}}'>{{mytask}}</option> {% endfor %} </select> </td>  
-            <td>  <a class="btn btn-info" id="selecttaskmodal" href="/my-tasks?edit=true&id=" is-task='true' data-toggle="modal" data-target="#taskModal" checkme='id_pilots_{{k.0|default:0}}' > Edit Conf</a>
-
+            <td style="width: 10%" > 1 </td>  
+            <td style="width: 10%" > <select id="select_task">  {% for mytask in mytasks %} <option value='{{mytask.id}}'>{{mytask}}</option> {% endfor %} </select> </td>  
+            <td style="width: 20%" >  
+                <a class="btn btn-info" id="selecttaskmodal" href="/my-tasks?edit=true&id=" is-task='true' data-toggle="modal" data-target="#taskModal" checkme='id_pilots_{{k.0|default:0}}' > Edit Conf</a>
             </td>  
-            <td>  <a href="/job/celery_tasks?staskid={{task.id}}&ttype=start_task" class="btn btn-primary" id='start_task_{{task.id}}'>Submit Task</a>   </td>  
-            <td>   <div class="progress">
-                 <div class="bar" style="width: 100%;"> New </div> 
-              </div> 
-             </td>  
+            <td style="width: 20%" >  
+                <a href="/job/celery_tasks?staskid={{task.id}}"  id='task_action_{{task.id}}' ttype="start_task" class="btn btn-success starttask">Start Task
+                </a>
+            </td>  
+            <td style="width: 40%">   
+              <span id='status-task-text-{{task.id}}'></span>
+                <div class="progress task-progress-bars" href="/job/celery_tasks?staskid={{task.id}}">
+                  <div class="bar" id="progress_task_{{task.id}}" style="width: 0%;">  </div> 
+                </div> 
+            </td>  
           </tr>   
         {% endfor %}
     </tbody>  
 </table> 
 <a class="btn btn-large btn-success" href="/job/bigjob/?action=create_task&job_id={{job_id}}">Add One More Task</a>
-<div id="taskModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-</div>
+
+<div id="taskModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> </div>

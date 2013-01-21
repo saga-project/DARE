@@ -87,27 +87,11 @@ def get_pilot_status(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:
             return {'ur_id': ur_id, 'percentage': 0, 'state': State.Unknown}
 
 
-def submit_cu(pilot_url, command):
-        """ submits CUs (does not waits for completion) """
-        #print "Submit CU to %s"%(pilot_url)
-        compute_unit_description = {
-            "executable": command[0],
-            "arguments": 's',
-            "total_core_count": 1,
-            "number_of_processes": 1,
-            "output": "stdout.txt",
-            "error": "stderr.txt",
-        }
-        return self.submit_cu_by_description(pilot_url, compute_unit_description)
-
-
 @task
 def start_task(staskid):
-    pilot_url = None
-    print staskid
 
-    jobinfo = JobInfo.objects.get(id=int(staskid))
-    pilot_url = jobinfo.job.get_pilot_url()
+    taskinfo = JobInfo.objects.get(id=int(staskid))
+    pilot_url = taskinfo.job.get_pilot_url()
     if pilot_url:
         pilot_compute = PilotCompute(pilot_url=pilot_url)
         compute_unit_description = {
@@ -120,4 +104,36 @@ def start_task(staskid):
             }
         compute_unit = pilot_compute.submit_compute_unit(compute_unit_description)
         print "Started ComputeUnit: %s" % (compute_unit.get_url())
+        taskinfo.detail['cu_url'] = compute_unit.get_url()
+        taskinfo.detail['status'] = 'Submitted'
+        taskinfo.save()
         return compute_unit
+
+
+@task
+def get_task_status(staskid):
+
+    taskinfo = JobInfo.objects.get(id=int(staskid))
+    cu_url = taskinfo.detail.get('cu_url')
+    percentage = taskinfo.detail.get('percentage', 0)
+    status = taskinfo.detail['status']
+
+    if cu_url:
+        compute_unit = ComputeUnit(cu_url=cu_url)
+        if compute_unit.get_state() == State.Running:
+            status = "Running"
+            percentage = 50
+
+        elif compute_unit.get_state() == State.Done:
+            status = State.Done
+            percentage = 100
+        else:
+            if taskinfo.detail.get('status') == "Submitted":
+                percentage = 20
+                status = "Submitted"
+
+        taskinfo.detail['status'] = status
+        taskinfo.detail['percentage'] = percentage
+        taskinfo.save()
+
+    return {'staskid': staskid, 'percentage': percentage, 'state': status}
