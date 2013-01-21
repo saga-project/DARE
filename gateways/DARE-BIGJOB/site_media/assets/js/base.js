@@ -1,6 +1,6 @@
  $(document).ready(function(){
   setProgress();
-  setInterval('setProgress()', 2000);
+  setInterval('setProgress()', 5000);
   //addJobid();
 
     $(".starttask").click(function(){
@@ -131,7 +131,7 @@ var setProgress = function() {
             var id  = "progress_task_" + msg.staskid;
             $('#' + id).attr("style", "width: " + msg.percentage + "%");
             $("#status-task-text-" + msg.staskid).text(msg.state);
-            console.log(msg.state);
+            //console.log(msg.state);
             if (msg.state=='Done' |  msg.state=='Unknown' |  msg.state=='New' ){
               change_task_button("task_action_" + msg.staskid, 'start');
             }
