@@ -132,7 +132,7 @@ var setProgress = function() {
             $('#' + id).attr("style", "width: " + msg.percentage + "%");
             $("#status-task-text-" + msg.staskid).text(msg.state);
             console.log(msg.state);
-            if (msg.state=='Done'|  msg.state=='Unknown'){
+            if (msg.state=='Done' |  msg.state=='Unknown' |  msg.state=='New' ){
               change_task_button("task_action_" + msg.staskid, 'start');
             }
             else{
