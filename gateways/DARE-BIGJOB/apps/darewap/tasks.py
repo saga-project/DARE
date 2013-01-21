@@ -87,3 +87,34 @@ def get_pilot_status(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:
             return {'ur_id': ur_id, 'percentage': 0, 'state': State.Unknown}
 
 
+def submit_cu(self, pilot_url, command):
+        """ submits CUs (does not waits for completion) """
+        #print "Submit CU to %s"%(pilot_url)
+        compute_unit_description = {
+            "executable": command[0],
+            "arguments": 's',
+            "total_core_count": 1,
+            "number_of_processes": 1,
+            "output": "stdout.txt",
+            "error": "stderr.txt",
+        }
+        return self.submit_cu_by_description(pilot_url, compute_unit_description)
+
+
+@task
+def start_task(self, staskid, ut_id):
+    pilot_url = None
+    jobinfo = JobInfo.objects.get(id=staskid)
+    pilot_url = jobinfo.job.get_pilot()
+    pilot_compute = PilotCompute(pilot_url=pilot_url)
+    compute_unit_description = {
+            "executable": "/bin/date",
+            "arguments": '',
+            "total_core_count": 1,
+            "number_of_processes": 1,
+            "output": "stdout.txt",
+            "error": "stderr.txt",
+        }
+    compute_unit = pilot_compute.submit_compute_unit(compute_unit_description)
+    print "Started ComputeUnit: %s" % (compute_unit.get_url())
+    return compute_unit

@@ -10,10 +10,10 @@ from django.views.generic.simple import direct_to_template
 from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib import messages
-from .models import Job, UserContext, UserResource, UserTasks
+from .models import Job, UserContext, UserResource, UserTasks, JobInfo
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserTasksForm
 from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
-from .tasks import start_pilot, stop_pilot, get_pilot_status
+from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task
 import json
 
 def view_home(request):
@@ -247,6 +247,8 @@ def view_manage_tasks(request):
 
 @login_required
 def view_bigjob(request):
+    
+
     if request.method == 'POST':
         form = BigJobForm(request.user, request.POST, request.FILES)
         if form.is_valid():
@@ -256,23 +258,41 @@ def view_bigjob(request):
         else:
             messages.error(request, "Error in creating job: Inavlid Form")
             retrun_dict = {}
-    elif request.GET.get('job_id'):
-        job_id = request.GET.get('job_id')
-        job = Job.objects.get(id=job_id)
-        bigjobform = BigJobForm(request.user, instance=job)
-        pilotform = PilotForm(request.user)
-        mytasks = UserTasks.objects.filter(user=request.user)
-
-        retrun_dict = {'bigjobform': bigjobform, "pilotform": pilotform, 'job_id': job.id, "mytasks": mytasks}
-
     else:
-        job = Job(user=request.user, status="New")
-        job.save()
-        job.title = "Bigjob-%s" % job.id
-        job.save()
-        return HttpResponseRedirect("/job/bigjob/?job_id=%s" % job.id)
+        job_id = request.GET.get('job_id')
+        if job_id:
 
-    return render_to_response('darewap/bigjob/main.html', retrun_dict, context_instance=RequestContext(request))
+            if  not request.GET.get('action'):
+                job = Job.objects.get(id=job_id)
+                bigjobform = BigJobForm(request.user, instance=job)
+                pilotform = PilotForm(request.user)
+                mytasks = UserTasks.objects.filter(user=request.user)
+                jobtasks = JobInfo.objects.filter(job=job, itype='task')
+                print len(jobtasks), "jobtasks"
+                #import pdb;pdb.set_trace()
+                if len(jobtasks) < 1:
+                    job.create_task()
+                    jobtasks = JobInfo.objects.filter(job=job, itype='task')
+
+                retrun_dict = {'bigjobform': bigjobform, "pilotform": pilotform, 'job_id': job.id, "mytasks": mytasks, 'jobtasks': jobtasks}
+                return render_to_response('darewap/bigjob/main.html', retrun_dict, context_instance=RequestContext(request))
+
+            elif str(request.GET.get('action')) == "create_task":
+                print request.GET.get('action'), request.GET.get('job_id'), str(request.GET.get('action')) == "create_task"
+
+                jobs = Job.objects.filter(id=job_id, user=request.user)
+                if len(jobs) == 1:
+                    job = jobs[0]
+                    job.create_task()
+                    return HttpResponseRedirect("/job/bigjob/?job_id=%s" % job.id)
+                else:
+                    return HttpResponseRedirect("/job/bigjob/")
+        else:
+            job = Job(user=request.user, status="New")
+            job.save()
+            job.title = "Bigjob-%s" % job.id
+            job.save()
+            return HttpResponseRedirect("/job/bigjob/?job_id=%s" % job.id)
 
 
 @login_required
@@ -306,7 +326,8 @@ def view_celery_tasks(request):
         pilotid = request.GET.get("pilotid")
         return HttpResponse(json.dumps(get_pilot_status(jobid, pilotid)))
 
+    if task_type == 'start_task':
+        staskid = request.GET.get("subtaskid")
+        start_task(jobid, staskid)
+
     return HttpResponse()
-
-
-

@@ -17,15 +17,14 @@ class Job(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
-
-
     @property
     def get_status(self):
         pilots = JobInfo.objects.filter(job=self, itype='pilot')
         if len(pilots) > 0:
-            return pilots[0].detail.get('status')
-        else:
-            return "New"
+            if pilots[0].detail.get('status'):
+                return pilots[0].detail.get('status')
+
+        return "New"
 
     @property
     def get_pilots_detail_info(self):
@@ -36,6 +35,29 @@ class Job(models.Model):
             all_pilots.append(pilot_info)
 
         return all_pilots
+
+    def create_task(self, user_task_id=None):
+        if not user_task_id:
+            user_task_id = UserTasks.objects.filter(user=self.user)[0].id
+
+        cu_desc = {"ut_id": user_task_id,  "status": "New"}
+        new_jobtask = JobInfo()
+        new_jobtask.job = self
+        new_jobtask.itype = 'task'
+        new_jobtask.detail = cu_desc
+        new_jobtask.save()
+        return new_jobtask
+
+    def save_task(self, job_task_id, ut_id=None, cu_desc={}):
+        if ut_id:
+            cu_desc["ut_id"] = ut_id
+
+        new_jobtask = JobInfo()
+        new_jobtask.job = self
+        new_jobtask.itype = 'task'
+        new_jobtask.detail.update(cu_desc)
+        new_jobtask.save()
+        return new_jobtask
 
     def get_pilot_with_ur(self, ur_id):
         jobinfo = JobInfo.objects.filter(job=self, user_resource=ur_id)
@@ -242,6 +264,8 @@ class UserTasks(models.Model):
     env = models.CharField(max_length=30, blank=True)
     spmd_variation = models.CharField(max_length=30, choices=spmd_type, default='single', blank=True)
     num_of_cores = models.CharField(max_length=30, blank=True)
+    num_of_processes = models.CharField(max_length=30, blank=True)
+    num_of_tasks = models.CharField(max_length=30, blank=True)
     script = models.TextField(blank=True, default=ppp)
 
     created = models.DateTimeField(editable=False)
