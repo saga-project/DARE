@@ -211,7 +211,7 @@ admin.site.register(UserContext, UserContextAdmin)
 
 class UserResource(models.Model):
     user = models.ForeignKey('auth.User', null=True, related_name='user_resource')
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=30)
     service_url = models.CharField(max_length=256, blank=True)
     data_service_url = models.CharField(max_length=200,  blank=True)
     working_directory = models.CharField(max_length=30, blank=True)

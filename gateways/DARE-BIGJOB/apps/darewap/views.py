@@ -16,6 +16,7 @@ from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
 from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task, get_task_status
 import json
 
+
 def view_home(request):
     return render(request, 'static/home.html')
 

@@ -1,12 +1,38 @@
 {% extends "base.html" %}
-{% block body%}
-    <form action="" method="post">
-        {% csrf_token %}
-        <table>{{ form.as_table }}</table>
-        <input type="submit" />
-    </form>
 
-    <h2> Your contexts</h2>
-    {% load django_tables2 %}
-    {% render_table table %}
+{% block body%}
+
+<a class="btn btn-large btn-success" href="/my-tasks?new=true" data-toggle="modal" data-target="#taskModal"> Add a Task</a>
+
+<table class="table table-hover">
+        <thead>  
+          <tr>  
+            <th>Name</th>  
+            <th>Script</th>  
+            <th>Input Files</th>  
+            <th>Actions</th>  
+          </tr>  
+        </thead>  
+        <tbody> 
+        {% for task in mytasks%} 
+          <tr>  
+            <td>{{task.name}}</td>  
+            <td>{{task.script|truncatechars:30}}</td>   
+            <td>{{task.executable}}</td>  
+            <td>
+
+<a class="btn btn-small btn-info" href="/my-tasks?edit=true&id={{task.id}}" data-toggle="modal" data-target="#taskModal"> Edit</a>
+
+        <a class="btn btn-small btn-danger" data-toggle="deletetask" href='/my-tasks?del=true&id={{task.id}}'>Delete</a></td>  
+          </tr>   
+          {% endfor %}
+        </tbody> 
+
+</table>
+
+<div id="taskModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
+</form>
+
 {% endblock%}
