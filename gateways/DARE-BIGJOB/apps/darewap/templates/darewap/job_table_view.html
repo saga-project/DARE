@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block body%}
+{% load daretags%}
 
 <table class='table table-hover well'>
     <tr>
         <th style="width: 10%" >Job ID</th>
         <th style="width: 10%" >Name</th>
         <th style="width: 10%" >Status</th>
-        <th style="width: 10%" >Submitted-Time</th>
+        <th style="width: 10%" >Last Modified</th>
         <th style="width: 40%" >Actions</th>
     </tr>
     {% for job in jobs %}
@@ -14,7 +15,7 @@
         <td > {{ job.id}}  </td>
         <td><span style="text-transform: uppercase"> {{ job.title}} </span> </td>
         <td>  {{ job.get_status }}</td>
-        <td width="10%" > <p class="text-info" >{{job.modified}} </p></td>
+        <td width="10%" > <p class="text-info" > <small>{{job.modified|timesince_human}} </small></p></td>
         <td width="25%">
             <a class='btn btn-success' href='/job/bigjob/?job_id={{job.id}}' > View Job</a>
             <a class='btn btn-danger' href=''> Delete Job </a>
