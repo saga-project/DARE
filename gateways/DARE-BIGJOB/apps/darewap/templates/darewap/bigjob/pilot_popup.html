@@ -1,6 +1,7 @@
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
   <h3 id="myModalLabel">Edit Ranger Conf</h3>
+  <input class="btn btn-success" id='save_button' type="submit" value="Save" />
 </div>
 <form action="/job/pilot_popup/{{job_id}}/{{ur_id}}/" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
     {% csrf_token %}
@@ -37,13 +38,7 @@
           </div> 
 
 
-      </fieldset>
-  <div class="modal-footer">
-    <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Cancel</button>
-    <input class="btn btn-success" id='save_button' type="submit" value="Save" />
-    <input class="btn btn-success" id='save_button_p' type="submit" value="Save as New" />
-  </div>
-        
+      </fieldset>        
 
 </form>
 <script type="text/javascript">

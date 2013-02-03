@@ -1,8 +1,11 @@
+<form action="/my-tasks/{% if tid %}?id={{tid}}{% endif%}" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
 
 
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Task (Compute Unit)</h3>
+    <input class="btn btn-success" id='save_button' type="submit" value="Save" />
+
   </div>
 
                 <ul class="messages">
@@ -13,7 +16,6 @@
 <div>
 
 <p class="text-error">{{form.non_field_errors}}</p>
-<form action="/my-tasks/{% if tid %}?id={{tid}}{% endif%}" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
     {% csrf_token %}  
     <fieldset>
         <div class="control-group">  
@@ -45,11 +47,6 @@
             <div class="controls"> 
                 {{ form.script }} <p class="text-error" > {{form.errors.script}}</p>
             </div>
-        </div>
-
-        <div class="modal-footer" id='spinner'>
-            <button class="btn close_button" data-dismiss="modal" aria-hidden="true">Close</button>
-            <input class="btn btn-primary" id='save_button' type="submit" value="Save changes" />
         </div>
     </fieldset>
 
