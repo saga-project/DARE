@@ -9,13 +9,15 @@ import bigjob
 from pilot import PilotComputeService, PilotCompute, ComputeUnit, State
 BIGJOB_DIRECTORY = "~/.bigjob/"
 
+COORD_URL = "redis://cyder.cct.lsu.edu:2525/"
+
 
 @task
-def start_pilot(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:2525/"):
+def start_pilot(job_id, ur_id, coordination_url=COORD_URL):
 
     job = Job.objects.get(id=job_id)
     pilot = job.get_pilot_with_ur(ur_id)
-    print pilot.detail
+    #print pilot.detail
     # create pilot job service and initiate a pilot job
     pilot_compute_description = {"service_url": "fork://localhost",
                          "number_of_processes": 1,
@@ -23,7 +25,19 @@ def start_pilot(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:2525/
                          "number_of_processes": 1,
                          "processes_per_node": 1}
 
-    pilot_compute_service = PilotComputeService(coordination_url=coordination_url)
+    #pilot_compute_description = pilot.detail
+
+    #pilot_compute_description.update({"number_of_processes": 1,
+    #                     "processes_per_node": 1,
+    #                     "walltime": 16,
+    #                     "project": "TG-MCB090174",
+    #                     })
+    #pilot_compute_description = dict([(k, str(v)) for k, v in pilot_compute_description.items()])
+
+    pilot_compute_description = dict([(k, str(v)) for k, v in pilot_compute_description.items()])
+    #import pdb;pdb.set_trace()
+
+    pilot_compute_service = PilotComputeService(coordination_url=COORD_URL)
     pilot_compute = pilot_compute_service.create_pilot(pilot_compute_description=pilot_compute_description)
     pilot_url = pilot_compute.get_url()
     pilot.detail['pilot_url'] = pilot_url
@@ -33,7 +47,7 @@ def start_pilot(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:2525/
 
 
 @task
-def stop_pilot(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:2525/"):
+def stop_pilot(job_id, ur_id, coordination_url=COORD_URL):
 
     job = Job.objects.get(id=job_id)
     pilot = job.get_pilot_with_ur(ur_id)
@@ -50,7 +64,7 @@ def stop_pilot(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:2525/"
 
 
 @task
-def get_pilot_status(job_id, ur_id, coordination_url="redis://cyder.cct.lsu.edu:2525/"):
+def get_pilot_status(job_id, ur_id, coordination_url=COORD_URL):
 
     job = Job.objects.get(id=job_id)
     pilot = job.get_pilot_with_ur(ur_id)

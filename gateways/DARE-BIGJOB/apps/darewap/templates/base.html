@@ -63,27 +63,36 @@
           <a class="brand" href="/">DARE-BIGJOB</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href='/static/about'>About</a></li>
+              <li> <a href="/">Home</a></li>
+              <li> <a href='/static/about'>About</a></li>
+              <li> <a href="/view-job-list">Job Browser</a></li>
+
 
               <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown">Job Designer<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href='/my-tasks'>My Tasks</a></li>
+                    <li ><a title='Bigjob' href='/job/bigjob' >New Job</a></li>
+                </ul>
+ <!--
+              <li class="dropdown">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown">Account Management<b class="caret"></b></a>
-                <!--
+               
                 <ul class="dropdown-menu">
             <li ><a title='Pipeline'  href='/accounts/resources/' > Pilots</a></li>
             <li ><a title='Pipeline'  href='/accounts/contexts/' > Contexts</a></li>
                 </ul>
-              -->
               </li>
 
               <li class="dropdown">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown">Job Submission<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href='/my-tasks'>Tasks</a></li>
-                    <li><a href='/view-job-list'>Job Table View</a></li>
-                    <li ><a title='Bigjob' href='/job/bigjob' >New BigJob</a></li>
-
+                    <li><a href='/view-job-list'>Job History</a></li>
+                    <li ><a title='Bigjob' href='/job/bigjob' >New Job</a></li>
                 </ul>
+         -->
+     
               </li>
               <li><a href='/static/software'>Software</a></li>
               <li><a href='/static/contact'>Contact</a></li>
