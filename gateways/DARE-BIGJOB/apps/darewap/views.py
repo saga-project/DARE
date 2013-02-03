@@ -248,7 +248,6 @@ def view_manage_tasks(request):
 
 @login_required
 def view_bigjob(request):
-    
 
     if request.method == 'POST':
         form = BigJobForm(request.user, request.POST, request.FILES)
