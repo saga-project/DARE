@@ -106,7 +106,7 @@ def view_manage_resources(request):
 
 @login_required
 def view_job_list(request):
-    jobs = Job.objects.filter(user=request.user)
+    jobs = Job.objects.filter(user=request.user).order_by('-modified')
     paginator = Paginator(jobs, 10)
     page = request.GET.get('page')
     try:
