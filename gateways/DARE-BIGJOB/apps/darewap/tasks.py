@@ -1,6 +1,6 @@
 from celery.decorators import task
 from dare.core.dare_manager import DareManager
-from darewap.models import Job, JobInfo, UserResource
+from darewap.models import Job, JobInfo, UserResource, UserTasks
 from dare.helpers.cfgparser import CfgWriter
 import os
 from django.conf import settings
@@ -14,7 +14,7 @@ COORD_URL = "redis://cyder.cct.lsu.edu:2525/"
 
 @task
 def start_pilot(job_id, ur_id, coordination_url=COORD_URL):
-
+    print job_id, ur_id
     job = Job.objects.get(id=job_id)
     pilot = job.get_pilot_with_ur(ur_id)
     #print pilot.detail
@@ -34,8 +34,18 @@ def start_pilot(job_id, ur_id, coordination_url=COORD_URL):
     #                     })
     #pilot_compute_description = dict([(k, str(v)) for k, v in pilot_compute_description.items()])
 
-    pilot_compute_description = dict([(k, str(v)) for k, v in pilot_compute_description.items()])
     #import pdb;pdb.set_trace()
+
+    pilot_compute_description = {
+                             "service_url": 'sge+ssh://smaddi2@ranger.tacc.utexas.edu',
+                             "number_of_processes": 16,
+                             "queue": "development",
+                             "walltime": 10,
+                             "allocation": "TG-MCB090174",
+                             "working_directory": "/work/01395/smaddi2/dare/",
+                             "affinity_datacenter_label": "eu-de-south",
+                             "affinity_machine_label": "mymachine-1",
+                            }
 
     pilot_compute_service = PilotComputeService(coordination_url=COORD_URL)
     pilot_compute = pilot_compute_service.create_pilot(pilot_compute_description=pilot_compute_description)
@@ -106,21 +116,34 @@ def start_task(staskid):
 
     taskinfo = JobInfo.objects.get(id=int(staskid))
     pilot_url = taskinfo.job.get_pilot_url()
+    ut_id = taskinfo.detail.get('ut_id')
+    ut = UserTasks.objects.get(id=ut_id)
+    env = {}
+    env["locals"]   = None
+    env["globals"]  = None
+    env["__name__"] = None
+    env["__file__"] = None
+    env["__builtins__"] = None
+    exec(ut.script)
+    #import pdb;pdb.set_trace()
+
+    cus = tasks()
     if pilot_url:
         pilot_compute = PilotCompute(pilot_url=pilot_url)
-        compute_unit_description = {
-                "executable": "/bin/date",
-                "arguments": [''],
-                "total_core_count": 1,
-                "number_of_processes": 1,
-                "output": "stdout.txt",
-                "error": "stderr.txt",
-            }
-        compute_unit = pilot_compute.submit_compute_unit(compute_unit_description)
-        print "Started ComputeUnit: %s" % (compute_unit.get_url())
-        taskinfo.detail['cu_url'] = compute_unit.get_url()
-        taskinfo.detail['status'] = 'Submitted'
-        taskinfo.save()
+        for cu in cus:
+            compute_unit_description = {
+                    "executable": "/bin/date",
+                    "arguments": [''],
+                    "total_core_count": 1,
+                    "number_of_processes": 1,
+                    "output": "stdout.txt",
+                    "error": "stderr.txt",
+                }
+            compute_unit = pilot_compute.submit_compute_unit(cu)
+            print "Started ComputeUnit: %s" % (compute_unit.get_url())
+            taskinfo.detail['cu_url'] = compute_unit.get_url()
+            taskinfo.detail['status'] = 'Submitted'
+            taskinfo.save()
         return compute_unit
 
 
