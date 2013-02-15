@@ -4,12 +4,24 @@ from darewap.models import Job, JobInfo, UserResource, UserTasks
 from dare.helpers.cfgparser import CfgWriter
 import os
 from django.conf import settings
+from RestrictedPython import compile_restricted
+from RestrictedPython.PrintCollector import PrintCollector
+from RestrictedPython.Guards import safe_builtins
 
 import bigjob
 from pilot import PilotComputeService, PilotCompute, ComputeUnit, State
 BIGJOB_DIRECTORY = "~/.bigjob/"
 
 COORD_URL = "redis://cyder.cct.lsu.edu:2525/"
+
+DEFAULT_CUD = {
+                    "executable": "/bin/date",
+                    "arguments": [''],
+                    "total_core_count": 1,
+                    "number_of_processes": 1,
+                    "output": "stdout.txt",
+                    "error": "stderr.txt",
+                }
 
 
 @task
@@ -118,27 +130,16 @@ def start_task(staskid):
     pilot_url = taskinfo.job.get_pilot_url()
     ut_id = taskinfo.detail.get('ut_id')
     ut = UserTasks.objects.get(id=ut_id)
-    env = {}
-    env["locals"]   = None
-    env["globals"]  = None
-    env["__name__"] = None
-    env["__file__"] = None
-    env["__builtins__"] = None
-    exec(ut.script)
-    #import pdb;pdb.set_trace()
-
+    code = compile_restricted(ut.script, '<string>', 'exec')
+    restricted_globals = dict(__builtins__ = safe_builtins)
+    _print_ = PrintCollector
+    _write_ = full_write_guard
+    _getattr_ = getattr
+    exec(code)
     cus = tasks()
     if pilot_url:
         pilot_compute = PilotCompute(pilot_url=pilot_url)
         for cu in cus:
-            compute_unit_description = {
-                    "executable": "/bin/date",
-                    "arguments": [''],
-                    "total_core_count": 1,
-                    "number_of_processes": 1,
-                    "output": "stdout.txt",
-                    "error": "stderr.txt",
-                }
             compute_unit = pilot_compute.submit_compute_unit(cu)
             print "Started ComputeUnit: %s" % (compute_unit.get_url())
             taskinfo.detail['cu_url'] = compute_unit.get_url()

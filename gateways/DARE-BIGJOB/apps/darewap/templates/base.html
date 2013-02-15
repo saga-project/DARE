@@ -36,8 +36,10 @@
     <script type='text/javascript' src='/assets/js/base.js'></script>
     <script type='text/javascript' src='/assets/js/purl.js'></script>
 
+
     <script src="/assets/js/bootstrap.js"></script>
     <script src="/assets/js/codemirror.js"></script>
+    <script type='text/javascript' src='/assets/js/jsl.format.js'></script>
     <script src="/assets/js/matchbrackets.js"></script>
     <script src="/assets/js/python.js"></script>
     <script src="/assets/js/spin.js"></script>
@@ -59,20 +61,17 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">DARE-BIGJOB</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li> <a href="/">Home</a></li>
-              <li> <a href='/static/about'>About</a></li>
-              <li> <a href="/view-job-list">Job Browser</a></li>
+              <li><a class="brand" href="/">DARE-BIGJOB</a></li>
 
+              <li><a href='/my-tasks/'>Tasks-Repo</a></li>
+              <li><a href='/my-pilots/'>Pilots-Repo</a></li>
+              <li><a href='/my-files/'>Files-Repo</a></li>
 
-              <li class="dropdown">
-                <a href="" class="dropdown-toggle" data-toggle="dropdown">Job Designer<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a href='/my-tasks'>My Tasks</a></li>
-                    <li ><a title='Bigjob' href='/job/bigjob' >New Job</a></li>
-                </ul>
+              <li ><a title='Bigjob' href='/job/bigjob/' >Launch-Pilots/Tasks</a></li>
+              <li> <a href="/view-job-list/">Launch-History</a></li>
+
  <!--
               <li class="dropdown">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown">Account Management<b class="caret"></b></a>
@@ -93,8 +92,8 @@
          -->
      
               </li>
-              <li><a href='/static/software'>Software</a></li>
-              <li><a href='/static/contact'>Contact</a></li>
+              <li><a href='/static/software/'>Software</a></li>
+              <li><a href='/static/contact/'>Contact</a></li>
             </ul>
 
             <div class="navbar pull-right">

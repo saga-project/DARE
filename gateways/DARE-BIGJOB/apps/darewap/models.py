@@ -147,7 +147,7 @@ class JobDetailedInfo(models.Model):
     jobinfo = models.ForeignKey('JobInfo', null=True, related_name='job_detailed_info')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
-    
+
     def __repr__(self):
         return self.key
 
@@ -239,7 +239,7 @@ class UserResourceAdmin(admin.ModelAdmin):
     list_display = ('user', 'data_service_url', 'service_url', 'processes_per_node', 'queue', 'modified')
 
     def save_model(self, *args, **kwargs):
-        return super(UserContextAdmin, self).save_model(*args, **kwargs)
+        return super(UserResourceAdmin, self).save_model(*args, **kwargs)
 
 admin.site.register(UserResource, UserResourceAdmin)
 
@@ -299,3 +299,38 @@ class UserTasksAdmin(admin.ModelAdmin):
         return super(UserTasksAdmin, self).save_model(*args, **kwargs)
 
 admin.site.register(UserTasks, UserTasksAdmin)
+
+
+class UserPilots(models.Model):
+    user = models.ForeignKey('auth.User', null=True, related_name='user_pilots')
+    name = models.CharField(max_length=30)
+    detail = PickledObjectField(null=True)
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = datetime.datetime.now()
+        self.modified = datetime.datetime.now()
+        super(UserPilots, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        if self.name:
+            return self.name
+        return str(self.id)
+
+
+class UserPilotsAdmin(admin.ModelAdmin):
+    list_display = ('user', 'name', 'detail')
+
+    def save_model(self, *args, **kwargs):
+        return super(UserPilotsAdmin, self).save_model(*args, **kwargs)
+
+admin.site.register(UserPilots, UserPilotsAdmin)
+
+
+
+
+
+

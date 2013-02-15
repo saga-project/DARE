@@ -1,20 +1,19 @@
-<form action="/my-tasks/{% if tid %}?id={{tid}}{% endif%}" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
+<form action="/my-pilots/{% if pid %}?id={{pid}}{% endif%}" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
 
 
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Task (Compute Unit)</h3>
+    <h3 id="myModalLabel">Pilot</h3>
     <input class="btn btn-success" id='save_button' type="submit" value="Save" />
 
   </div>
 
                 <ul class="messages">
                     {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                     {% endfor %}
                 </ul>
 <div>
-
 <p class="text-error">{{form.non_field_errors}}</p>
     {% csrf_token %}  
     <fieldset>
@@ -26,26 +25,9 @@
         </div>  
 
         <div class="control-group">  
-            <label class="control-label" for="select01"> Use Input Files</label>  
-            <div class="controls">  
-                <select id="select01">  
-                    <option>Test1.txt</option>  
-                    <option>Test1.txt</option>  
-                </select>  
-            </div>  
-        </div> 
-
-        <div class="control-group">  
-            <label class="control-label" for="select01">Get Output Files</label>  
-              <div class="controls">  
-                {{ form.outputfiles }}
-              </div>  
-        </div> 
-
-        <div class="control-group">  
-            <label class="control-label" for="select01">Tasks Script</label>  
+            <label class="control-label" for="select01">Pilot Details</label>  
             <div class="controls"> 
-                {{ form.script }} <p class="text-error" > {{form.errors.script}}</p>
+                <input type='text' id="id_detail" name="detail" value="{{ detail|safe }}">  </input> <p class="text-error" > {{form.errors.detail}}</p>
             </div>
         </div>
     </fieldset>
@@ -54,11 +36,10 @@
 
 
 
+
     <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("id_script"), {
-        mode: {name: "python",
-               version: 2,
-               singleLineStringErrors: false},
+      var editor = CodeMirror.fromTextArea(document.getElementById("id_detail"), {
+        mode: {name: "javascript", json: true},
         lineNumbers: true,
         indentUnit: 4,
         tabMode: "shift",
@@ -68,9 +49,13 @@
 
       setTimeout(function(){editor.refresh();}, 500);
 
+      var formatted_json = jsl.format.formatJson(editor.getValue());
+      editor.setValue(formatted_json);  
+
+
     $(".close_button").click(function(event) {
         event.preventDefault();
-        $('#taskModal').modal('hide');
+        $('#pilotModal').modal('hide');
         location.reload();
 
     });
@@ -86,23 +71,13 @@
                 url: this.action, 
                 data: $(this).serialize(),
                 context: this,
-                success: function(data, status) {$('#taskModal').html(data);  spinner.stop()}
+                success: function(data, status) {$('#pilotModal').html(data);  spinner.stop()}
             });
-
+          $('#pilotModal').modal('hide');
+          location.reload();
 
             return false;
         });
-
-
-
-       // Create a new jQuery.Event object with specified event properties.
-  
-  //var e = jQuery.Event("keydown", { keyCode: 13 });
-
-  // trigger an artificial keydown event with keyCode 64
-  //$(".CodeMirror").trigger( alert('hi'));
-
-
 
     </script>
 </div>

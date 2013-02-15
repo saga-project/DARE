@@ -10,11 +10,35 @@ from django.views.generic.simple import direct_to_template
 from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib import messages
-from .models import Job, UserContext, UserResource, UserTasks, JobInfo
-from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserTasksForm
+from .models import Job, UserContext, UserResource, UserTasks, JobInfo, UserPilots
+from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserPilotsForm, UserTasksForm
 from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
 from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task, get_task_status
 import json
+
+
+DEFAULT_PILOTS = {'stampede': {"service_url": 'slurm+ssh://smaddi2@ranger.tacc.utexas.edu',
+                     "number_of_processes": 16,
+                     "queue": "development",
+                     "walltime": 10,
+                     "allocation": "TG-MCB090174",
+                     "working_directory": "/work/01395/smaddi2/dare/",
+                    }, 'lonestar':  {"service_url": 'sge+ssh://smaddi2@ranger.tacc.utexas.edu',
+                     "number_of_processes": 16,
+                     "queue": "development",
+                     "walltime": 10,
+                     "allocation": "TG-MCB090174",
+                     "working_directory": "/work/01395/smaddi2/dare/",
+                    }
+            }
+
+DEFAULT_PILOT_VALS = {"service_url": 'fork://localhost',
+                     "number_of_processes": 1,
+                     "queue": "development",
+                     "walltime": 10,
+                     "allocation": "TG-MCB090174",
+                     "working_directory": "/work/01395/smaddi2/dare/",
+                    }
 
 
 def view_home(request):
@@ -208,7 +232,7 @@ def view_manage_tasks(request):
 
     if request.GET.get('new') == 'true':
         form = UserTasksForm()
-        return render_to_response('darewap/new_task_script.html', {'form': form},  context_instance=RequestContext(request))
+        return render_to_response('darewap/tasks/new_task_script.html', {'form': form},  context_instance=RequestContext(request))
 
     if request.GET.get('edit') == 'true':
         tid = request.GET.get('id')
@@ -218,7 +242,7 @@ def view_manage_tasks(request):
             task = None
         if task:
             form = UserTasksForm(instance=task)
-            return render_to_response('darewap/new_task_script.html', {'form': form, 'tid': tid},  context_instance=RequestContext(request))
+            return render_to_response('darewap/tasks/new_task_script.html', {'form': form, 'tid': tid},  context_instance=RequestContext(request))
 
     if request.method == 'POST':
 
@@ -238,16 +262,26 @@ def view_manage_tasks(request):
         if form.is_valid():
             task = form.save(request=request)
             messages.success(request, "Task Succesfully Saved")
-            return render_to_response('darewap/new_task_script.html', {'form': form, 'tid': task.id},  context_instance=RequestContext(request))
+            return render_to_response('darewap/tasks/new_task_script.html', {'form': form, 'tid': task.id},  context_instance=RequestContext(request))
         else:
-            return render_to_response('darewap/new_task_script.html', {'form': form},  context_instance=RequestContext(request))
+            return render_to_response('darewap/tasks/new_task_script.html', {'form': form},  context_instance=RequestContext(request))
 
     mytasks = UserTasks.objects.filter(user=request.user)
-    return render_to_response('darewap/manage_tasks.html', {'mytasks': mytasks}, context_instance=RequestContext(request))
+    return render_to_response('darewap/tasks/manage_tasks.html', {'mytasks': mytasks}, context_instance=RequestContext(request))
 
 
 @login_required
 def view_bigjob(request):
+
+    if request.GET.get('del') == 'true':
+        job_id = request.GET.get('job_id')
+        try:
+            ll = Job.objects.get(id=job_id)
+            ll.delete()
+            messages.success(request, "Job Succesfully Deleted with %s " % job_id)
+        except:
+            messages.success(request, "Job Deletion Failed- id=%s" % job_id)
+        return HttpResponseRedirect("/view-job-list/")
 
     if request.method == 'POST':
         form = BigJobForm(request.user, request.POST, request.FILES)
@@ -268,7 +302,6 @@ def view_bigjob(request):
                 pilotform = PilotForm(request.user)
                 mytasks = UserTasks.objects.filter(user=request.user)
                 jobtasks = JobInfo.objects.filter(job=job, itype='task')
-                print len(jobtasks), "jobtasks"
                 #import pdb;pdb.set_trace()
                 if len(jobtasks) < 1:
                     job.create_task()
@@ -335,3 +368,66 @@ def view_celery_tasks(request):
         return HttpResponse(json.dumps(get_task_status(staskid)))
 
     return HttpResponse()
+
+
+@login_required
+def view_manage_pilots(request):
+
+    if request.GET.get('del') == 'true':
+        pid = request.GET.get('id')
+        try:
+            ll = UserPilots.objects.get(id=pid)
+            ll.delete()
+            messages.success(request, "Pilot Succesfully Deleted")
+        except:
+            messages.success(request, "Pilot Deletion Failed- id=%s" % pid)
+        return HttpResponseRedirect("/my-pilots/")
+
+    if request.GET.get('new') == 'true':
+        form = UserResourceForm()
+        return render_to_response('darewap/pilots/new_pilot.html', {'form': form, 'detail': DEFAULT_PILOT_VALS},  context_instance=RequestContext(request))
+
+    if request.GET.get('edit') == 'true':
+
+        pid = request.GET.get('id')
+        try:
+            pilot = UserPilots.objects.get(id=pid)
+        except:
+            pilot = None
+        if pilot:
+            form = UserPilotsForm(instance=pilot)
+            #import pdb;pdb.set_trace()
+            return render_to_response('darewap/pilots/new_pilot.html', {'form': form, 'pid': pid, 'detail': pilot.detail},  context_instance=RequestContext(request))
+
+    if request.method == 'POST':
+
+        pid = request.GET.get('id')
+        form = None
+        if pid:
+            try:
+                pilot = UserPilots.objects.get(id=pid)
+            except:
+                pilot = None
+            if pilot:
+                form = UserPilotsForm(request.POST, request.FILES, instance=pilot)
+        if not form:
+            form = UserPilotsForm(request.POST, request.FILES)
+        #import pdb;pdb.set_trace()
+        if form.is_valid():
+            pilot = form.save(request=request)
+            messages.success(request, "Pilot Succesfully Saved")
+            return render_to_response('darewap/pilots/new_pilot.html', {'form': form, 'pid': pilot.id, 'detail': pilot.detail},  context_instance=RequestContext(request))
+        else:
+            messages.success(request, "Pilot Saving failed")
+            return render_to_response('darewap/pilots/new_pilot.html', {'form': form, 'detail': DEFAULT_PILOT_VALS},  context_instance=RequestContext(request))
+
+    mypilots = UserPilots.objects.filter(user=request.user)
+    if mypilots.count() < 1:
+        for pilot in DEFAULT_PILOTS.keys():
+            up = UserPilots()
+            up.user = request.user
+            up.name = pilot
+            up.detail = DEFAULT_PILOTS[pilot]
+            up.save()
+    return render_to_response('darewap/pilots/manage_pilots.html', {'mypilots': mypilots}, context_instance=RequestContext(request))
+

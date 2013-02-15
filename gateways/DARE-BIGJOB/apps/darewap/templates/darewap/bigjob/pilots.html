@@ -1,12 +1,17 @@
 <table class="table well">   
     <tbody> 
+      <tr>  
+            <th>#</th> 
+            <th>Name</th>
+            <th>Actions</th>  
+            <th>Status</th>  
+      </tr>
       {% for pilot in pilotform.fields.pilots.choices %}
         <tr>  
-          <td style="width: 20%">{{pilot.1|title}}</td>  
-          <td style="width: 20%" >
-              <a class="btn btn-info" id="editconf" href="/job/pilot_popup/{{job_id}}/{{pilot.0}}/" data-toggle="modal" data-target="#editconfModal" checkme='id_pilots_{{k.0|default:0}}' > Edit Conf</a>
-          </td>  
-          <td style="width: 20%" > 
+          <td style="width: 10%"> {{forloop.counter}}</td>
+          <td style="width: 22%">{{pilot.1|title}}</td>  
+          <td style="width: 35%" >
+              <a class="btn btn-info" id="editconf" href="/my-pilots?edit=true&id={{pilot.0}}" data-toggle="modal" data-target="#editconfModal" checkme='id_pilots_{{k.0|default:0}}' > Edit</a> 
             <a class="btn btn-success"  id='celery_task_{{pilot.0}}' href="/job/celery_tasks/?jobid={{job_id}}&pilotid={{pilot.0}}" ttype="start_pilot" data-toggle="pilot" > Start Pilot</a> </td>  
           <td style="width: 40%">            
                 <span id='status-bar-{{pilot.0}}'>  </span>

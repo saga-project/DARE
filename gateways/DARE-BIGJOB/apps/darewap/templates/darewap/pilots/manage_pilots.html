@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block body%}
+
+<a class="btn btn-large btn-success" href="/my-pilots?new=true" data-toggle="modal" data-target="#pilotModal"> Add a Pilot</a>
+
+<table class="table table-hover">
+        <thead>  
+          <tr>  
+            <th>Name</th>
+            <th>Details</th>  
+            <th>Actions</th>  
+          </tr>  
+        </thead>  
+        <tbody> 
+        {% for pilot in mypilots%} 
+          <tr>  
+            <td>{{pilot.name|title}}</td>  
+            <td>{{pilot.detail|truncatechars:100}}</td>   
+            <td>
+
+<a class="btn btn-small btn-info" href="/my-pilots?edit=true&id={{pilot.id}}" data-toggle="modal" data-target="#pilotModal"> Edit</a>
+
+        <a class="btn btn-small btn-danger" data-toggle="deletemodal" href='/my-pilots?del=true&id={{pilot.id}}'>Delete</a></td>  
+          </tr>   
+          {% endfor %}
+        </tbody> 
+
+</table>
+
+<div id="pilotModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
+</form>
+
+{% endblock%}

@@ -2,19 +2,20 @@
     <tbody> 
       <tr>  
             <th>#</th>  
-            <th>Type</th>  
+            <th>Type</th>
+            <th>Actions</th>  
+            <th>Status</th>  
       </tr>
 
       {% for task in jobtasks%}  
           <tr>  
-            <td style="width: 10%" > 1 </td>  
-            <td style="width: 10%" > <select id="select_task">  {% for mytask in mytasks %} <option value='{{mytask.id}}'>{{mytask}}</option> {% endfor %} </select> </td>  
-            <td style="width: 20%" >  
-                <a class="btn btn-info" id="selecttaskmodal" href="/my-tasks?edit=true&id=" is-task='true' data-toggle="modal" data-target="#taskModal" checkme='id_pilots_{{k.0|default:0}}' > Edit Conf</a>
-            </td>  
-            <td style="width: 20%" >  
-                <a href="/job/celery_tasks?staskid={{task.id}}"  id='task_action_{{task.id}}' ttype="start_task" class="btn btn-success starttask">Start Task
-                </a>
+            <td style="width: 10%" > {{forloop.counter}}</td> 
+            <td style="width: 22%" > <select id="select_task">  {% for mytask in mytasks %} <option value='{{mytask.id}}'>{{mytask}}</option> {% endfor %} </select> </td>  
+            <td style="width: 35%" >  
+                <a class="btn btn-info" id="selecttaskmodal" href="/my-tasks?edit=true&id=" is-task='true' data-toggle="modal" data-target="#taskModal" checkme='id_pilots_{{k.0|default:0}}' > Edit</a>  
+                <a href="/job/celery_tasks?staskid={{task.id}}"  id='task_action_{{task.id}}' ttype="start_task" class="btn btn-success starttask">Start Task</a>
+                <a href="/job/celery_tasks?staskid={{task.id}}"  id='task_action_{{task.id}}' ttype="start_task" class="btn btn-success disabled">Download Output
+
             </td>  
             <td style="width: 40%">   
               <span id='status-task-text-{{task.id}}'></span>
@@ -26,6 +27,7 @@
         {% endfor %}
     </tbody>  
 </table> 
+
 <a class="btn btn-large btn-success" href="/job/bigjob/?action=create_task&job_id={{job_id}}">Add One More Task</a>
 
 <div id="taskModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> </div>

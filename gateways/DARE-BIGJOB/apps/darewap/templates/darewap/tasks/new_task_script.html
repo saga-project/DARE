@@ -1,0 +1,109 @@
+<form action="/my-tasks/{% if tid %}?id={{tid}}{% endif%}" method="post" enctype="multipart/form-data" class="well form-horizontal" id="modal_form">
+
+
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Task (Compute Unit)</h3>
+    <input class="btn btn-success" id='save_button' type="submit" value="Save" />
+
+  </div>
+
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+<div>
+
+<p class="text-error">{{form.non_field_errors}}</p>
+    {% csrf_token %}  
+    <fieldset>
+        <div class="control-group">  
+            <label class="control-label" for="textarea">Name</label>  
+            <div class="controls">  
+                {{ form.name }} <p class="text-error" > {{form.errors.name}}</p>
+            </div>  
+        </div>  
+
+        <div class="control-group">  
+            <label class="control-label" for="select01"> Use Input Files</label>  
+            <div class="controls">  
+                <select id="select01">  
+                    <option>Test1.txt</option>  
+                    <option>Test1.txt</option>  
+                </select>  
+            </div>  
+        </div> 
+
+        <div class="control-group">  
+            <label class="control-label" for="select01">Get Output Files</label>  
+              <div class="controls">  
+                {{ form.outputfiles }}
+              </div>  
+        </div> 
+
+        <div class="control-group">  
+            <label class="control-label" for="select01">Tasks Script</label>  
+            <div class="controls"> 
+                {{ form.script }} <p class="text-error" > {{form.errors.script}}</p>
+            </div>
+        </div>
+    </fieldset>
+
+</form>
+
+
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("id_script"), {
+        mode: {name: "python",
+               version: 2,
+               singleLineStringErrors: false},
+        lineNumbers: true,
+        indentUnit: 4,
+        tabMode: "shift",
+        autofocus: true,
+        matchBrackets: true,
+      });
+
+      setTimeout(function(){editor.refresh();}, 500);
+
+    $(".close_button").click(function(event) {
+        event.preventDefault();
+        $('#taskModal').modal('hide');
+        location.reload();
+
+    });
+
+
+     $('#modal_form').live('submit', function() {
+          //event.preventDefault();
+            var target = document.getElementById('spinner');
+            var spinner = new Spinner(opts).spin(target);
+            $("#id_script").val(editor.getValue());
+            $.ajax({ 
+                type: $(this).attr('method'), 
+                url: this.action, 
+                data: $(this).serialize(),
+                context: this,
+                success: function(data, status) {$('#taskModal').html(data);  spinner.stop()}
+            });
+            $('#taskModal').modal('hide');
+            location.reload();
+
+            return false;
+        });
+
+
+
+       // Create a new jQuery.Event object with specified event properties.
+  
+  //var e = jQuery.Event("keydown", { keyCode: 13 });
+
+  // trigger an artificial keydown event with keyCode 64
+  //$(".CodeMirror").trigger( alert('hi'));
+
+
+
+    </script>
+</div>

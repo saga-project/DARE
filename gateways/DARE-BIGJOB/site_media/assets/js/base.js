@@ -1,6 +1,13 @@
  $(document).ready(function(){
+  var url = window.location;
+    
+$('ul.nav a').filter(function() {
+  //console.log(this.href,url.href);
+    return this.href == url.href.split( '?' )[0];
+}).parent().addClass('active');
+
   setProgress();
-  setInterval('setProgress()', 5000);
+  //setInterval('setProgress()', 5000);
   //addJobid();
 
     $(".starttask").click(function(){
@@ -60,6 +67,7 @@
       return false;
     });
       
+
     $("a[data-toggle=deletetask]").click(function(){
             jConfirm('Message', 'Title', function(confirmed){
                 if(confirmed){

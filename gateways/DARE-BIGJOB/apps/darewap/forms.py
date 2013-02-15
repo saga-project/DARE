@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserContext, UserResource, UserTasks, spmd_type
+from .models import UserContext, UserResource, UserTasks, UserPilots
 import datetime
 from django.forms.widgets import Select
 from darewap.models import Job, JobInfo, JobDetailedInfo
@@ -29,6 +29,21 @@ class UserTasksForm(forms.ModelForm):
         self.instance.modified = datetime.datetime.now()
         #import pdb;pdb.set_trace()
         return super(UserTasksForm, self).save(commit=commit, *args, **kwargs)
+
+
+class UserPilotsForm(forms.ModelForm):
+
+    class Meta:
+        model = UserPilots
+        exclude = ('user', 'modified')
+
+    def save(self, commit=True, *args, **kwargs):
+        request = kwargs.pop('request')
+        self.instance.user = request.user
+        self.instance.detail = request.POST.get('detail')
+        self.instance.created = datetime.datetime.now()
+        self.instance.modified = datetime.datetime.now()
+        return super(UserPilotsForm, self).save(commit=commit, *args, **kwargs)
 
 
 class UserContextForm(forms.ModelForm):
@@ -81,7 +96,7 @@ class PilotForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(PilotForm, self).__init__(*args, **kwargs)
-        self.fields['pilots'].queryset = UserResource.objects.filter(user__isnull=True) | UserResource.objects.filter(user=user)
+        self.fields['pilots'].queryset = UserPilots.objects.filter(user=user)
         self.fields['pilots'].error_messages['required'] = 'Please select atleast one Resource'
         self.fields['title'].widget.attrs['class'] = 'input-medium'
 

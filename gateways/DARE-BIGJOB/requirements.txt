@@ -26,3 +26,6 @@ redis==2.7.2
 django-picklefield
 
 git+https://github.com/jezdez/django_compressor.git#egg=django_compressor
+
+
+RestrictedPython
