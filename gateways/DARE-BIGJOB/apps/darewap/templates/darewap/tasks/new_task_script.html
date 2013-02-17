@@ -86,10 +86,13 @@
                 url: this.action, 
                 data: $(this).serialize(),
                 context: this,
-                success: function(data, status) {$('#taskModal').html(data);  spinner.stop()}
+                success: function(data, status) {$('#taskModal').html(data);  spinner.stop()
+                $('#taskModal').modal('hide');
+                location.reload();
+
+            }
             });
-            $('#taskModal').modal('hide');
-            location.reload();
+            
 
             return false;
         });

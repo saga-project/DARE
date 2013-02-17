@@ -71,10 +71,12 @@
                 url: this.action, 
                 data: $(this).serialize(),
                 context: this,
-                success: function(data, status) {$('#pilotModal').html(data);  spinner.stop()}
+                success: function(data, status) {$('#pilotModal').html(data);  spinner.stop()
+                            $('#pilotModal').modal('hide');
+                            setTimeout(location.reload(), 1000);
+              }
             });
-          $('#pilotModal').modal('hide');
-          setTimeout(location.reload(), 1000);
+
           //location.reload();
 
             return false;
