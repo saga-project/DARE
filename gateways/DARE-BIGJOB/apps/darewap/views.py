@@ -301,9 +301,9 @@ def view_bigjob(request):
                 pilotform = PilotForm(request.user)
                 mytasks = UserTasks.objects.filter(user=request.user)
                 jobtasks = JobInfo.objects.filter(job=job, itype='task')
-                if len(jobtasks) < 1:
-                    job.create_task()
-                    jobtasks = JobInfo.objects.filter(job=job, itype='task')
+                #if len(jobtasks) < 1:
+                #    job.create_task()
+                #    jobtasks = JobInfo.objects.filter(job=job, itype='task')
 
                 retrun_dict = {'bigjobform': bigjobform, "pilotform": pilotform, 'job_id': job.id, "mytasks": mytasks, 'jobtasks': jobtasks}
                 return render_to_response('darewap/bigjob/main.html', retrun_dict, context_instance=RequestContext(request))
@@ -314,7 +314,7 @@ def view_bigjob(request):
                 jobs = Job.objects.filter(id=job_id, user=request.user)
                 if len(jobs) == 1:
                     job = jobs[0]
-                    job.create_task()
+                    job.create_jobinfo_for_task(request.GET.get('task_id'))
                     return HttpResponseRedirect("/job/bigjob/?job_id=%s" % job.id)
                 else:
                     return HttpResponseRedirect("/job/bigjob/")

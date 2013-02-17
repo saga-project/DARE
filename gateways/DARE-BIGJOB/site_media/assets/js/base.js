@@ -27,6 +27,19 @@ $('ul.nav a').filter(function() {
     });
 
 
+    $("#jobaddtask").click(function(){
+      event.preventDefault();
+      var task_id = $('#select_task').val();
+
+      var url = $(this).attr('action');
+      url =  url + "&task_id=" + task_id;
+      $.ajax({ type: "GET", url: url});
+      location.reload();
+    });
+
+
+
+
 
     $("a[data-toggle=modal]").click(function(){
       var target = $(this).attr('data-target');

@@ -26,47 +26,6 @@ class Job(models.Model):
 
         return "New"
 
-    @property
-    def get_pilots_detail_info(self):
-        pilots = JobInfo.objects.filter(job=self, key='pilot')
-        all_pilots = []
-        for pilot in pilots:
-            pilot_info = UserResource.objects.get(id=pilot.user_resource)
-            all_pilots.append(pilot_info)
-
-        return all_pilots
-
-    def create_task(self, user_task_id=None):
-        if not user_task_id:
-            user_task_id = UserTasks.objects.filter(user=self.user)[0].id
-
-        cu_desc = {"ut_id": user_task_id,  "status": "New"}
-        new_jobtask = JobInfo()
-        new_jobtask.job = self
-        new_jobtask.itype = 'task'
-        new_jobtask.detail = cu_desc
-        new_jobtask.save()
-        return new_jobtask
-
-    def save_task(self, job_task_id, ut_id=None, cu_desc={}):
-        if ut_id:
-            cu_desc["ut_id"] = ut_id
-
-        new_jobtask = JobInfo()
-        new_jobtask.job = self
-        new_jobtask.itype = 'task'
-        new_jobtask.detail.update(cu_desc)
-        new_jobtask.save()
-        return new_jobtask
-
-    def get_pilot_url(self, pilot=None):
-        if pilot:
-            pilot = JobInfo.objects.get(id=pilot)
-        else:
-            pilot = JobInfo.objects.filter(job=self, itype='pilot')[0]
-
-        return pilot.detail.get('pilot_url')
-
     def get_or_create_jobinfo_for_pilot(self, pilot_id):
         jobinfo = JobInfo.objects.filter(job=self, user_pilot=pilot_id)
         if len(jobinfo) > 0:
@@ -79,6 +38,17 @@ class Job(models.Model):
             jobinfo.user_pilot = pilot
             jobinfo.detail = {'status': 'New'}
             jobinfo.save()
+
+        return jobinfo
+
+    def create_jobinfo_for_task(self, task_id):
+        task = UserTasks.objects.get(id=task_id)
+        jobinfo = JobInfo()
+        jobinfo.job = self
+        jobinfo.itype = 'task'
+        jobinfo.user_task = task
+        jobinfo.detail = {'status': 'New'}
+        jobinfo.save()
 
         return jobinfo
 
@@ -101,8 +71,9 @@ class JobInfo(models.Model):
     job = models.ForeignKey('Job', null=True, related_name='job_info')
     description = models.CharField(max_length=200, blank=True)
     itype = models.CharField(max_length=200, blank=True)  # task or pilot
-    user_resource = models.ForeignKey('UserResource', null=True, related_name='user resource')
-    user_pilot = models.ForeignKey('UserPilots', null=True, related_name='userpilot')
+    #user_resource = models.ForeignKey('UserResource', null=True, related_name='user resource')
+    user_pilot = models.ForeignKey('UserPilots', null=True, related_name='jobuserpilots')
+    user_task = models.ForeignKey('UserTasks', null=True, related_name='jobusertasks')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
     detail = PickledObjectField(null=True)

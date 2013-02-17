@@ -96,9 +96,12 @@ def get_pilot_status(job_id, ur_id, coordination_url=COORD_URL):
 def start_task(staskid):
 
     taskinfo = JobInfo.objects.get(id=int(staskid))
-    pilot_url = taskinfo.job.get_pilot_url()
-    ut_id = taskinfo.detail.get('ut_id')
-    ut = UserTasks.objects.get(id=ut_id)
+    if taskinfo.get('job_pilot_id'):
+        #job_pilot_id = taskinfo.detail.job_pilot_id
+        pass
+    pilot_url = JobInfo.objects.get(job=taskinfo.job, itype='pilot')[0].detail.pilot_url
+
+    ut = taskinfo.user_task
     code = compile_restricted(ut.script, '<string>', 'exec')
     restricted_globals = dict(__builtins__ = safe_builtins)
     _print_ = PrintCollector

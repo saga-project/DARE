@@ -31,13 +31,20 @@
       <div class="accordion-group">  
         <div class="accordion-heading">  
           <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">  
-            Tasks
+            Tasks 
           </a>  
         </div>  
         <div id="collapseTwo" class="accordion-body collapse in">   
-         <div class="accordion-inner">   
+         <div class="accordion-inner"> 
+
+          <form class="form-inline">
+             <select id="select_task">  {% for mytask in mytasks %} <option value='{{mytask.id}}'>{{mytask}}</option> {% endfor %} </select> 
+             <button type="submit" class="btn" id='jobaddtask'  action="/job/bigjob/?action=create_task&job_id={{job_id}}">Add Task</button>
+         </form>
+
             {% include "darewap/bigjob/tasks.html" %}
           </div>  
+
         </div>  
       </div>
 </div>
