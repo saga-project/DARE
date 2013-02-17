@@ -7,7 +7,7 @@ $('ul.nav a').filter(function() {
 }).parent().addClass('active');
 
   setProgress();
-  setInterval('setProgress()', 2000);
+  setInterval('setProgress()', 3000);
   //addJobid();
 
     $(".starttask,.startpilot").click(function(){

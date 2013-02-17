@@ -27,12 +27,13 @@ DEFAULT_CUD = {
 def start_pilot(job_id, pilot_id, coordination_url=COORD_URL):
     job = Job.objects.get(id=job_id)
     jbinfo = job.get_or_create_jobinfo_for_pilot(pilot_id)
+    jbinfo.detail['status'] = "Submitted"
+    jbinfo.save()
     pilot_compute_description = json.loads(jbinfo.user_pilot.detail)
     pilot_compute_service = PilotComputeService(coordination_url=COORD_URL)
     pilot_compute = pilot_compute_service.create_pilot(pilot_compute_description=pilot_compute_description)
     pilot_url = pilot_compute.get_url()
     jbinfo.detail['pilot_url'] = pilot_url
-    jbinfo.detail['status'] = "Submitted"
     jbinfo.save()
     print("Started Pilot: %s" % (pilot_url))
 
@@ -45,8 +46,11 @@ def stop_pilot(job_id, pilot_id, coordination_url=COORD_URL):
     print pilot.detail
     pilot_url = pilot.detail.get("pilot_url")
     #cancle
-    pilot_compute = PilotCompute(pilot_url=pilot_url)
-    pilot_compute.cancel()
+    try:
+        pilot_compute = PilotCompute(pilot_url=pilot_url)
+        pilot_compute.cancel()
+    except:
+        pass
 
     pilot.detail['pilot_url'] = ""
     pilot.detail['status'] = "Stopped"
@@ -62,10 +66,12 @@ def get_pilot_status(job_id, pilot_id, coordination_url=COORD_URL):
     pilot_url = pilot.detail.get("pilot_url")
 
     if pilot_url:
-        pilot_compute = PilotCompute(pilot_url=pilot_url)
-
+        try:
+            pilot_compute = PilotCompute(pilot_url=pilot_url)
+        except:
+            pilot.detail['status'] = "Stopped"
+            pilot.save()
         if pilot.detail.get('status') == "Submitted":
-            print pilot.detail.get('status')
             if pilot_compute.get_state() == State.Running:
                 status = "Running"
                 percentage = 100
@@ -88,6 +94,8 @@ def get_pilot_status(job_id, pilot_id, coordination_url=COORD_URL):
     else:
         if pilot.detail.get('status') == "Stopped":
             return {'ur_id': pilot_id, 'percentage': 0, 'state': "Stopped"}
+        elif pilot.detail.get('status') == "Submitted":
+            return {'ur_id': pilot_id, 'percentage': 30, 'state': "Submitted"}
         else:
             return {'ur_id': pilot_id, 'percentage': 0, 'state': State.Unknown}
 
