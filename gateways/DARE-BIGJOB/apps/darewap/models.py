@@ -79,7 +79,7 @@ class JobInfo(models.Model):
     detail = PickledObjectField(null=True)
 
     def __repr__(self):
-        return "%s-%s-%s" % (self.itype, self.user_resource, self.job)
+        return "%s-%s" % (self.itype, self.job)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''

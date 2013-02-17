@@ -6,7 +6,7 @@ import os
 from django.conf import settings
 from RestrictedPython import compile_restricted
 from RestrictedPython.PrintCollector import PrintCollector
-from RestrictedPython.Guards import safe_builtins
+from RestrictedPython.Guards import safe_builtins, full_write_guard
 import simplejson as json
 from pilot import PilotComputeService, PilotCompute, ComputeUnit, State
 BIGJOB_DIRECTORY = "~/.bigjob/"
@@ -96,29 +96,38 @@ def get_pilot_status(job_id, ur_id, coordination_url=COORD_URL):
 def start_task(staskid):
 
     taskinfo = JobInfo.objects.get(id=int(staskid))
-    if taskinfo.get('job_pilot_id'):
+    if hasattr(taskinfo, 'job_pilot_id'):
         #job_pilot_id = taskinfo.detail.job_pilot_id
         pass
-    pilot_url = JobInfo.objects.get(job=taskinfo.job, itype='pilot')[0].detail.pilot_url
 
-    ut = taskinfo.user_task
-    code = compile_restricted(ut.script, '<string>', 'exec')
-    restricted_globals = dict(__builtins__ = safe_builtins)
-    _print_ = PrintCollector
-    _write_ = full_write_guard
-    _getattr_ = getattr
-    exec(code)
-    cus = tasks()
-    if pilot_url:
+    for pilot in JobInfo.objects.filter(job=taskinfo.job, itype='pilot'):
+        pilot_url = pilot.detail['pilot_url']
         pilot_compute = PilotCompute(pilot_url=pilot_url)
-        for cu in cus:
-            compute_unit = pilot_compute.submit_compute_unit(cu)
-            print "Started ComputeUnit: %s" % (compute_unit.get_url())
-            taskinfo.detail['cu_url'] = compute_unit.get_url()
-            taskinfo.detail['status'] = 'Submitted'
-            taskinfo.save()
-        return compute_unit
-
+        if pilot_compute.get_state() == State.Running:
+            break
+    import pdb;pdb.set_trace()
+    if pilot_url:
+        ut = taskinfo.user_task
+        code = compile_restricted(ut.script, '<string>', 'exec')
+        restricted_globals = dict(__builtins__=safe_builtins)
+        _print_ = PrintCollector
+        _write_ = full_write_guard
+        _getattr_ = getattr
+        global _getiter_, _getattr_, _write_, _print_, restricted_globals
+        _getiter_ = list
+        exec(code)
+        cus = tasks()
+        if pilot_url:
+            pilot_compute = PilotCompute(pilot_url=pilot_url)
+            for cu in cus:
+                compute_unit = pilot_compute.submit_compute_unit(cu)
+                print "Started ComputeUnit: %s" % (compute_unit.get_url())
+                taskinfo.detail['cu_url'] = compute_unit.get_url()
+                taskinfo.detail['status'] = 'Submitted'
+                taskinfo.save()
+            return compute_unit
+        #except:
+        #    pass
 
 @task
 def get_task_status(staskid):

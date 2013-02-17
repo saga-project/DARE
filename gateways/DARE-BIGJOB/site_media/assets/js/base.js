@@ -49,6 +49,7 @@ $('ul.nav a').filter(function() {
           url = url + $('#select_task').val();
           //alert(url);
       }
+
       $(target).load(url);
     });
 
