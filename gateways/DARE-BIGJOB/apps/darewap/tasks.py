@@ -41,7 +41,7 @@ def start_pilot(job_id, pilot_id, coordination_url=COORD_URL):
 def stop_pilot(job_id, pilot_id, coordination_url=COORD_URL):
 
     job = Job.objects.get(id=job_id)
-    pilot = job.get_pilot(pilot_id)
+    pilot = job.get_or_create_jobinfo_for_pilot(pilot_id)
     print pilot.detail
     pilot_url = pilot.detail.get("pilot_url")
     #cancle
@@ -55,10 +55,10 @@ def stop_pilot(job_id, pilot_id, coordination_url=COORD_URL):
 
 
 @task
-def get_pilot_status(job_id, ur_id, coordination_url=COORD_URL):
+def get_pilot_status(job_id, pilot_id, coordination_url=COORD_URL):
 
     job = Job.objects.get(id=job_id)
-    pilot = job.get_pilot_with_ur(ur_id)
+    pilot = job.get_or_create_jobinfo_for_pilot(pilot_id)
     pilot_url = pilot.detail.get("pilot_url")
 
     if pilot_url:
@@ -83,13 +83,13 @@ def get_pilot_status(job_id, ur_id, coordination_url=COORD_URL):
             status = ""
 
         print pilot.detail['status'], percentage, status
-        p = {'ur_id': ur_id, 'percentage': percentage, 'state': status}
+        p = {'ur_id': pilot_id, 'percentage': percentage, 'state': status}
         return p
     else:
         if pilot.detail.get('status') == "Stopped":
-            return {'ur_id': ur_id, 'percentage': 0, 'state': "Stopped"}
+            return {'ur_id': pilot_id, 'percentage': 0, 'state': "Stopped"}
         else:
-            return {'ur_id': ur_id, 'percentage': 0, 'state': State.Unknown}
+            return {'ur_id': pilot_id, 'percentage': 0, 'state': State.Unknown}
 
 
 @task
@@ -105,7 +105,7 @@ def start_task(staskid):
         pilot_compute = PilotCompute(pilot_url=pilot_url)
         if pilot_compute.get_state() == State.Running:
             break
-    import pdb;pdb.set_trace()
+
     if pilot_url:
         ut = taskinfo.user_task
         code = compile_restricted(ut.script, '<string>', 'exec')
