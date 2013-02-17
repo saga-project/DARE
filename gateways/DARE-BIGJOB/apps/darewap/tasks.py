@@ -7,8 +7,7 @@ from django.conf import settings
 from RestrictedPython import compile_restricted
 from RestrictedPython.PrintCollector import PrintCollector
 from RestrictedPython.Guards import safe_builtins
-
-import bigjob
+import simplejson as json
 from pilot import PilotComputeService, PilotCompute, ComputeUnit, State
 BIGJOB_DIRECTORY = "~/.bigjob/"
 
@@ -25,54 +24,24 @@ DEFAULT_CUD = {
 
 
 @task
-def start_pilot(job_id, ur_id, coordination_url=COORD_URL):
-    print job_id, ur_id
+def start_pilot(job_id, pilot_id, coordination_url=COORD_URL):
     job = Job.objects.get(id=job_id)
-    pilot = job.get_pilot_with_ur(ur_id)
-    #print pilot.detail
-    # create pilot job service and initiate a pilot job
-    pilot_compute_description = {"service_url": "fork://localhost",
-                         "number_of_processes": 1,
-                         "working_directory":  '/tmp/',
-                         "number_of_processes": 1,
-                         "processes_per_node": 1}
-
-    #pilot_compute_description = pilot.detail
-
-    #pilot_compute_description.update({"number_of_processes": 1,
-    #                     "processes_per_node": 1,
-    #                     "walltime": 16,
-    #                     "project": "TG-MCB090174",
-    #                     })
-    #pilot_compute_description = dict([(k, str(v)) for k, v in pilot_compute_description.items()])
-
-    #import pdb;pdb.set_trace()
-
-    pilot_compute_description = {
-                             "service_url": 'sge+ssh://smaddi2@ranger.tacc.utexas.edu',
-                             "number_of_processes": 16,
-                             "queue": "development",
-                             "walltime": 10,
-                             "allocation": "TG-MCB090174",
-                             "working_directory": "/work/01395/smaddi2/dare/",
-                             "affinity_datacenter_label": "eu-de-south",
-                             "affinity_machine_label": "mymachine-1",
-                            }
-
+    jbinfo = job.get_or_create_jobinfo_for_pilot(pilot_id)
+    pilot_compute_description = json.loads(jbinfo.user_pilot.detail)
     pilot_compute_service = PilotComputeService(coordination_url=COORD_URL)
     pilot_compute = pilot_compute_service.create_pilot(pilot_compute_description=pilot_compute_description)
     pilot_url = pilot_compute.get_url()
-    pilot.detail['pilot_url'] = pilot_url
-    pilot.detail['status'] = "Submitted"
-    pilot.save()
+    jbinfo.detail['pilot_url'] = pilot_url
+    jbinfo.detail['status'] = "Submitted"
+    jbinfo.save()
     print("Started Pilot: %s" % (pilot_url))
 
 
 @task
-def stop_pilot(job_id, ur_id, coordination_url=COORD_URL):
+def stop_pilot(job_id, pilot_id, coordination_url=COORD_URL):
 
     job = Job.objects.get(id=job_id)
-    pilot = job.get_pilot_with_ur(ur_id)
+    pilot = job.get_pilot(pilot_id)
     print pilot.detail
     pilot_url = pilot.detail.get("pilot_url")
     #cancle
@@ -175,3 +144,23 @@ def get_task_status(staskid):
         taskinfo.save()
 
     return {'staskid': staskid, 'percentage': percentage, 'state': status}
+
+
+"""
+    #pilot_compute_description = pilot.detail
+
+    #pilot_compute_description.update({"number_of_processes": 1,
+    #                     "processes_per_node": 1,
+    #                     "walltime": 16,
+    #                     "project": "TG-MCB090174",
+    #                     })
+    #pilot_compute_description = dict([(k, str(v)) for k, v in pilot_compute_description.items()])
+
+    #import pdb;pdb.set_trace()
+
+        pilot_compute_description = {"service_url": "fork://localhost",
+                         "number_of_processes": 1,
+                         "working_directory":  '/tmp/',
+                         "number_of_processes": 1,
+                         "processes_per_node": 1}
+"""

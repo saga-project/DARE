@@ -10,7 +10,7 @@ $('ul.nav a').filter(function() {
   //setInterval('setProgress()', 5000);
   //addJobid();
 
-    $(".starttask").click(function(){
+    $(".starttask,.startpilot").click(function(){
       var ttype = $(this).attr('ttype');
 
       var url = $(this).attr('href');

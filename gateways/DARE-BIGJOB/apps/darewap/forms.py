@@ -5,7 +5,7 @@ from django.forms.widgets import Select
 from darewap.models import Job, JobInfo, JobDetailedInfo
 
 import django_tables2 as tables
-
+import json
 time_list = [[10, 10]]
 
 
@@ -39,8 +39,13 @@ class UserPilotsForm(forms.ModelForm):
 
     def save(self, commit=True, *args, **kwargs):
         request = kwargs.pop('request')
+        try:
+            detail = json.loads(request.POST.get('detail'))
+        except:
+            detail = "only json format is supported"
+        detail = json.loads(request.POST.get('detail'))
         self.instance.user = request.user
-        self.instance.detail = request.POST.get('detail')
+        self.instance.detail = json.dumps(detail)
         self.instance.created = datetime.datetime.now()
         self.instance.modified = datetime.datetime.now()
         return super(UserPilotsForm, self).save(commit=commit, *args, **kwargs)

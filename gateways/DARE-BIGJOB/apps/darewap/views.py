@@ -295,14 +295,12 @@ def view_bigjob(request):
     else:
         job_id = request.GET.get('job_id')
         if job_id:
-
             if  not request.GET.get('action'):
                 job = Job.objects.get(id=job_id)
                 bigjobform = BigJobForm(request.user, instance=job)
                 pilotform = PilotForm(request.user)
                 mytasks = UserTasks.objects.filter(user=request.user)
                 jobtasks = JobInfo.objects.filter(job=job, itype='task')
-                #import pdb;pdb.set_trace()
                 if len(jobtasks) < 1:
                     job.create_task()
                     jobtasks = JobInfo.objects.filter(job=job, itype='task')
@@ -345,26 +343,24 @@ def view_pilot_popup(request, job_id, ur_id):
 
 @login_required
 def view_celery_tasks(request):
-    jobid = request.GET.get("jobid")
+    job_id = request.GET.get("jobid")
     task_type = request.GET.get("ttype")
+    pilot_id = request.GET.get("pilotid")
+    staskid = request.GET.get("staskid")
+
     if task_type == "start_pilot":
-        pilotid = request.GET.get("pilotid")
-        start_pilot(jobid, pilotid)
+        start_pilot(job_id, pilot_id)
 
     if task_type == "stop_pilot":
-        pilotid = request.GET.get("pilotid")
-        stop_pilot(jobid, pilotid)
+        stop_pilot(job_id, pilot_id)
 
     if task_type == 'get_pilot_status':
-        pilotid = request.GET.get("pilotid")
-        return HttpResponse(json.dumps(get_pilot_status(jobid, pilotid)))
+        return HttpResponse(json.dumps(get_pilot_status(job_id, pilot_id)))
 
     if task_type == 'start_task':
-        staskid = request.GET.get("staskid")
         start_task(staskid)
 
     if task_type == 'get_task_status':
-        staskid = request.GET.get("staskid")
         return HttpResponse(json.dumps(get_task_status(staskid)))
 
     return HttpResponse()
@@ -397,10 +393,15 @@ def view_manage_pilots(request):
         if pilot:
             form = UserPilotsForm(instance=pilot)
             #import pdb;pdb.set_trace()
-            return render_to_response('darewap/pilots/new_pilot.html', {'form': form, 'pid': pid, 'detail': pilot.detail},  context_instance=RequestContext(request))
+            try:
+                detail = json.dumps(json.loads(pilot.detail))
+            except:
+                detail = "Json Not supported"
+
+            return render_to_response('darewap/pilots/new_pilot.html', {'form': form, 'pid': pid, 'detail': detail},  context_instance=RequestContext(request))
 
     if request.method == 'POST':
-
+        #import pdb;pdb.set_trace()
         pid = request.GET.get('id')
         form = None
         if pid:
@@ -412,7 +413,6 @@ def view_manage_pilots(request):
                 form = UserPilotsForm(request.POST, request.FILES, instance=pilot)
         if not form:
             form = UserPilotsForm(request.POST, request.FILES)
-        #import pdb;pdb.set_trace()
         if form.is_valid():
             pilot = form.save(request=request)
             messages.success(request, "Pilot Succesfully Saved")

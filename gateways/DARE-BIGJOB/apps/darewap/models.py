@@ -67,41 +67,18 @@ class Job(models.Model):
 
         return pilot.detail.get('pilot_url')
 
-    def get_pilot_with_ur(self, ur_id):
-        jobinfo = JobInfo.objects.filter(job=self, user_resource=ur_id)
-        #print self.id, ur_id, "im in get_pilot", len(jobinfo)
+    def get_or_create_jobinfo_for_pilot(self, pilot_id):
+        jobinfo = JobInfo.objects.filter(job=self, user_pilot=pilot_id)
         if len(jobinfo) > 0:
             return jobinfo[0]
         else:
-            ur = UserResource.objects.get(id=ur_id)
-            pilot_compute_description = {"service_url": getattr(ur, "service_url", "fork://localhost"),
-                         "working_directory":  getattr(ur, "working_directory", '/tmp/'),
-                         "number_of_processes": getattr(ur, "cores_per_node", 1),
-                         "processes_per_node": getattr(ur, "processes_per_node", 1),
-                         "ur_id": ur.id}
-
-            return self.save_pilot(pilot_compute_description)
-
-    def save_pilot(self, pilot_desc={}):
-        ur_id = pilot_desc.get("ur_id", 0)
-        pilot_compute_description = {"service_url": pilot_desc.get("service_url", "fork://localhost"),
-                     "number_of_processes": pilot_desc.get("number_of_processes", 1),
-                     "working_directory":  pilot_desc.get("working_directory", '/tmp/'),
-                     "processes_per_node": pilot_desc.get("processes_per_node", 1),
-                     "user_resource_id": ur_id}
-
-        ur = UserResource.objects.get(id=ur_id)
-        jobinfo_r = JobInfo.objects.filter(job=self, user_resource=ur_id)
-        if len(jobinfo_r) > 0:
-            jobinfo = jobinfo_r[0]
-        else:
+            pilot = UserPilots.objects.get(id=pilot_id)
             jobinfo = JobInfo()
             jobinfo.job = self
             jobinfo.itype = 'pilot'
-            jobinfo.user_resource = ur
-
-        jobinfo.detail = pilot_compute_description
-        jobinfo.save()
+            jobinfo.user_pilot = pilot
+            jobinfo.detail = {'status': 'New'}
+            jobinfo.save()
 
         return jobinfo
 
@@ -125,6 +102,7 @@ class JobInfo(models.Model):
     description = models.CharField(max_length=200, blank=True)
     itype = models.CharField(max_length=200, blank=True)  # task or pilot
     user_resource = models.ForeignKey('UserResource', null=True, related_name='user resource')
+    user_pilot = models.ForeignKey('UserPilots', null=True, related_name='userpilot')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
     detail = PickledObjectField(null=True)
