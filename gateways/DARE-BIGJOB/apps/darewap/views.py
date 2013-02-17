@@ -14,7 +14,7 @@ from .models import Job, UserContext, UserResource, UserTasks, JobInfo, UserPilo
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserPilotsForm, UserTasksForm
 from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
 from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task, get_task_status
-import json
+import simplejson as json
 
 
 DEFAULT_PILOTS = {'stampede': {"service_url": 'slurm+ssh://smaddi2@ranger.tacc.utexas.edu',
@@ -427,7 +427,7 @@ def view_manage_pilots(request):
             up = UserPilots()
             up.user = request.user
             up.name = pilot
-            up.detail = DEFAULT_PILOTS[pilot]
+            up.detail = json.dumps(DEFAULT_PILOTS[pilot])
             up.save()
     return render_to_response('darewap/pilots/manage_pilots.html', {'mypilots': mypilots}, context_instance=RequestContext(request))
 
