@@ -34,7 +34,8 @@ $('ul.nav a').filter(function() {
       var url = $(this).attr('action');
       url =  url + "&task_id=" + task_id;
       $.ajax({ type: "GET", url: url});
-      location.reload();
+      
+      setTimeout(location.reload(), 1000);
     });
 
 

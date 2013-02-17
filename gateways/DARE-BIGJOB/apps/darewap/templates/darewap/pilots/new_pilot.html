@@ -74,7 +74,8 @@
                 success: function(data, status) {$('#pilotModal').html(data);  spinner.stop()}
             });
           $('#pilotModal').modal('hide');
-          location.reload();
+          setTimeout(location.reload(), 1000);
+          //location.reload();
 
             return false;
         });
