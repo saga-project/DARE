@@ -18,7 +18,7 @@
 5) Running the django web server
     $ python manage.py runserver
 
-
+6) visit browser http://localhost:8000/
 
 
 Useful links:
