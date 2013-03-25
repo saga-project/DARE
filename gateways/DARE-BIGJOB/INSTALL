@@ -1,0 +1,30 @@
+1) Check out the code
+    $ mkdir workspace 
+    $ cd workspace
+    $ git clone https://github.com/saga-project/DARE/tree/master/gateways/DARE-BIGJOB
+
+2) Create virtualenv
+    $ virtualenv /tmp/envdare
+    $ source /tmp/envdae/bin/activate
+    
+3) INSTALL DARE-BIGJOB Env.
+    $ cd DARE-BIGJOB/
+    $ pip install -r requirements.txt
+    
+4) create/sync/update Database schema
+    $ python manage.py syncdb
+    $ python manage.py migrate
+
+5) Running the django web server
+    $ python manage.py runserver
+
+
+
+
+Useful links:
+    1) South for data schema migrations. http://south.readthedocs.org/en/0.7.6/
+    2) Django Celery for asynchronous tasks from webserver. http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html
+    3) django-social-auth for login with google. https://github.com/omab/django-social-auth
+    4) django-picklefield for storing serialized objects. https://pypi.python.org/pypi/django-picklefield
+    5) django compressor for compressing javascript and css files to serve on the web. https://github.com/jezdez/django_compressor
+    6) django-extensions for command line operations like django-shell. https://github.com/django-extensions/django-extensions
