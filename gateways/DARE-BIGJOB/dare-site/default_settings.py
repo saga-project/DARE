@@ -268,6 +268,6 @@ SITE_ID = 1
 
 COMPRESS_ENABLED = True
 
-
+DEBUG=False
 import djcelery
 djcelery.setup_loader()
