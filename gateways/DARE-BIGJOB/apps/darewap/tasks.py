@@ -7,8 +7,12 @@ from django.conf import settings
 from RestrictedPython import compile_restricted
 from RestrictedPython.PrintCollector import PrintCollector
 from RestrictedPython.Guards import safe_builtins, full_write_guard
+#from sandbox import Sandbox
 import simplejson as json
 from pilot import PilotComputeService, PilotCompute, ComputeUnit, State
+
+
+
 BIGJOB_DIRECTORY = "~/.bigjob/"
 
 COORD_URL = "redis://cyder.cct.lsu.edu:2525/"

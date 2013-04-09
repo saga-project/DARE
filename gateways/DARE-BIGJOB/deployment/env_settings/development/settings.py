@@ -13,3 +13,5 @@ CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 #CELERYBEAT_SCHEDULER="djcelery.schedulers.DatabaseScheduler"
 
 COMPRESS_OFFLINE = True
+
+DEBUG = False
