@@ -271,3 +271,6 @@ COMPRESS_ENABLED = True
 
 import djcelery
 djcelery.setup_loader()
+
+
+ALLOWED_HOSTS = ['gw68.quarry.iu.teragrid.org']
