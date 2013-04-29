@@ -71,3 +71,9 @@ a.disabled {
 .ui-icon-triangle-1-s {
 background-position: -64px -16px;
 }
+
+
+#username{
+  color: white;
+  padding-top: 10px;
+}
