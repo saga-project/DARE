@@ -26,23 +26,23 @@ http://gw68.quarry.iu.teragrid.org
 INSTALLATION
 ----------------------------
 1) Check out the code
-    $ mkdir workspace 
-    $ cd workspace
-    $ git clone https://github.com/saga-project/DARE/
+        $ mkdir workspace 
+        $ cd workspace
+        $ git clone https://github.com/saga-project/DARE/
 
 2) Create virtualenv
-    $ virtualenv /tmp/envdare
-    $ source /tmp/envdare/bin/activate
+        $ virtualenv /tmp/envdare
+        $ source /tmp/envdare/bin/activate
     
 3) INSTALL DARE-BIGJOB Env.
-    $ cd DARE/DARE-BIGJOB
-    $ pip install -r requirements.txt
+        $ cd DARE/DARE-BIGJOB
+        $ pip install -r requirements.txt
 
 USAGE
 ----------------------------
 1) create/sync/update Database schema
-    $ python manage.py syncdb
-    $ python manage.py migrate
+        $ python manage.py syncdb
+        $ python manage.py migrate
 
 2) Running the django web server
-    $ python manage.py runserver
+        $ python manage.py runserver
