@@ -39,7 +39,7 @@
 
           <form class="form-inline">
              <select id="select_task">  {% for mytask in mytasks %} <option value='{{mytask.id}}'>{{mytask}}</option> {% endfor %} </select> 
-             <button type="submit" class="btn" id='jobaddtask'  action="/job/bigjob/?action=create_task&job_id={{job_id}}">Add Task</button>
+             <button type="submit" class="btn" id='jobaddtask'  action="/job/bigjob/?action=create_task&job_id={{job_id}}">Add Task to Launch</button>
          </form>
 
             {% include "darewap/bigjob/tasks.html" %}

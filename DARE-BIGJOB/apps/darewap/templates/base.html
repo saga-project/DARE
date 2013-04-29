@@ -64,10 +64,10 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a class="brand" href="/"><i class="icon-home"></i>DARE-BIGJOB</a></li>
+              <li><a href="/view-job-list/"><i class="icon-fighter-jet"></i>Launch-Pilot/Tasks</a></li>
               <li><a href='/my-tasks/'><i class="icon-suitcase"></i>Tasks </a></li>
               <li><a href='/my-pilots/'><i class="icon-suitcase"></i>Pilots</a></li>
               <!--<li><a href='/my-files/'> <i class="icon-suitcase"></i> Files</a></li>-->
-              <li><a href="/view-job-list/"><i class="icon-fighter-jet"></i>Launch-Pilot/Tasks</a></li>
               <li><a href='/stat/software/'>Software</a></li>
               <li><a href='/stat/contact/'>Contact</a></li>
             </ul>
@@ -81,7 +81,7 @@
                   {% endif %}
                     <li> <a href='/logout'> <i class="icon-user"></i>Logout </a></li> 
                   {% else %}
-                    
+
                     <a class="dropdown-toggle" data-toggle="dropdown" href='/login/'><i class="icon-user"></i> Login<b class="caret"></b></a>
                     <ul class="dropdown-menu"> 
                       <li><a href="{% url 'dare_login_in' %}"> Username </a></li>
