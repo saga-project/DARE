@@ -8,5 +8,3 @@ try:
         from env_settings.local.settings import *
 except:
     print 'error'
-
-DEBUG = False
