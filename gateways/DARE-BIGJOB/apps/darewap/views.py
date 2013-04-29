@@ -6,7 +6,6 @@ from django.template import RequestContext
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
-from django.views.generic.simple import direct_to_template
 from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib import messages

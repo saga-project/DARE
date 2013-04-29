@@ -1,4 +1,4 @@
-django==1.4.3
+django==1.5.1
 django-chunks
 django-storages
 south==0.7.6
@@ -27,5 +27,6 @@ django-picklefield
 
 git+https://github.com/jezdez/django_compressor.git#egg=django_compressor
 
-
 RestrictedPython
+
+git+git://github.com/dcramer/django-devserver#egg=django-devserver

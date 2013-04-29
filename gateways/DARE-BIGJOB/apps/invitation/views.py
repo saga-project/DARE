@@ -1,9 +1,10 @@
 from django.conf import settings
-from django.views.generic.simple import direct_to_template
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 from invitation.models import InvitationKey
 from invitation.forms import RequestInvitationKeyForm
 
@@ -17,7 +18,7 @@ def approve_invite(request, invitation_key=None, extra_context=None):
             template_name = 'invitation/invited.html'
         else:
             template_name = 'invitation/wrong_invitation_key.html'
-            return direct_to_template(request, template_name, extra_context)
+            return render_to_response(template_name, RequestContext(request, extra_context))
 
         extra_context = extra_context is not None and extra_context.copy() or {}
         extra_context.update({'invitation_key': invitation_key})
@@ -40,6 +41,4 @@ def request_invite(request, form_class=RequestInvitationKeyForm, extra_context={
         extra_context.update({'form': form})
 
     template_name = 'invitation/invitation_form.html'
-    return direct_to_template(request, template_name, extra_context)
-
-
+    return render_to_response(template_name, RequestContext(request, extra_context))
