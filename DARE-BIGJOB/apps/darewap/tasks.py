@@ -1,9 +1,6 @@
 from celery.decorators import task
-from dare.core.dare_manager import DareManager
-from darewap.models import Job, JobInfo, UserResource, UserTasks
-from dare.helpers.cfgparser import CfgWriter
-import os
-from django.conf import settings
+
+from darewap.models import Job, JobInfo
 from RestrictedPython import compile_restricted
 from RestrictedPython.PrintCollector import PrintCollector
 from RestrictedPython.Guards import safe_builtins, full_write_guard

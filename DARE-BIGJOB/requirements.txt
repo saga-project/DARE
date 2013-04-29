@@ -9,7 +9,9 @@ django-extensions
 #dare
 git+https://github.com/saga-project/BigJob.git#egg=BigJob
 bliss
-dare
+
+#removed as we are not using DARE-commandline
+#dare
 
 #for celery
 celery

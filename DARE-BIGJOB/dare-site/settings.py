@@ -7,4 +7,6 @@ try:
     else:
         from env_settings.local.settings import *
 except:
-    print 
+    print 'error'
+
+DEBUG=False
