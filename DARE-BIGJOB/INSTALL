@@ -8,7 +8,7 @@
     $ source /tmp/envdare/bin/activate
     
 3) INSTALL DARE-BIGJOB Env.
-    $ cd DARE/gateways/DARE-BIGJOB
+    $ cd DARE/DARE-BIGJOB
     $ pip install -r requirements.txt
     
 4) create/sync/update Database schema
