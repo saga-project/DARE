@@ -6,7 +6,7 @@
   # user/group to run as
   USER=dare
   GROUP=dare
-  cd /opt/DARE/gateways/DARE-BIGJOB/
+  cd /opt/DARE/DARE-BIGJOB/
   source /opt/dare-virtual-env/bjdareenv/bin/activate
   test -d $LOGDIR || mkdir -p $LOGDIR
   exec python manage.py run_gunicorn -w $NUM_WORKERS \
