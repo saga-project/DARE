@@ -4,4 +4,4 @@ site_media/thornfiles/*
 celerybeat-schedule.db
 dump.rdb
 bjdareenv
-CACHE/*
+site_media/assets/CACHE/*
