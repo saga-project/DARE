@@ -9,6 +9,6 @@
   cd /opt/DARE/DARE-BIGJOB/
   source /opt/dare-virtual-env/bjdareenv/bin/activate
   test -d $LOGDIR || mkdir -p $LOGDIR
-  exec python manage.py run_gunicorn -w $NUM_WORKERS \
+  exec python manage.py run_gunicorn -b 0.0.0.0:8080 -w $NUM_WORKERS \
     --user=$USER --group=$GROUP --log-level=debug \
     --log-file=$LOGFILE 2>>$LOGFILE
