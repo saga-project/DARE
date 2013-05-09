@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
+from django.core.management import execute_from_command_line
 
 sys.path.append("apps")
 full_path = os.path.dirname(os.path.realpath(__file__))
@@ -13,9 +14,9 @@ if __name__ == "__main__":
     for arg in sys.argv:
         if arg == '--dev':
             os.environ['APPENV'] = 'Development'
+
         else:
             new_args.append(arg)
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dare-site.settings")
-    from django.core.management import execute_from_command_line
-    execute_from_command_line(new_args)
+    execute_from_command_line()
