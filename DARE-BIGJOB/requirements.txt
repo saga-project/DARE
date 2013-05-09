@@ -32,3 +32,5 @@ git+https://github.com/jezdez/django_compressor.git#egg=django_compressor
 RestrictedPython
 
 git+git://github.com/dcramer/django-devserver#egg=django-devserver
+supervisor
+gunicorn
