@@ -2,7 +2,7 @@
   set -e
   LOGFILE=/var/log/gunicorn/dare.log
   LOGDIR=$(dirname $LOGFILE)
-  NUM_WORKERS=3
+  NUM_WORKERS=1
   # user/group to run as
   USER=Sharath
   GROUP=staff
