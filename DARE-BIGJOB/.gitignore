@@ -5,3 +5,5 @@ celerybeat-schedule.db
 dump.rdb
 bjdareenv
 site_media/assets/CACHE/*
+
+site_media/assets/CACHE/*/*
