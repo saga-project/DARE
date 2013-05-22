@@ -36,7 +36,7 @@ def start_pilot(job_id, pilot_id, coordination_url=COORD_URL):
     pilot_url = pilot_compute.get_url()
     jbinfo.detail['pilot_url'] = pilot_url
     jbinfo.save()
-    print("Started Pilot: %s" % (pilot_url))
+    print("Started Pilot: %s" % (jbinfo.detail['pilot_url']), jbinfo.id)
 
 
 @task
@@ -47,16 +47,16 @@ def stop_pilot(job_id, pilot_id, coordination_url=COORD_URL):
     print pilot.detail
     pilot_url = pilot.detail.get("pilot_url")
     #cancle
-    try:
-        pilot_compute = PilotCompute(pilot_url=pilot_url)
-        pilot_compute.cancel()
-    except:
-        pass
-
+    #try:
+    pilot_compute = PilotCompute(pilot_url=pilot_url)
+    pilot_compute.cancel()
     pilot.detail['pilot_url'] = ""
     pilot.detail['status'] = "Stopped"
     pilot.save()
-    print("Started Pilot: %s" % (pilot_url))
+    #except:
+    #    pass
+
+    print("Stopped Pilot: %s" % (pilot_url))
 
 
 @task
@@ -109,11 +109,15 @@ def start_task(staskid):
         #job_pilot_id = taskinfo.detail.job_pilot_id
         pass
 
+    pilot_url = None
     for pilot in JobInfo.objects.filter(job=taskinfo.job, itype='pilot'):
-        pilot_url = pilot.detail['pilot_url']
-        pilot_compute = PilotCompute(pilot_url=pilot_url)
-        if pilot_compute.get_state() == State.Running:
-            break
+        print pilot.id
+        #import pdb;pdb.set_trace()
+        if pilot.detail.get('pilot_url'):
+            pilot_url = pilot.detail['pilot_url']
+            pilot_compute = PilotCompute(pilot_url=pilot_url)
+            if pilot_compute.get_state() == State.Running:
+                break
 
     if pilot_url:
         ut = taskinfo.user_task
