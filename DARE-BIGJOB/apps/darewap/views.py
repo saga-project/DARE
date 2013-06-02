@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib import messages
-from .models import Job, UserContext, UserResource, UserTasks, JobInfo, UserPilots, DareBigJob, DareBigJobTask, DareBigJobPilot, simple_task_script
+from .models import Job, UserContext, UserResource, UserTasks, JobInfo, UserPilots, DareBigJob, DareBigJobTask, DareBigJobPilot, simple_task_script , DefaultDareBigJobPilot
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserPilotsForm, UserTasksForm
 from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
 from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task, get_task_status
@@ -441,9 +441,19 @@ def view_all_dare_runs(request):
 @login_required
 def view_dare_run(request, id):
     run = DareBigJob.objects.get(id=id)
-    form = UserTasksForm()
+    runpilots = DareBigJobPilot.objects.filter(dare_bigjob=run)
+    runtasks = DareBigJobTask.objects.filter(dare_bigjob=run)
 
-    return render_to_response('runs/view.html', {'run': run, 'form': form}, context_instance=RequestContext(request))
+    form = UserTasksForm()
+    send_dict = {
+                 'defaultpilots': DefaultDareBigJobPilot.objects.all(),
+                 'runpilots': runpilots,
+                 'runtasks': runtasks,
+                 'run': run,
+                 'form': form
+                 }
+
+    return render_to_response('runs/view.html', send_dict, context_instance=RequestContext(request))
 
 
 @login_required
@@ -454,4 +464,43 @@ def view_create_run(request):
             new_run = DareBigJob(user=request.user, status='New', name=request.POST.get('name'))
             new_run.save()
             return HttpResponseRedirect('/runs/%s/' % new_run.id)
+    return HttpResponseServerError()
+
+
+@login_required
+def view_run_add_pilot(request, id):
+    if request.method == "POST":
+        print request.POST
+        if request.POST.get('pilot'):
+            run = DareBigJob.objects.get(id=id)
+            pilot = DefaultDareBigJobPilot.objects.get(id=request.POST.get('pilot'))
+            runpilot = DareBigJobPilot()
+            for field in DareBigJobPilot._meta.fields:
+                if field.name not in ['id', 'defaultdarebigjobpilot_ptr', 'dare_bigjob']:
+                    setattr(runpilot, field.name, getattr(pilot, field.name, ''))
+
+            runpilot.user = request.user
+            runpilot.number_of_processes = request.POST.get('cores', 8)
+            runpilot.walltime = request.POST.get('walltime', 100)
+            runpilot.dare_bigjob = run
+            runpilot.save()
+            return HttpResponseRedirect('/runs/%s/' % run.id)
+    return HttpResponseServerError()
+
+
+@login_required
+def view_run_add_task(request, id):
+    if request.method == "POST":
+        print request.POST
+        if request.POST.get('task'):
+            run = DareBigJob.objects.get(id=id)
+            runtask = DareBigJobTask()
+            if request.POST.get('pilot') > -1:
+                runtask.dare_bigjob_pilot = DareBigJobPilot.objects.get(request.POST.get('pilot'))
+            runtask.name = request.POST.get('name', 'Task')
+            runtask.dare_bigjob = run
+            runtask.user = request.user
+            runtask.save()
+
+            return HttpResponseRedirect('/runs/%s/' % run.id)
     return HttpResponseServerError()

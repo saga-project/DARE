@@ -14,19 +14,15 @@
     </thead>
     <tbody> 
 
-      {% for pilot in pilotform.fields.pilots.choices %}
+      {% for pilot in runpilots %}
         <tr>  
-          <td style="width: 10%"> {{forloop.counter}}</td>
-          <td style="width: 22%">{{pilot.1|title}}</td>  
-          <td style="width: 35%" >
-              <a class="btn btn-info" id="editconf" href="/my-pilots?edit=true&id={{pilot.0}}" data-toggle="modal" data-target="#editconfModal" checkme='id_pilots_{{k.0|default:0}}' > Edit</a> 
-            <a class="btn btn-success"  id='celery_task_{{pilot.0}}' href="/job/celery_tasks/?jobid={{job_id}}&pilotid={{pilot.0}}" ttype="start_pilot" data-toggle="pilot" > Start Pilot</a> </td>  
-          <td style="width: 40%">            
-                <span id='status-bar-{{pilot.0}}'>  </span>
-                <div class="progress progress-bars"  href="/job/celery_tasks/?jobid={{job_id}}&pilotid={{pilot.0}}" myid="{{pilot.0}}">
-                    <div class="bar" id="progress_celery_task_{{pilot.0}}"  style="width: 0%;"> </div> 
-                </div> 
-          </td>  
+          <td style="width: 5%"> {{forloop.counter}}</td>
+          <td style="width: 22%">{{pilot.name|title}}({{pilot.id}})</td>  
+          <td style="width: 10%">{{pilot.number_of_processes}}</td>  
+          <td style="width: 10%">{{pilot.walltime}}</td>  
+          <td style="width: 10%">{{pilot.status}}</td>  
+          <td style="width: 10%"><a class="btn btn-primary"> Start</a></td>  
+
 
         </tr>  
       {% endfor %}
@@ -39,22 +35,23 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Allocate Pilot to this Run</h3>
     </div>
-    <form class="form-horizontal" id="allocatePilotForm" method="post" action="allocatepilot">
+    <form class="form-horizontal" id="allocatePilotForm" method="post" action="add-pilot">
         <div class="modal-body">
             {% csrf_token %}
             <div class="control-group">
                 <label class="control-label" for="inputEmail">Pilot</label>
                 <div class="controls">
-                    <select>
-                      <option>OSG</option>
-                      <option>XSEDE-Lonestar</option>
+                    <select name='pilot'>
+                        {% for pilot in defaultpilots %}
+                            <option value="{{pilot.id}}">{{pilot.name}}</option>
+                        {% endfor%}
                     </select>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputPassword"># of Cores</label>
                 <div class="controls">
-                <input type="number" id="walltime" value="8" name="walltime" placeholder="10">
+                <input type="number" id="cores" value="8" name="cores" placeholder="10">
                 </div>
             </div>
             <div class="control-group">

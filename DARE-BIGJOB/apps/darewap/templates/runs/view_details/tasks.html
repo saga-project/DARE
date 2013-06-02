@@ -3,34 +3,26 @@
 <table class="table table-striped table-hover whitetable">   
     <thead>
       <tr>  
-          <th>#</th>  
-          <th>Name</th>
-          <th>#Cores</th>  
-          <th>Data</th>  
-          <th>Status</th>  
-          <th>Pilot</th>  
+          <th style="width: 5%" >#</th>  
+          <th style="width: 20%">Name</th>
+          <th style="width: 5%" >#Cores</th>  
+          <th style="width: 20%">Data</th>  
+          <th style="width: 10%">Status</th>  
+          <th style="width: 10%">Pilot</th>  
           <th>Actions</th>  
       </tr>
     </thead>
     <tbody> 
-      {% for task in jobtasks%}  
+      {% for task in runtasks%}  
           <tr>  
-            <td style="width: 10%" > {{forloop.counter}}</td> 
-            <td style="width: 22%" > {{task.user_task}}</td>  
-            <td style="width: 35%" >  
-                <a class="btn btn-info" id="selecttaskmodal" href="/my-tasks?edit=true&id={{task.user_task.id}}" data-toggle="modal" data-target="#taskModal" checkme='id_pilots_{{k.0|default:0}}' > Edit</a>  
-                <a href="/job/celery_tasks?staskid={{task.id}}"  id='task_action_{{task.id}}' ttype="start_task" class="btn btn-success starttask">Start Task</a>
-                <a href="/job/celery_tasks?staskid={{task.id}}"  id='task_action_{{task.id}}' ttype="start_task" class="btn btn-success disabled">Download Output
+            <td > {{forloop.counter}}</td> 
+            <td  > {{task.name}}</td>  
+            <td > {{task.get_cores}}</td>  
+            <td  >  </td>  
+            <td  > {{task.status}}</td>  
+            <td  > {{task.dare_bigjob_pilot}}</td>  
+            <td ><a class="btn btn-primary"> Start</a></td>  
 
-            </td>  
-            <td style="width: 40%">   
-              <span id='status-task-text-{{task.id}}'></span>
-                <div class="progress task-progress-bars" href="/job/celery_tasks?staskid={{task.id}}">
-                  <div class="bar" id="progress_task_{{task.id}}" style="width: 0%;">  </div> 
-                </div> 
-
-
-            </td>  
           </tr>   
         {% endfor %}
     </tbody>  
@@ -42,25 +34,32 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Add Task to this Run</h3>
     </div>
-    <form id="addTaskForm" method="post" action="allocatepilot">
+    <form id="addTaskForm" method="post" action="add-task">
         <div class="modal-body">
             {% csrf_token %}
-            <ul class="inline">
-                  <li><label class="control-label" for="inputEmail">Pilot</label></li>
-                  <li>
-                      <select>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+            <table>
+              <tr>
+                  <td class='name'><label class="control-label" for="inputEmail">Name</label></td>
+                  <td>
+                    {{form.name}}
+                  </td>
+              </tr>
+            <tr>
+                  <td class='name'><label class="control-label" for="inputEmail">Pilot</label></td>
+                  <td>
+                      <select name='task'>
+                        {% for pilot in runpilots %}
+                            <option value="{{pilot.id}}">{{pilot.name}}({{pilot.id}})</option>
+                        {% endfor%}
                       </select>
-                  </li>
-            </ul>
+                  </td>
+            </tr>
+            </table>
+
             <div class="control-group">
                 <label class="control-label" for="inputPassword">Tasks</label>
                 <div class="controls">
-                {{form.script}}
+                      {{form.script}}
                 </div>
             </div>
         </div>

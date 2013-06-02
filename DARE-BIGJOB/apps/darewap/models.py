@@ -329,4 +329,7 @@ class DareBigJobPilot(DefaultDareBigJobPilot):
 
 class DareBigJobTask(BaseDareModel):
     dare_bigjob = models.ForeignKey('DareBigJob')
+    dare_bigjob_pilot = models.ForeignKey('DareBigJobPilot', blank=True, null=True)
     script = models.TextField(blank=True, default=simple_task_script)
+    inputfiles = models.CharField(max_length=30, blank=True)
+    outputfiles = models.CharField(max_length=30, blank=True)
