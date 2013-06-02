@@ -18,4 +18,12 @@ $(document).ready(function() {
     replace_tab_by_spaces: true
   });
 
+
+  $("#addTaskForm").validate({
+      rules: {
+       name : { required : true, minlength: 2 },
+       script : { required : true, minlength: 30 }
+      }
+  });
+
 });

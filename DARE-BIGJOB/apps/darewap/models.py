@@ -294,7 +294,7 @@ class BaseDareModel(models.Model):
         return str(self.id)
 
 
-class DefaultDareBigJobPilot(BaseDareModel):
+class BaseDareBigJobPilot(BaseDareModel):
     pilot_type = models.CharField(max_length=10)
     service_url = models.CharField(max_length=256)
     data_service_url = models.CharField(max_length=256,  blank=True)
@@ -304,12 +304,13 @@ class DefaultDareBigJobPilot(BaseDareModel):
     queue = models.CharField(max_length=30, blank=True)
     project = models.CharField(max_length=30, blank=True)
     walltime = models.IntegerField(default=10)
-    time_started = models.DateTimeField()
 
-    def __unicode__(self):
-        if self.name:
-            return self.name
-        return str(self.id)
+    class Meta:
+        abstract = True
+
+
+class DefaultDareBigJobPilot(BaseDareBigJobPilot):
+    pass
 
 
 class DefaultDareBigJobPilotAdmin(admin.ModelAdmin):
@@ -323,8 +324,9 @@ class DareBigJob(BaseDareModel):
     other_info = models.CharField(max_length=150, blank=True)
 
 
-class DareBigJobPilot(DefaultDareBigJobPilot):
+class DareBigJobPilot(BaseDareBigJobPilot):
     dare_bigjob = models.ForeignKey('DareBigJob')
+    time_started = models.DateTimeField()
 
 
 class DareBigJobTask(BaseDareModel):
@@ -333,3 +335,6 @@ class DareBigJobTask(BaseDareModel):
     script = models.TextField(blank=True, default=simple_task_script)
     inputfiles = models.CharField(max_length=30, blank=True)
     outputfiles = models.CharField(max_length=30, blank=True)
+
+
+

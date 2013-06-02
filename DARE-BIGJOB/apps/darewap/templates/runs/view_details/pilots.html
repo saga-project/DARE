@@ -1,14 +1,14 @@
 <a href="#allocatePilotModal" role="button" class="btn btn-primary runadd" data-toggle="modal">Allocate</a>
 <h3 class='run-h'>  Pilots </h3>  
-<table class="table table-striped table-hover whitetable">   
+<table class="table table-condensed table-striped table-hover whitetable">   
     <thead>
         <tr>  
-            <th>#</th> 
-            <th>Name</th>
-            <th>#Cores</th>  
-            <th>Walltime</th>  
-            <th>Status</th>  
-            <th>Actions</th>  
+            <th style="width: 5%">#</th> 
+            <th style="width: 22%">Name</th>
+            <th style="width: 10%">#Cores</th>  
+            <th style="width: 10%">Walltime</th>  
+            <th style="width: 10%">Status</th>  
+            <th style="width: 10%">Actions</th>  
 
         </tr>
     </thead>
@@ -16,12 +16,12 @@
 
       {% for pilot in runpilots %}
         <tr>  
-          <td style="width: 5%"> {{forloop.counter}}</td>
-          <td style="width: 22%">{{pilot.name|title}}({{pilot.id}})</td>  
-          <td style="width: 10%">{{pilot.number_of_processes}}</td>  
-          <td style="width: 10%">{{pilot.walltime}}</td>  
-          <td style="width: 10%">{{pilot.status}}</td>  
-          <td style="width: 10%"><a class="btn btn-primary"> Start</a></td>  
+          <td> {{forloop.counter}}</td>
+          <td>{{pilot.name|title}}({{pilot.pk}})</td>  
+          <td>{{pilot.number_of_processes}}</td>  
+          <td>{{pilot.walltime}}</td>  
+          <td>{{pilot.status}}</td>  
+          <td><a class="btn btn-success btn-mini"> Start</a></td>  
 
 
         </tr>  

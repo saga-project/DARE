@@ -14,7 +14,7 @@ from .forms import UserContextTable, UserContextForm, UserResourceTable, UserRes
 from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
 from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task, get_task_status
 import simplejson as json
-
+import datetime
 
 DEFAULT_PILOTS = {'stampede': {"service_url": 'slurm+ssh://smaddi2@ranger.tacc.utexas.edu',
                      "number_of_processes": 16,
@@ -475,14 +475,17 @@ def view_run_add_pilot(request, id):
             run = DareBigJob.objects.get(id=id)
             pilot = DefaultDareBigJobPilot.objects.get(id=request.POST.get('pilot'))
             runpilot = DareBigJobPilot()
-            for field in DareBigJobPilot._meta.fields:
-                if field.name not in ['id', 'defaultdarebigjobpilot_ptr', 'dare_bigjob']:
-                    setattr(runpilot, field.name, getattr(pilot, field.name, ''))
-
             runpilot.user = request.user
+            runpilot.dare_bigjob = run
+            runpilot.time_started = datetime.datetime.now()
+
+            for field in ['name', 'status', 'pilot_type', 'service_url', 'data_service_url', 'working_directory',
+                        'cores_per_node', 'number_of_processes', 'queue', 'project', 'walltime']:
+                    setattr(runpilot, field, getattr(pilot, field, ''))
+
             runpilot.number_of_processes = request.POST.get('cores', 8)
             runpilot.walltime = request.POST.get('walltime', 100)
-            runpilot.dare_bigjob = run
+            print runpilot.id
             runpilot.save()
             return HttpResponseRedirect('/runs/%s/' % run.id)
     return HttpResponseServerError()
@@ -491,12 +494,12 @@ def view_run_add_pilot(request, id):
 @login_required
 def view_run_add_task(request, id):
     if request.method == "POST":
-        print request.POST
-        if request.POST.get('task'):
+        print request.POST , request.POST.get('pilot')
+        if request.POST.get('script') and len(request.POST.get('script')) > 0:
             run = DareBigJob.objects.get(id=id)
             runtask = DareBigJobTask()
             if request.POST.get('pilot') > -1:
-                runtask.dare_bigjob_pilot = DareBigJobPilot.objects.get(request.POST.get('pilot'))
+                runtask.dare_bigjob_pilot = DareBigJobPilot.objects.get(id=request.POST.get('pilot'))
             runtask.name = request.POST.get('name', 'Task')
             runtask.dare_bigjob = run
             runtask.user = request.user

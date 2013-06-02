@@ -114,5 +114,25 @@
          "content":"    <H2 align=\"justify\"><br />\r\n      <font color='#00007A'> DARE-BIGJOB </font> <br />\r\n      <span class=\"twoColHybRtHdr\">\r\n      </H2>\r\n<p>\r\nDARE-BIGJOB is a Gateway for BigJob based applications which builds upon the Distributed Application Runtime-Environment (DARE) Framework.\r\n</p>\r\n\r\nAt the moment, there are no general-purpose community accounts, and it requires registrations contacting us before using services. \r\nFor more information, contact us. For information about SAGA and SAGA-Bigjob, please visit this\r\n<a href=\"http://saga-project.org/\">Link</a></font></p>\r\n    </p>\r\n    \r\n    <p><br class=\"clearfloat\" />\r\n    </p>\r\n\r\n\r\n\r\n",
          "key":"home"
       }
+   },
+   {
+       "pk": 1, 
+       "model": "darewap.defaultdarebigjobpilot", 
+       "fields": {
+           "status": "New", 
+           "project": "TG-MCB090174", 
+           "name": "XSEDE-LONESTAR", 
+           "data_service_url": "", 
+           "created": "2013-06-02T12:07:50.006Z", 
+           "cores_per_node": 12, 
+           "number_of_processes": 10, 
+           "modified": "2013-06-02T12:07:50.006Z", 
+           "queue": "development", 
+           "pilot_type": "xsede", 
+           "service_url": "sge+ssh://smaddi2@lonestar.tacc.utexas.edu", 
+           "user": 1, 
+           "working_directory": "/work/01395/smaddi2/dare/", 
+           "walltime": 100
+       }
    }
 ]

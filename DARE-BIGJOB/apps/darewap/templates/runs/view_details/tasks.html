@@ -1,6 +1,6 @@
 <a href="#addTaskModal" role="button" class="btn btn-primary runadd" data-toggle="modal" id="btnAddTaskModal">Add Task </a>
 <h3 class='run-h'>  Tasks </h3>  
-<table class="table table-striped table-hover whitetable">   
+<table class="table table-condensed table-hover whitetable">   
     <thead>
       <tr>  
           <th style="width: 5%" >#</th>  
@@ -8,7 +8,7 @@
           <th style="width: 5%" >#Cores</th>  
           <th style="width: 20%">Data</th>  
           <th style="width: 10%">Status</th>  
-          <th style="width: 10%">Pilot</th>  
+          <th style="width: 15%">Pilot</th>  
           <th>Actions</th>  
       </tr>
     </thead>
@@ -20,8 +20,8 @@
             <td > {{task.get_cores}}</td>  
             <td  >  </td>  
             <td  > {{task.status}}</td>  
-            <td  > {{task.dare_bigjob_pilot}}</td>  
-            <td ><a class="btn btn-primary"> Start</a></td>  
+            <td  > {{task.dare_bigjob_pilot.name}}({{task.dare_bigjob_pilot.id}})</td>  
+            <td ><a class="btn btn-success btn-mini"> Start</a></td>  
 
           </tr>   
         {% endfor %}
@@ -47,7 +47,7 @@
             <tr>
                   <td class='name'><label class="control-label" for="inputEmail">Pilot</label></td>
                   <td>
-                      <select name='task'>
+                      <select name='pilot'>
                         {% for pilot in runpilots %}
                             <option value="{{pilot.id}}">{{pilot.name}}({{pilot.id}})</option>
                         {% endfor%}
