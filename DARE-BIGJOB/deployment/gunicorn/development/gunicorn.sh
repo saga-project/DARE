@@ -9,7 +9,7 @@
   cd /opt/DARE/DARE-BIGJOB/
   source /opt/dare-virtual-env/bjdareenv/bin/activate
   test -d $LOGDIR || mkdir -p $LOGDIR
-  exec python managedev.py compress  
+  python managedev.py compress  
   exec python managedev.py run_gunicorn -b 0.0.0.0:8080 -w $NUM_WORKERS \
     --user=$USER --group=$GROUP --log-level=debug \
     --log-file=$LOGFILE 2>>$LOGFILE
