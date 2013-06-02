@@ -217,7 +217,8 @@ def update_status_run_pilot(pilot_id):
         elif pilot_compute.get_state() in [State.Running]:
             pilot.status = "Active"
     else:
-        pilot.status = "New"
+        if not pilot.status == "Stopped":
+            pilot.status = "New"
 
     pilot.save()
     print("Stopped Pilot: %s " % (pilot_url), pilot.id)
@@ -293,6 +294,9 @@ def update_status_run_task(task_id):
                 all_status = "Submitted"
             elif compute_unit.get_state() in [State.Running]:
                 all_status = "Running"
+
+        elif  taskinfo.status == "Stopped":
+            all_status = "Stopped"
 
     taskinfo.status = all_status
     taskinfo.save()
