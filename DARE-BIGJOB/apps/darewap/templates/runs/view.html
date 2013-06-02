@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Run {% endblock %}
+{% block breadcrumb%}
+    <ul class="breadcrumb">
+      <li><a href="/home/">Home</a> <span class="divider">/</span></li>
+      <li><a href="/runs/">Runs</a> <span class="divider">/</span></li>
+      <li class="active">{{run.name|default:run.id}}</li>
+    </ul>
+{% endblock %}
+
+
+{% block body%}
+    {% include "runs/view_details/pilots.html" %}
+    <hr>
+    {% include "runs/view_details/tasks.html" %}
+{% endblock%}
+
+

@@ -1,0 +1,72 @@
+<a href="#addTaskModal" role="button" class="btn btn-primary runadd" data-toggle="modal" id="btnAddTaskModal">Add Task </a>
+<h3 class='run-h'>  Tasks </h3>  
+<table class="table table-striped table-hover well">   
+    <thead>
+      <tr>  
+          <th>#</th>  
+          <th>Name</th>
+          <th>#Cores</th>  
+          <th>Data</th>  
+          <th>Status</th>  
+          <th>Pilot</th>  
+          <th>Actions</th>  
+      </tr>
+    </thead>
+    <tbody> 
+      {% for task in jobtasks%}  
+          <tr>  
+            <td style="width: 10%" > {{forloop.counter}}</td> 
+            <td style="width: 22%" > {{task.user_task}}</td>  
+            <td style="width: 35%" >  
+                <a class="btn btn-info" id="selecttaskmodal" href="/my-tasks?edit=true&id={{task.user_task.id}}" data-toggle="modal" data-target="#taskModal" checkme='id_pilots_{{k.0|default:0}}' > Edit</a>  
+                <a href="/job/celery_tasks?staskid={{task.id}}"  id='task_action_{{task.id}}' ttype="start_task" class="btn btn-success starttask">Start Task</a>
+                <a href="/job/celery_tasks?staskid={{task.id}}"  id='task_action_{{task.id}}' ttype="start_task" class="btn btn-success disabled">Download Output
+
+            </td>  
+            <td style="width: 40%">   
+              <span id='status-task-text-{{task.id}}'></span>
+                <div class="progress task-progress-bars" href="/job/celery_tasks?staskid={{task.id}}">
+                  <div class="bar" id="progress_task_{{task.id}}" style="width: 0%;">  </div> 
+                </div> 
+
+
+            </td>  
+          </tr>   
+        {% endfor %}
+    </tbody>  
+</table> 
+
+<!-- Modal -->
+<div id="addTaskModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Add Task to this Run</h3>
+    </div>
+    <form id="addTaskForm" method="post" action="allocatepilot">
+        <div class="modal-body">
+            {% csrf_token %}
+            <ul class="inline">
+                  <li><label class="control-label" for="inputEmail">Pilot</label></li>
+                  <li>
+                      <select>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                      </select>
+                  </li>
+            </ul>
+            <div class="control-group">
+                <label class="control-label" for="inputPassword">Tasks</label>
+                <div class="controls">
+                {{form.script}}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <input class="btn btn-primary" id="runFormSubmit" type="submit" value="Add Task">
+        </div>
+    </form>
+</div>

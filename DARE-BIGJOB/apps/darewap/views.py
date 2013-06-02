@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate
@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib import messages
-from .models import Job, UserContext, UserResource, UserTasks, JobInfo, UserPilots
+from .models import Job, UserContext, UserResource, UserTasks, JobInfo, UserPilots, DareBigJob, DareBigJobTask, DareBigJobPilot, simple_task_script
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserPilotsForm, UserTasksForm
 from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
 from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task, get_task_status
@@ -431,3 +431,27 @@ def view_manage_pilots(request):
             up.save()
     return render_to_response('darewap/pilots/manage_pilots.html', {'mypilots': mypilots}, context_instance=RequestContext(request))
 
+
+@login_required
+def view_all_dare_runs(request):
+    runs = DareBigJob.objects.filter(user=request.user)
+    return render_to_response('runs/list.html', {'runs': runs}, context_instance=RequestContext(request))
+
+
+@login_required
+def view_dare_run(request, id):
+    run = DareBigJob.objects.get(id=id)
+    form = UserTasksForm()
+
+    return render_to_response('runs/view.html', {'run': run, 'form': form}, context_instance=RequestContext(request))
+
+
+@login_required
+def view_create_run(request):
+    if request.method == "POST":
+        print request.POST
+        if request.POST.get('name'):
+            new_run = DareBigJob(user=request.user, status='New', name=request.POST.get('name'))
+            new_run.save()
+            return HttpResponseRedirect('/runs/%s/' % new_run.id)
+    return HttpResponseServerError()

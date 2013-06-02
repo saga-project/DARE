@@ -1,44 +1,13 @@
-.progress { width: 100%; border: 1px solid #000; height: 20px; }
-.bar { background: blue; line-height:130%; }
-
-.modal { width: 800px;  }
-
-.modal-body {
-    max-height: 800px;
-}
-
-
-#editconfModal {
-
-}
-
-
-#taskModal {
-    width: 800px; /* SET THE WIDTH OF THE MODAL */
-    height: 600px; 
-    margin: 0 0 0 -400px; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
-}
-
-
-
 .CodeMirror {
-    background:#fff;
-    height: auto;
-    width: 550px;
+    background: #fff;
+    height: 200px !important;
+    width: 500px;
 }
 
 .CodeMirror pre { 
     line-height: inherit; 
     color: inherit; 
 } 
-
-a.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-    cursor: default;
-}
-
-
 
 .pager {
   padding-top: 20px;
@@ -60,20 +29,36 @@ a.disabled {
   padding-left: 2px;
   }
 
-.css_right {
-  float: right;
-}
-
-.ui-icon {
-  background-image: url(../img/ui-icons_888888_256x240.png);
-}
-
-.ui-icon-triangle-1-s {
-background-position: -64px -16px;
-}
-
 
 #username{
   color: white;
   padding-top: 10px;
+  padding-right: 5px;
+}
+
+.runadd {
+  float: right;
+  margin-top: 6px;
+  margin-right: 5px;
+}
+
+.run-h {
+  padding-left: 10px;
+  color: grey;
+}
+
+.nav i{
+  margin-top: 1px;
+}
+.nav .moreh{
+  margin-top: 4px;
+}
+
+
+.modal form{
+  margin: 0;
+}
+
+.navbar-inverse .brand, .navbar-inverse .nav>li>a {
+  color: white;
 }

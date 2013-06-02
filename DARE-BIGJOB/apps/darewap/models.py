@@ -195,7 +195,7 @@ admin.site.register(UserResource, UserResourceAdmin)
 
 spmd_type = (('Single', 'single'), ('MPI', 'mpi'))
 
-ppp = """def tasks(NUMBER_JOBS=1):
+simple_task_script = """def tasks(NUMBER_JOBS=1):
     tasks = []
     for i in range(NUMBER_JOBS):
         compute_unit_description = {
@@ -207,8 +207,7 @@ ppp = """def tasks(NUMBER_JOBS=1):
         "output": "stdout.txt",
         "error": "stderr.txt"}
         tasks.append(compute_unit_description)
-    return tasks
-"""
+    return tasks"""
 
 
 class UserTasks(models.Model):
@@ -223,7 +222,7 @@ class UserTasks(models.Model):
     num_of_cores = models.CharField(max_length=30, blank=True)
     num_of_processes = models.CharField(max_length=30, blank=True)
     num_of_tasks = models.CharField(max_length=30, blank=True)
-    script = models.TextField(blank=True, default=ppp)
+    script = models.TextField(blank=True, default=simple_task_script)
 
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(blank=True)
@@ -279,7 +278,55 @@ class UserPilotsAdmin(admin.ModelAdmin):
 admin.site.register(UserPilots, UserPilotsAdmin)
 
 
+class BaseDareModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=30, null=False, blank=False, default='name')
+    status = models.CharField(max_length=30, null=False, blank=False, default='New')
+    user = models.ForeignKey('auth.User')
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+        if self.name:
+            return self.name
+        return str(self.id)
 
 
+class DefaultDareBigJobPilot(BaseDareModel):
+    pilot_type = models.CharField(max_length=10)
+    service_url = models.CharField(max_length=256)
+    data_service_url = models.CharField(max_length=256,  blank=True)
+    working_directory = models.CharField(max_length=30, blank=True)
+    cores_per_node = models.IntegerField(default=1)
+    number_of_processes = models.IntegerField(default=1)
+    queue = models.CharField(max_length=30, blank=True)
+    project = models.CharField(max_length=30, blank=True)
+    walltime = models.IntegerField(default=10)
+    time_started = models.DateTimeField()
+
+    def __unicode__(self):
+        if self.name:
+            return self.name
+        return str(self.id)
 
 
+class DefaultDareBigJobPilotAdmin(admin.ModelAdmin):
+    list_display = ('user', 'name', 'service_url', 'cores_per_node', 'number_of_processes', 'queue', 'project', 'walltime')
+
+admin.site.register(DefaultDareBigJobPilot, DefaultDareBigJobPilotAdmin)
+
+
+class DareBigJob(BaseDareModel):
+    cordination_url = models.CharField(max_length=150, blank=True)
+    other_info = models.CharField(max_length=150, blank=True)
+
+
+class DareBigJobPilot(DefaultDareBigJobPilot):
+    dare_bigjob = models.ForeignKey('DareBigJob')
+
+
+class DareBigJobTask(BaseDareModel):
+    dare_bigjob = models.ForeignKey('DareBigJob')
+    script = models.TextField(blank=True, default=simple_task_script)

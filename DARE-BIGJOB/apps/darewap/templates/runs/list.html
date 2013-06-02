@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %} Run List {% endblock %}
+
+
+{% block breadcrumb%}
+    <ul class="breadcrumb">
+      <li><a href="/home/">Home</a> <span class="divider">/</span></li>
+      <li class="active">Runs</li>
+    </ul>
+{% endblock %}
+
+
+{% block body%}
+{% load daretags%}
+ 
+<!-- Modal -->
+<div id="createRunModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Create A New Run</h3>
+    </div>
+    <form id="runForm" method="post" action="/runs/new/">
+        <div class="modal-body">
+            {% csrf_token %}
+            <label class="control-label" for="runName">Name</label>
+            <input class="span2" id="id_name" name="name" type="text">
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <input class="btn btn-primary" id="runFormSubmit" type="submit" value="Create">
+        </div>
+    </form>
+</div>
+
+
+<ul class="inline">
+  <li><h3>Existing Runs </h3></li>
+  <li><a href="#createRunModal" role="button" class="btn btn-primary" data-toggle="modal">Create  Run</a>
+ </li>
+
+</ul>
+
+
+<table class='table table-hover table-condensed'>
+
+    <tr>
+        <th style="width: 10%" >Run</th>
+        <th style="width: 10%" >Status</th>
+        <th style="width: 12%" >Last Modified 
+            <span class="css_right ui-icon ui-icon-triangle-1-s"></span>
+        </th>
+    </tr>
+    {% for job in runs %}
+        <tr>  
+        <td> <a href='/runs/{{job.id}}/' > 
+{{ job.name|default:job.id|title}}</a> </td>
+        <td>  {{ job.status }}</td>
+        <td width="10%" > <p class="text-success" > {{job.modified|timesince_human}}</p></td>
+        </tr>
+    {% endfor %}
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if jobs.has_previous %}
+            <a href="?page={{ jobs.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}.
+        </span>
+
+        {% if jobs.has_next %}
+            <a href="?page={{ jobs.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+
+{% endblock%}

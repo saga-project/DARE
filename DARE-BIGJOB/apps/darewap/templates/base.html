@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>DARE-BIGJOB</title>
+    <title>
+          {% block title %}
+          {% endblock %}
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -10,11 +13,9 @@
 {% load compress %}
     {% compress css %}
     <!-- Le styles -->
-    <link href="/assets/css/bootstrap.css" rel="stylesheet">
-    <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="/assets/css/base.css" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/css/codemirror.css">
    {% endcompress %}
    {% spaceless %}
     <style type="text/css">
@@ -30,17 +31,18 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 {% compress js %}
-    <script type='text/javascript' src='/assets/js/jquery-1.8.3.js'></script>
-    <script type='text/javascript' src='/assets/js/jquery-ui.js'></script>
+    <script type='text/javascript' src='/assets/js/jquery-2.0.2.min.js'></script>
+    <script type='text/javascript' src='/assets/js/jquery.validate.min.js'></script>
+    <script type='text/javascript' src='/assets/js/additional-methods.min.js'></script>
+    <script type='text/javascript' src='/assets/js/edit_area_full.js'></script>
+    <script type='text/javascript' src='/assets/js/python.js'></script>
+    <script type='text/javascript' src='/assets/js/en.js'></script>
+
     <script type='text/javascript' src='/assets/js/base.js'></script>
     <script type='text/javascript' src='/assets/js/purl.js'></script>
 
-
-    <script src="/assets/js/bootstrap.js"></script>
-    <script src="/assets/js/codemirror.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
     <script type='text/javascript' src='/assets/js/jsl.format.js'></script>
-    <script src="/assets/js/matchbrackets.js"></script>
-    <script src="/assets/js/python.js"></script>
     <script src="/assets/js/spin.js"></script>
 {% endcompress %}
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -63,12 +65,9 @@
           
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li><a class="brand" href="/"><i class="icon-home"></i>DARE-BIGJOB</a></li>
-              <li><a href="/view-job-list/"><i class="icon-fighter-jet"></i>Launch-Pilot/Tasks</a></li>
-              <li><a href='/my-tasks/'><i class="icon-suitcase"></i>Tasks </a></li>
-              <li><a href='/my-pilots/'><i class="icon-suitcase"></i>Pilots</a></li>
-              <!--<li><a href='/my-files/'> <i class="icon-suitcase"></i> Files</a></li>-->
-              <li><a href='/stat/software/'>Software</a></li>
+              <li><a class="brand" href="/home/"><i class="icon-home icon-white moreh"></i>DARE-BIGJOB</a></li>
+              <li><a href="/runs/"><i class="icon-plane icon-white"></i>Runs</a></li>
+              <li><a href='#'><i class="icon-briefcase icon-white"></i>Files </a></li>
               <li><a href='/stat/contact/'>Contact</a></li>
             </ul>
           
@@ -76,10 +75,19 @@
                 <li class="dropdown">
 
                   {% if request.user.is_authenticated %}
-                  {% if request.user.get_full_name %}
-                   <p id='username' > Hello {{request.user.get_full_name|title}} </p>
-                  {% endif %}
-                    <li> <a href='/logout'> <i class="icon-user"></i>Logout </a></li> 
+                   <p id='username'> Hello </p>
+                    <li> 
+                      <div class="btn-group">
+                        <a class="btn btn-info" href="#"><i class="icon-user icon-white"></i>  
+                          {{request.user.get_full_name|title}}
+                        </a>
+                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href='/logout'> <i class="icon-user"></i>Logout </a></li>
+                        </ul>
+                      </div>
+
+                    </li> 
                   {% else %}
 
                     <a class="dropdown-toggle" data-toggle="dropdown" href='/login/'><i class="icon-user"></i> Login<b class="caret"></b></a>
@@ -104,22 +112,30 @@
     </div>
 
     <div class="container">
+        {% if messages %}
 
+          <ul class="messages">
+              {% for message in messages %}
+                <div class="alert">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  {{ message }}
+                </div>
+              {% endfor %}
+          </ul>
+        {% endif %}
+
+
+      {% block breadcrumb%}
+      {% endblock %}
       <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-                          {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
+      <div class="well">
 
-                {% block body %}
-                {% endblock %}
-          
-                {% block content %}
-                {% endblock %}
+
+        {% block body %}
+        {% endblock %}
+  
+        {% block content %}
+        {% endblock %}
 
       </div>
       <hr/>
