@@ -12,9 +12,10 @@ from django.contrib import messages
 from .models import Job, UserContext, UserResource, UserTasks, JobInfo, UserPilots, DareBigJob, DareBigJobTask, DareBigJobPilot, simple_task_script , DefaultDareBigJobPilot
 from .forms import UserContextTable, UserContextForm, UserResourceTable, UserResourceForm, UserPilotsForm, UserTasksForm
 from .forms import PilotForm, ResourceEditConf, BigJobForm, PilotPopup
-from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task, get_task_status
+from .tasks import start_pilot, stop_pilot, get_pilot_status, start_task, get_task_status, start_run_pilot, stop_run_pilot, start_run_task, stop_run_task
 import simplejson as json
 import datetime
+from . import tasks
 
 DEFAULT_PILOTS = {'stampede': {"service_url": 'slurm+ssh://smaddi2@ranger.tacc.utexas.edu',
                      "number_of_processes": 16,
@@ -440,6 +441,9 @@ def view_all_dare_runs(request):
 
 @login_required
 def view_dare_run(request, id):
+    if request.GET.get('created'):
+        messages.success(request, "You have successfully created a Job! Please go ahead and allocate Pilots and add Tasks")
+
     run = DareBigJob.objects.get(id=id)
     runpilots = DareBigJobPilot.objects.filter(dare_bigjob=run)
     runtasks = DareBigJobTask.objects.filter(dare_bigjob=run)
@@ -459,18 +463,16 @@ def view_dare_run(request, id):
 @login_required
 def view_create_run(request):
     if request.method == "POST":
-        print request.POST
         if request.POST.get('name'):
             new_run = DareBigJob(user=request.user, status='New', name=request.POST.get('name'))
             new_run.save()
-            return HttpResponseRedirect('/runs/%s/' % new_run.id)
+            return HttpResponseRedirect('/runs/%s/?created=true' % new_run.id)
     return HttpResponseServerError()
 
 
 @login_required
 def view_run_add_pilot(request, id):
     if request.method == "POST":
-        print request.POST
         if request.POST.get('pilot'):
             run = DareBigJob.objects.get(id=id)
             pilot = DefaultDareBigJobPilot.objects.get(id=request.POST.get('pilot'))
@@ -493,17 +495,48 @@ def view_run_add_pilot(request, id):
 
 @login_required
 def view_run_add_task(request, id):
-    if request.method == "POST":
-        print request.POST , request.POST.get('pilot')
-        if request.POST.get('script') and len(request.POST.get('script')) > 0:
-            run = DareBigJob.objects.get(id=id)
-            runtask = DareBigJobTask()
-            if request.POST.get('pilot') > -1:
-                runtask.dare_bigjob_pilot = DareBigJobPilot.objects.get(id=request.POST.get('pilot'))
-            runtask.name = request.POST.get('name', 'Task')
-            runtask.dare_bigjob = run
-            runtask.user = request.user
-            runtask.save()
+    if request.method == "POST" and request.POST.get('script') and len(request.POST.get('script')) > 0:
+        run = DareBigJob.objects.get(id=id)
+        runtask = DareBigJobTask()
+        if request.POST.get('pilot') > -1:
+            runtask.dare_bigjob_pilot = DareBigJobPilot.objects.get(id=request.POST.get('pilot'))
+        runtask.name = request.POST.get('name', 'Task')
+        runtask.dare_bigjob = run
+        runtask.user = request.user
+        runtask.script = request.POST.get('script')
+        runtask.save()
+        print runtask.script
 
-            return HttpResponseRedirect('/runs/%s/' % run.id)
+        return HttpResponseRedirect('/runs/%s/' % run.id)
     return HttpResponseServerError()
+
+
+@login_required
+def view_run_pilot_celery_action(request, id):
+    ctask_type = request.GET.get("type")
+    pilot_id = request.GET.get("pilot_id")
+    if ctask_type == "start":
+        start_run_pilot(pilot_id)
+
+    if ctask_type == "stop":
+        stop_run_pilot(pilot_id)
+
+    if ctask_type == "update":
+        tasks.update_status_run_pilot(pilot_id)
+
+    return HttpResponseRedirect('/runs/%s/' % id)
+
+
+@login_required
+def view_run_task_celery_action(request, id):
+    ctask_type = request.GET.get("type")
+    task_id = request.GET.get("task_id")
+    if ctask_type == "start":
+        start_run_task(task_id)
+
+    if ctask_type == "stop":
+        stop_run_task(task_id)
+    if ctask_type == "update":
+        tasks.update_status_run_task(task_id)
+
+    return HttpResponseRedirect('/runs/%s/' % id)

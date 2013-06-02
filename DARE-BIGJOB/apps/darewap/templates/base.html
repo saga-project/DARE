@@ -112,6 +112,9 @@
     </div>
 
     <div class="container">
+
+      {% block breadcrumb%}
+      {% endblock %}
         {% if messages %}
 
           <ul class="messages">
@@ -125,8 +128,6 @@
         {% endif %}
 
 
-      {% block breadcrumb%}
-      {% endblock %}
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="well">
 

@@ -327,14 +327,38 @@ class DareBigJob(BaseDareModel):
 class DareBigJobPilot(BaseDareBigJobPilot):
     dare_bigjob = models.ForeignKey('DareBigJob')
     time_started = models.DateTimeField()
+    pilot_url = models.CharField(max_length=256, blank=True)
+
+    def get_pilot_info(self):
+        pilotdescdict = {'service_url': self.service_url,
+                        'queue': self.queue,
+                        'walltime': self.walltime,
+                        'project': self.project,
+                        'working_directory': self.working_directory,
+                        'number_of_processes': self.number_of_processes,
+                        'cores_per_node': self.cores_per_node
+                        }
+        for key in pilotdescdict.keys():
+            pilotdescdict[key] = str(pilotdescdict[key])
+        return pilotdescdict
+
+    def get_stop_start(self):
+        if self.status in ['New', 'Stopped', 'Canceled']:
+            return True
+        return False
 
 
 class DareBigJobTask(BaseDareModel):
     dare_bigjob = models.ForeignKey('DareBigJob')
     dare_bigjob_pilot = models.ForeignKey('DareBigJobPilot', blank=True, null=True)
-    script = models.TextField(blank=True, default=simple_task_script)
+    script = models.TextField(blank=True)
     inputfiles = models.CharField(max_length=30, blank=True)
     outputfiles = models.CharField(max_length=30, blank=True)
+    cu_url = models.CharField(max_length=256, blank=True)
 
+    def get_stop_start(self):
+        if self.status in ['New', 'Stopped', 'Canceled', 'Done']:
+            return True
+        return False
 
 

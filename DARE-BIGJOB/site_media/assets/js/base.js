@@ -18,12 +18,30 @@ $(document).ready(function() {
     replace_tab_by_spaces: true
   });
 
+  $("#runFormSubmit").click(function(){
+    $("#id_script").val(editAreaLoader.getValue("id_script"));
+  });
 
   $("#addTaskForm").validate({
       rules: {
        name : { required : true, minlength: 2 },
        script : { required : true, minlength: 30 }
       }
+
   });
+
+
+  $("#allocatePilotForm").validate({
+      rules: {
+       walltime : { required : true,  minlength: 1},
+       cores : { required : true,  minlength: 1}
+      }
+  });
+  $("#runForm").validate({
+      rules: {
+       name : { required : true,  minlength: 2}
+      }
+  });
+
 
 });

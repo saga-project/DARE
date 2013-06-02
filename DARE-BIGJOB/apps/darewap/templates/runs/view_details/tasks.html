@@ -21,8 +21,14 @@
             <td  >  </td>  
             <td  > {{task.status}}</td>  
             <td  > {{task.dare_bigjob_pilot.name}}({{task.dare_bigjob_pilot.id}})</td>  
-            <td ><a class="btn btn-success btn-mini"> Start</a></td>  
-
+            <td>
+              {% if task.get_stop_start %}
+                  <a href="action-task/?type=start&task_id={{task.id}}" class="btn btn-success btn-mini"> Start</a>
+              {% else%}
+                  <a href="action-task/?type=stop&task_id={{task.id}}" class="btn btn-danger btn-mini"> Cancel</a>
+              {% endif%}
+                  <a href="action-task/?type=update&task_id={{task.id}}" class="btn btn-success btn-mini"> Update Status</a>
+              </td>
           </tr>   
         {% endfor %}
     </tbody>  
@@ -34,7 +40,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Add Task to this Run</h3>
     </div>
-    <form id="addTaskForm" method="post" action="add-task">
+    <form id="addTaskForm" method="post" action="add-task/">
         <div class="modal-body">
             {% csrf_token %}
             <table>

@@ -18,10 +18,25 @@
         <tr>  
           <td> {{forloop.counter}}</td>
           <td>{{pilot.name|title}}({{pilot.pk}})</td>  
-          <td>{{pilot.number_of_processes}}</td>  
+          <td>
+            {% ifequal pilot.pilot_type 'osg'%}  
+                NA
+            {% else %}
+                {{pilot.number_of_processes}}
+            {% endifequal %}
+
+          </td>  
           <td>{{pilot.walltime}}</td>  
           <td>{{pilot.status}}</td>  
-          <td><a class="btn btn-success btn-mini"> Start</a></td>  
+          <td>
+            {% if pilot.get_stop_start %}
+                <a href="action-pilot/?type=start&pilot_id={{pilot.id}}" class="btn btn-success btn-mini"> Start</a>
+            {% else%}
+                <a href="action-pilot/?type=stop&pilot_id={{pilot.id}}" class="btn btn-danger btn-mini"> Cancel</a>
+            {% endif%}
+                <a href="action-pilot/?type=update&pilot_id={{pilot.id}}" class="btn btn-success btn-mini"> Update Status</a>
+
+          </td>  
 
 
         </tr>  
@@ -35,7 +50,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Allocate Pilot to this Run</h3>
     </div>
-    <form class="form-horizontal" id="allocatePilotForm" method="post" action="add-pilot">
+    <form class="form-horizontal" id="allocatePilotForm" method="post" action="add-pilot/">
         <div class="modal-body">
             {% csrf_token %}
             <div class="control-group">
@@ -49,15 +64,15 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputPassword"># of Cores</label>
+                <label class="control-label"># of Cores</label>
                 <div class="controls">
-                <input type="number" id="cores" value="8" name="cores" placeholder="10">
+                <input type="number" id="id_cores" value="8" name="cores" placeholder="10">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputPassword">Walltime</label>
                 <div class="controls">
-                <input type="number" id="walltime" value="10" name="walltime" placeholder="10">
+                <input type="number" id="id_walltime" value="10" name="walltime" placeholder="10">
                 </div>
             </div>
         </div>
