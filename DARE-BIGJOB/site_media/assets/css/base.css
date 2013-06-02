@@ -19,7 +19,7 @@
   }
 
 
-#username{
+#username {
   color: white;
   padding-top: 10px;
   padding-right: 5px;
@@ -49,7 +49,7 @@
 }
 
 .navbar-inverse .brand, .navbar-inverse .nav>li>a {
-  color: white;
+  color: grey;
 }
 
 .whitetable {
