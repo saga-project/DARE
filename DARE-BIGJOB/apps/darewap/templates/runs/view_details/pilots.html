@@ -17,7 +17,7 @@
       {% for pilot in runpilots %}
         <tr>  
           <td> {{forloop.counter}}</td>
-          <td>{{pilot.name|title}}({{pilot.pk}})</td>  
+          <td>{{pilot.name}}({{pilot.pk}})</td>  
           <td>
             {% ifequal pilot.pilot_type 'osg'%}  
                 NA
@@ -56,9 +56,15 @@
             <div class="control-group">
                 <label class="control-label" for="inputEmail">Pilot</label>
                 <div class="controls">
-                    <select name='pilot'>
+                    <select name='pilot' id="pilotPopupSelect" multiple="multiple">
                         {% for pilot in defaultpilots %}
-                            <option value="{{pilot.id}}">{{pilot.name}}</option>
+                        <option value="{{pilot.id}}" type-pilot='{{pilot.pilot_type}}'
+                                {% if forloop.first %} 
+                                selected
+                                {%endif%}
+                                default-cores='{{pilot.cores_per_node}}'>
+                                {{pilot.name}}
+                        </option>
                         {% endfor%}
                     </select>
                 </div>
@@ -70,7 +76,7 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputPassword">Walltime</label>
+                <label class="control-label" for="inputPassword">Walltime in Min.</label>
                 <div class="controls">
                 <input type="number" id="id_walltime" value="10" name="walltime" placeholder="10">
                 </div>

@@ -9,6 +9,7 @@ django-extensions
 #dare
 git+https://github.com/saga-project/BigJob.git#egg=BigJob
 bliss
+saga-python
 
 #removed as we are not using DARE-commandline
 #dare
