@@ -7,3 +7,8 @@ bjdareenv
 site_media/assets/CACHE/*
 CACHE
 site_media/assets/CACHE/*/*
+site_media/*
+!site_media/assets/css
+!site_media/assets/js
+!site_media/assets/img
+!site_media/assets/font
