@@ -14,12 +14,3 @@ CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 
 GITHUB_APP_ID = 'aafd354d36d01b5c0cd9'
 GITHUB_API_SECRET = 'b3d567fbd131b347bffaf4514cc40db69746f4d9'
-
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-    #"staticfiles.finders.FileSystemFinder",
-    #"staticfiles.finders.AppDirectoriesFinder",
-    'compressor.finders.CompressorFinder',
-)
