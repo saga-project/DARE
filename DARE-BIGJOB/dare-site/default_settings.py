@@ -201,7 +201,7 @@ LOGIN_ERROR_URL = '/accounts/login/'
 #SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
 
 from django.template.defaultfilters import slugify
-SOCIAL_AUTH_ENABLED_BACKENDS = ('github',)
+SOCIAL_AUTH_ENABLED_BACKENDS = ('google',)
 SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
 SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'associate_complete'
 SOCIAL_AUTH_DEFAULT_USERNAME = lambda u: slugify(u)
@@ -212,17 +212,24 @@ SOCIAL_AUTH_ASSOCIATE_BY_MAIL = True
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleOAuthBackend',
     'social_auth.backends.google.GoogleOAuth2Backend',
+    'social_auth.backends.google.GoogleBackend',
     'social_auth.backends.yahoo.YahooBackend',
     'social_auth.backends.browserid.BrowserIDBackend',
     'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'social_auth.backends.contrib.disqus.DisqusBackend',
     'social_auth.backends.contrib.livejournal.LiveJournalBackend',
+    'social_auth.backends.contrib.orkut.OrkutBackend',
     'social_auth.backends.contrib.foursquare.FoursquareBackend',
     'social_auth.backends.contrib.github.GithubBackend',
-    'social_auth.backends.contrib.vkontakte.VKontakteBackend',
+    'social_auth.backends.contrib.vk.VKOAuth2Backend',
     'social_auth.backends.contrib.live.LiveBackend',
     'social_auth.backends.contrib.skyrock.SkyrockBackend',
     'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
+    'social_auth.backends.contrib.readability.ReadabilityBackend',
+    'social_auth.backends.contrib.fedora.FedoraBackend',
     'social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -244,6 +251,10 @@ SOCIAL_AUTH_PIPELINE = (
 GOOGLE_OAUTH2_CLIENT_ID = '130016037963.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = '4-wWN2SjTl7pHiEezVfeW7mo'
 
+GITHUB_APP_ID = 'aafd354d36d01b5c0cd9'
+GITHUB_API_SECRET = 'b3d567fbd131b347bffaf4514cc40db69746f4d9'
+
+
 INVITATIONS_PER_USER = 10
 ACCOUNT_INVITATION_DAYS = 7
 INVITE_MODE = True
@@ -263,3 +274,6 @@ djcelery.setup_loader()
 
 ALLOWED_HOSTS = ['gw68.quarry.iu.teragrid.org', 'localhost']
 
+
+STATIC_ROOT = 'site_media'
+STATIC_URL = '/assets/'

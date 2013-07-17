@@ -12,6 +12,5 @@ CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 #CELERY_ANNOTATIONS = {"tasks.add": {"rate_limit": "10/s"}}
 #CELERYBEAT_SCHEDULER="djcelery.schedulers.DatabaseScheduler"
 
-
-
 COMPRESS_OFFLINE = True
+

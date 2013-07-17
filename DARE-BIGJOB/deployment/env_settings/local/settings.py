@@ -11,3 +11,6 @@ CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 
 #CELERY_ANNOTATIONS = {"tasks.add": {"rate_limit": "10/s"}}
 #CELERYBEAT_SCHEDULER="djcelery.schedulers.DatabaseScheduler"
+
+GITHUB_APP_ID = 'aafd354d36d01b5c0cd9'
+GITHUB_API_SECRET = 'b3d567fbd131b347bffaf4514cc40db69746f4d9'

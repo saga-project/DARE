@@ -35,3 +35,4 @@ RestrictedPython
 git+git://github.com/dcramer/django-devserver#egg=django-devserver
 supervisor
 gunicorn
+dj-static

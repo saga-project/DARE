@@ -13,7 +13,7 @@ urlpatterns = patterns('',
 )
 urlpatterns += patterns('',   url(r'', include('social_auth.urls')))
 
-if settings.DEBUG == False:
-    urlpatterns += patterns('',
-                url(r'^assets/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT, 'show_indexes': False})
-        )
+#if settings.DEBUG == False:
+#    urlpatterns += patterns('',
+#                url(r'^assets/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT, 'show_indexes': False})
+#        )

@@ -93,9 +93,9 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href='/login/'><i class="icon-user"></i> Login<b class="caret"></b></a>
                     <ul class="dropdown-menu"> 
                       <li><a href="{% url 'dare_login_in' %}"> Username </a></li>
-                      <li><a href="{% url 'socialauth_begin' 'yahoo' %}?{{ redirect_querystring }}"> Yahoo</a> 
+                      <li><a href="{% url 'socialauth_begin' 'github' %}?{{ redirect_querystring }}">GitHub</a> 
                       </li>
-                      <li><a href="{% url 'socialauth_begin' 'google-oauth2' %}?{{ redirect_querystring }}"> Google </a></li>
+                      <li><a href="{% url 'socialauth_begin' 'google-oauth2' %}?{{ redirect_querystring }}">Google</a></li>
                     </ul>
                     <li><a href="{% url 'request_invite' %}"> Signup Today </a> </li>
                   {% endif %}

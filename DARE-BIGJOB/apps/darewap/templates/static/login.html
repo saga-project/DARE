@@ -1,22 +1,18 @@
 {% extends "base.html" %}
 
 {% block body%}
+{% if request.session.invitation_key %}
+    <div class="alert alert-success">Your invitation is validated!</div>
+{% else %}
+    <div class="alert alert-warning">Currently all registration are through invite only. Please  
+        <a href='/invite/request/'> click here </a> to request one!
+    </div>
+{% endif%}
 
- <div>   
-    
-    {% if request.session.invitation_key %}
-
-        Your invitation is validated
-    {% else %}
-        Currently all registration are through invite only. Please  <a href='/invite/request/'> click here </a> to request one!
-    {% endif%}
-</div>
 <div>
-    <h2>
-    Invited users can Register/Login  using 
-    <h2>
+    <h3>Invited users can Register/Login  using </h3>
     <h4>
-        <a href="{% url 'socialauth_begin' 'yahoo' %}?{{ redirect_querystring }}"> Yahoo </a>|
+        <a href="{% url 'socialauth_begin' 'github' %}?{{ redirect_querystring }}">GitHub</a> |
         <a href="{% url 'socialauth_begin' 'google-oauth2' %}?{{ redirect_querystring }}"> Google</a>
     </h4>
 </div>
