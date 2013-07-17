@@ -10,6 +10,6 @@
   cd /Users/Sharath/workspace/projects/DARE/DARE-BIGJOB/
   source bjdareenv/bin/activate
   test -d $LOGDIR || mkdir -p $LOGDIR
-  exec python manage.py run_gunicorn -w $NUM_WORKERS \
+  exec python managedev.py run_gunicorn -w $NUM_WORKERS \
     --user=$USER --group=$GROUP --log-level=debug \
     --log-file=$LOGFILE 2>>$LOGFILE 
