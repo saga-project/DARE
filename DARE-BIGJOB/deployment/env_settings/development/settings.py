@@ -18,3 +18,13 @@ DEBUG = False
 
 GITHUB_APP_ID = '4e5e370fc2b67f60391c'
 GITHUB_API_SECRET = '9954bcb156932a3e7d677e26f2e3c63047a2e250'
+
+
+STATICFILES_FINDERS = (
+    #'django.contrib.staticfiles.finders.FileSystemFinder',
+    #'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #"staticfiles.finders.FileSystemFinder",
+    #"staticfiles.finders.AppDirectoriesFinder",
+    'compressor.finders.CompressorFinder',
+)
