@@ -14,7 +14,6 @@
     {% compress css %}
     <!-- Le styles -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="/static/css/base.css" rel="stylesheet">
    {% endcompress %}
    {% spaceless %}
@@ -55,23 +54,21 @@
   <body>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a class="brand" href="/home/"><i class="icon-home icon-white moreh"></i>DARE-BIGJOB</a></li>
-              <li><a href="/runs/"><i class="icon-plane icon-white"></i>Runs</a></li>
-              <li><a href='#'><i class="icon-briefcase icon-white"></i>Files </a></li>
-              <li><a href='/stat/contact/'>Contact</a></li>
-            </ul>
-          
-            <ul class="nav pull-right">
+      <div class="container">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/home/"><i class="icon-home icon-white moreh"></i>DARE-BIGJOB</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/runs/"><i class="icon-plane icon-white"></i>Runs</a></li>
+            <li><a href='#'><i class="icon-briefcase icon-white"></i>Files </a></li>
+            <li><a href='/stat/contact/'>Contact</a></li>
+          </ul>
+
+           <ul class="nav navbar-nav pull-right">
                 <li class="dropdown">
 
                   {% if request.user.is_authenticated %}
@@ -103,13 +100,11 @@
                   
                 </li>    
             </ul>
-            </div>
-       
-
-          </div>
-        </div>
+        </div><!--/.nav-collapse -->
       </div>
     </div>
+
+
 
     <div class="container">
 
