@@ -20,17 +20,9 @@ $(document).ready(function() {
     show_hide_cores();
   });
 
-  editAreaLoader.init({
-    id : "id_script",
-    syntax: "python",
-    start_highlight: true,
-    toolbar: '',
-    min_width: 525,
-    min_height: 250,
-    allow_toggle: false,
-    allow_resize: false,
-    replace_tab_by_spaces: true
-  });
+  var editor = ace.edit("id_script");
+  editor.getSession().setMode("ace/mode/python");
+  editor.setTheme("ace/theme/textmate");
 
   $("#runFormSubmit").click(function(){
     $("#id_script").val(editAreaLoader.getValue("id_script"));

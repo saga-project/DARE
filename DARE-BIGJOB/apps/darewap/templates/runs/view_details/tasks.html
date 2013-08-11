@@ -1,5 +1,7 @@
-<a href="#addTaskModal" role="button" class="btn btn-primary runadd" data-toggle="modal" id="btnAddTaskModal">Add Task </a>
-<h3 class='run-h'>  Tasks </h3>  
+<div>
+  <a href="#addTaskModal" role="button" class="btn btn-primary taskadd pull-right" data-toggle="modal">Add Task</a>
+  <h3 class='run-h'>  Tasks </h3>  
+</div>
 <table class="table table-condensed table-hover2 whitetable">   
     <thead>
       <tr>  
@@ -15,12 +17,12 @@
     <tbody> 
       {% for task in runtasks%}  
           <tr>  
-            <td > {{forloop.counter}}</td> 
-            <td  > {{task.name}}</td>  
-            <td > {{task.get_cores}}</td>  
-            <td  >  </td>  
-            <td  > {{task.status}}</td>  
-            <td  > {{task.dare_bigjob_pilot.name}}({{task.dare_bigjob_pilot.id}})</td>  
+            <td>{{forloop.counter}}</td> 
+            <td>{{task.name}}</td>  
+            <td>{{task.get_cores}}</td>  
+            <td></td>  
+            <td>{{task.status}}</td>  
+            <td>{{task.dare_bigjob_pilot.name}}({{task.dare_bigjob_pilot.id}})</td>  
             <td>
               {% if task.get_stop_start %}
                   <a href="action-task/?type=start&task_id={{task.id}}" class="btn btn-success btn-mini"> Start</a>
@@ -35,43 +37,51 @@
 </table> 
 
 <!-- Modal -->
-<div id="addTaskModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Add Task to this Run</h3>
-    </div>
-    <form id="addTaskForm" method="post" action="add-task/">
-        <div class="modal-body">
-            {% csrf_token %}
-            <table>
-              <tr>
-                  <td class='name'><label class="control-label" for="inputEmail">Name</label></td>
-                  <td>
-                    {{form.name}}
-                  </td>
-              </tr>
-            <tr>
-                  <td class='name'><label class="control-label" for="inputEmail">Pilot</label></td>
-                  <td>
-                      <select name='pilot'>
-                        {% for pilot in runpilots %}
-                            <option value="{{pilot.id}}">{{pilot.name}}({{pilot.id}})</option>
-                        {% endfor%}
-                      </select>
-                  </td>
-            </tr>
-            </table>
+  <div class="modal fade" id="addTaskModal">
 
-            <div class="control-group">
-                <label class="control-label" for="inputPassword">Tasks</label>
-                <div class="controls">
-                      {{form.script}}
-                </div>
-            </div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Add Task to this Run</h4>
         </div>
+      <form id="addTaskForm" method="post" action="add-task/" class="form-horizontal">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="id_name" class="col-lg-2 control-label">Name</label>
+            <div class="col-lg-6">
+              <input id="id_name"  class="form-control"  maxlength="30" name="name" type="text" placeholder="Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="id_pilot" class="col-lg-2 control-label">Pilot</label>
+            <div class="col-lg-6">
+                <select name='pilot' id="id_pilot" class="form-control">
+                  {% for pilot in runpilots %}
+                      <option value="{{pilot.id}}">{{pilot.name}}({{pilot.id}})</option>
+                  {% endfor%}
+                </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="id_script" class="col-lg-2 control-label">Tasks</label>
+            <div class="col-lg-6">
+              <pre id="id_script">{{ form.script.value }}</pre>
+            </div>
+          </div>
+
+        </div>
+
         <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn" data-dismiss="modal">Close</button>
             <input class="btn btn-primary" id="runFormSubmit" type="submit" value="Add Task">
         </div>
-    </form>
+      </form>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 </div>
+

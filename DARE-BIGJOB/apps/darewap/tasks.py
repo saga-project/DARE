@@ -1,4 +1,7 @@
 from celery.decorators import task
+import sys
+import saga
+import getpass
 
 from .models import DareBigJobPilot, DareBigJobTask
 from RestrictedPython import compile_restricted
@@ -127,3 +130,65 @@ def update_status_run_task(task_id):
     taskinfo.status = all_status
     taskinfo.save()
     print("Updated Status Task: ", task_id)
+
+CONDOR_URL = "condor://localhost?WhenToTransferOutput=ON_EXIT&should_transfer_files=YES&notification=Always"
+
+
+@task
+def start_run_osg_task(task_id):
+
+    # Your ssh identity on the remote machine.
+    ctx = saga.Context("ssh")
+    ctx.user_id = getpass.getuser()  # Change if necessary
+
+    session = saga.Session()
+    session.add_context(ctx)
+
+    js = saga.job.Service(CONDOR_URL, session=session)
+
+    jd = saga.job.Description()
+
+    jd.name = 'testjob'
+    jd.project = 'TG-MCB090174'
+    jd.environment = {'RUNTIME': '/etc/passwd'}
+    jd.wall_time_limit = 2  # minutes
+
+    jd.executable = '/bin/cat'
+    jd.arguments = ["$RUNTIME"]
+
+    jd.output = "saga_condorjob.stdout"
+    jd.error = "saga_condorjob.stderr"
+
+#       jd.candidate_hosts = ["FNAL_FERMIGRID", "cinvestav", "SPRACE",
+#                             "NYSGRID_CORNELL_NYS1", "Purdue-Steele",
+#                             "MIT_CMS_CE2", "SWT2_CPB", "AGLT2_CE_2",
+#                             "UTA_SWT2", "GridUNESP_CENTRAL",
+#                             "USCMS-FNAL-WC1-CE3"]
+
+    # create the job (state: New)
+    sleepjob = js.create_job(jd)
+
+    # check our job's id and state
+    print "Job ID    : %s" % (sleepjob.id)
+    print "Job State : %s" % (sleepjob.state)
+
+    print "\n...starting job...\n"
+    sleepjob.run()
+
+    print "Job ID    : %s" % (sleepjob.id)
+    print "Job State : %s" % (sleepjob.state)
+
+
+def get_osg_task_status(task_id):
+
+    # Your ssh identity on the remote machine.
+    ctx = saga.Context("ssh")
+    ctx.user_id = getpass.getuser()  # Change if necessary
+
+    session = saga.Session()
+    session.add_context(ctx)
+
+    js = saga.job.Service(CONDOR_URL, session=session)
+
+    sleebjob_clone = js.get_job(task_id)
+    return sleebjob_clone.state

@@ -2,6 +2,21 @@ from django.db import models
 from django.contrib import admin
 
 
+simple_task_script = """def tasks(NUMBER_JOBS=1):
+    tasks = []
+    for i in range(NUMBER_JOBS):
+        compute_unit_description = {
+        "executable": "/bin/echo",
+        "arguments": ["Hello", "$ENV1", "$ENV2"],
+        "environment": ['ENV1=env_arg1', 'ENV2=env_arg2'],
+        "number_of_processes": 4,
+        "spmd_variation": "mpi",
+        "output": "stdout.txt",
+        "error": "stderr.txt"}
+        tasks.append(compute_unit_description)
+    return tasks"""
+
+
 class BaseDareModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -75,7 +90,7 @@ class DareBigJobPilot(BaseDareBigJobPilot):
 class DareBigJobTask(BaseDareModel):
     dare_bigjob = models.ForeignKey('DareBigJob')
     dare_bigjob_pilot = models.ForeignKey('DareBigJobPilot', blank=True, null=True)
-    script = models.TextField(blank=True)
+    script = models.TextField(blank=True, default=simple_task_script)
     inputfiles = models.CharField(max_length=30, blank=True)
     outputfiles = models.CharField(max_length=30, blank=True)
     cu_url = models.CharField(max_length=256, blank=True)

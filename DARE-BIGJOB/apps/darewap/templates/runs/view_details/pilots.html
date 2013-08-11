@@ -1,5 +1,5 @@
 <a href="#allocatePilotModal" role="button" class="btn btn-primary runadd" data-toggle="modal">Allocate</a>
-<h3 class='run-h'>  Pilots </h3>  
+<h3 class='run-h'>Pilots</h3>  
 <table class="table table-condensed table-striped table-hover2 whitetable">   
     <thead>
         <tr>  
@@ -9,11 +9,9 @@
             <th style="width: 10%">Walltime</th>  
             <th style="width: 10%">Status</th>  
             <th style="width: 10%">Actions</th>  
-
         </tr>
     </thead>
     <tbody> 
-
       {% for pilot in runpilots %}
         <tr>  
           <td> {{forloop.counter}}</td>
@@ -35,10 +33,7 @@
                 <a href="action-pilot/?type=stop&pilot_id={{pilot.id}}" class="btn btn-danger btn-mini"> Cancel</a>
             {% endif%}
                 <a href="action-pilot/?type=update&pilot_id={{pilot.id}}" class="btn btn-success btn-mini"> Update Status</a>
-
           </td>  
-
-
         </tr>  
       {% endfor %}
     </tbody>  
@@ -53,43 +48,43 @@
             <h3 id="myModalLabel">Create A New Run</h3>
         </div>
 
-<form class="form-horizontal" id="allocatePilotForm" method="post" action="add-pilot/">
-        <div class="modal-body">
-            {% csrf_token %}
-            <div class="form-group">
-                <label class="col-lg-2 control-label control-label" for="inputEmail">Pilot</label>
-                <div class="col-lg-10">
-                    <select name='pilot' id="pilotPopupSelect" multiple="multiple">
-                        {% for pilot in defaultpilots %}
-                        <option value="{{pilot.id}}" type-pilot='{{pilot.pilot_type}}'
-                                {% if forloop.first %} 
-                                selected
-                                {%endif%}
-                                default-cores='{{pilot.cores_per_node}}'>
-                                {{pilot.name}}
-                        </option>
-                        {% endfor%}
-                    </select>
+        <form class="form-horizontal" id="allocatePilotForm" method="post" action="add-pilot/">
+            <div class="modal-body">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-lg-2 control-label control-label" for="inputEmail">Pilot</label>
+                    <div class="col-lg-10">
+                        <select name='pilot' id="pilotPopupSelect" multiple="multiple">
+                            {% for pilot in defaultpilots %}
+                            <option value="{{pilot.id}}" type-pilot='{{pilot.pilot_type}}'
+                                    {% if forloop.first %} 
+                                    selected
+                                    {%endif%}
+                                    default-cores='{{pilot.cores_per_node}}'>
+                                    {{pilot.name}}
+                            </option>
+                            {% endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"># of Cores</label>
+                    <div class="controls">
+                    <input type="number" id="id_cores" value="8" name="cores" placeholder="10">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="inputPassword">Walltime in Min.</label>
+                    <div class="controls">
+                    <input type="number" id="id_walltime" value="10" name="walltime" placeholder="10">
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="control-label"># of Cores</label>
-                <div class="controls">
-                <input type="number" id="id_cores" value="8" name="cores" placeholder="10">
-                </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <input class="btn btn-primary" id="runFormSubmit" type="submit" value="Allocate">
             </div>
-            <div class="form-group">
-                <label class="control-label" for="inputPassword">Walltime in Min.</label>
-                <div class="controls">
-                <input type="number" id="id_walltime" value="10" name="walltime" placeholder="10">
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            <input class="btn btn-primary" id="runFormSubmit" type="submit" value="Allocate">
-        </div>
-    </form>
+        </form>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->

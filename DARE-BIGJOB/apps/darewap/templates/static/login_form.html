@@ -3,28 +3,31 @@
 {% block body%}
 
 
-        <div class="login-form">
-                    <h2>Login</h2>
-    <form action="/log-in/" method="post">
-                    <form action="">
-        {% csrf_token %}
-
-        {% if next %}
+<h2>Login</h2>
+<form class="form-horizontal" action="/log-in/" method="post">
+    {% csrf_token %}
+    {% if next %}
         <input type="hidden" name="next" value="{{ next }}" />
-        {% endif %}
-                        <fieldset>
-                            <div class="clearfix">
-                                <input type="text" name="username" value="{{ username}}" placeholder="Username">
-                            </div>
-                            <div class="clearfix">
-                                <input type="password" name="password"  type="password" placeholder="Password">
-                            </div>
-                            <button class="btn primary" type="submit">Sign in</button>
-                        </fieldset>
-                    </form>
-                </div>
+    {% endif %}
 
-
+  <div class="form-group">
+    <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+    <div class="col-lg-4">
+        <input type="text" name="username" value="{{ username}}" class="form-control" placeholder="User Name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+    <div class="col-lg-4">
+        <input type="password" name="password"  class="form-control" type="password" placeholder="Password">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <button type="submit" class="btn btn-default">Sign in</button>
+    </div>
+  </div>
+</form>
 {% endblock %}
 
  
