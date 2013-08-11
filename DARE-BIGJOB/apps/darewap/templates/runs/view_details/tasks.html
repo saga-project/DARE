@@ -45,13 +45,14 @@
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title">Add Task to this Run</h4>
         </div>
-      <form id="addTaskForm" method="post" action="add-task/" class="form-horizontal">
+      
+      <form class="form-horizontal" id="addTaskForm" method="post" action="add-task/">
         {% csrf_token %}
         <div class="modal-body">
           <div class="form-group">
             <label for="id_name" class="col-lg-2 control-label">Name</label>
             <div class="col-lg-6">
-              <input id="id_name"  class="form-control"  maxlength="30" name="name" type="text" placeholder="Name">
+              <input id="id_name" class="form-control" maxlength="30" name="name" type="text" placeholder="Name">
             </div>
           </div>
           <div class="form-group">
@@ -67,7 +68,8 @@
           <div class="form-group">
             <label for="id_script" class="col-lg-2 control-label">Tasks</label>
             <div class="col-lg-6">
-              <pre id="id_script">{{ form.script.value }}</pre>
+              <input id="id_script" name="script" type="hidden">
+              <pre id="id_pre_script">{{ form.script.value }}</pre>
             </div>
           </div>
 
@@ -75,7 +77,7 @@
 
         <div class="modal-footer">
             <button class="btn" data-dismiss="modal">Close</button>
-            <input class="btn btn-primary" id="runFormSubmit" type="submit" value="Add Task">
+            <button class="btn btn-primary" id="runAddTask">Add Task</button>
         </div>
       </form>
 

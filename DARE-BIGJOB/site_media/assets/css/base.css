@@ -48,6 +48,7 @@
   margin: 0;
 }
 
+
 .navbar-inverse .brand, .navbar-inverse .nav>li>a {
   color: white;
 }
@@ -65,7 +66,7 @@ td.name {
     background-color: #EEE;
 }
 
-#id_script {
+#id_pre_script {
   width: 450px;
   height: 230px;
 }

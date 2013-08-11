@@ -20,18 +20,18 @@ $(document).ready(function() {
     show_hide_cores();
   });
 
-  var editor = ace.edit("id_script");
+  var editor = ace.edit("id_pre_script");
   editor.getSession().setMode("ace/mode/python");
   editor.setTheme("ace/theme/textmate");
 
-  $("#runFormSubmit").click(function(){
-    $("#id_script").val(editAreaLoader.getValue("id_script"));
+  $("#runAddTask").click(function() {
+    console.log(editor.getValue());
+    $("#id_script").val(editor.getValue());
   });
 
   $("#addTaskForm").validate({
       rules: {
-       name : { required : true, minlength: 2 },
-       script : { required : true, minlength: 30 }
+       name : { required : true, minlength: 2 }
       }
 
   });
