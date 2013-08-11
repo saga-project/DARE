@@ -13,6 +13,7 @@ CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 #CELERYBEAT_SCHEDULER="djcelery.schedulers.DatabaseScheduler"
 
 COMPRESS_OFFLINE = True
+STATIC_ROOT = '/opt/DARE/DARE-BIGJOB/site_media/assets/'
 DEBUG = False
 
 GITHUB_APP_ID = '4e5e370fc2b67f60391c'

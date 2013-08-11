@@ -180,12 +180,12 @@ full_path = os.path.dirname(os.path.realpath(__file__))
 DEFAULT_USER_CONTEXT_STORAGE = (os.path.join(full_path, '..', 'user_resource_auth'),)
 
 
-STATICFILES_DIRS = (os.path.join(full_path, '..', 'site_media/assets/'),)
+#STATICFILES_DIRS = (os.path.join(full_path, '..', 'site_media/assets/'),)
 
 STATIC_URL = '/assets/'
 INTERNAL_IPS = ('127.0.0.1',)
 
-MEDIA_ROOT = STATICFILES_DIRS[0]
+#MEDIA_ROOT = STATICFILES_DIRS[0]
 MEDIA_URL = '/media/'
 
 EMAIL_USE_TLS = True
