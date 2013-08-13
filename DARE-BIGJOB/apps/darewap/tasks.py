@@ -1,5 +1,4 @@
 from celery.decorators import task
-import sys
 import saga
 import getpass
 
