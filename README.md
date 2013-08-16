@@ -1,12 +1,28 @@
 DARE  
 =============
 
-To achieve the goal of supporting both types of parallelism, on heterogeneous distributed computing resources, we have
-developed the Dynamic Application Runtime Environment (DARE) framework.
-At the core of the DARE framework, is a SAGA BigJob (which is a flexible general purpose pilot-job implementation). With a
-suitable Web development framework, it supports the development of a lightweight but extensible, science gateway capable 
-of using a range of distributed resources. The effectiveness of  DARE framework supports a wide range of infrastructure, 
-problem instance configurations and size.
+To achieve the goal of supporting flexible, extensible and interoperable usage of 
+heterogeneous performance distributed computing  (HPDC) resources, we have
+developed the Distributed Application Runtime Environment (DARE) framework. 
+DARE is a standards-based, abstraction-driven middleware layer that provides these capabilities.
+
+
+At the core of DARE lies SAGA and SAGA-BigJob. 
+SAGA-BigJob is a flexible general purpose pilot-job implementation, which has been shown to be a powerful
+abstraction for resource management. SAGA provides the interoperability layer.
+Combined, SAGA and SAGA-BigJob are used to support the resource management capabilities of many tools.
+
+Furthermore, with a suitable Web development framework, DARE supports the development of a lightweight 
+but extensible, science gateway capable of using a range of distributed resources. 
+Currently, DARE uses DJANGO.
+
+DARE is an example of a Platform Independent Library, with specific support for 
+a range of commonly occuring "patterns" (namely stand-alone applications (Type I),  pipelines of tasks (Type II) 
+and execution patterns such as bag-of-tasks, coupled-ensembles etc (Type III)
+
+The effectiveness of the DARE framework lies in providing a simple, scalable and sustainable  
+approach to developing and supporting a wide range of patterns of execution independent of the
+infrastructure, problem instance configurations and size.
 
 
 
